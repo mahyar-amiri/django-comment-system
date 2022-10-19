@@ -1,0 +1,109 @@
+@import url("https://fonts.googleapis.com/css?family=Manrope:300,400,500,600,700&display=swap&subset=latin-ext");
+
+/* post comment */
+/*.message {*/
+/*    border-radius: 20px;*/
+/*    padding: 15px;*/
+/*    margin: 5px;*/
+/*    display: block;*/
+/*    color: white;*/
+/*    background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%) fixed;*/
+/*    position: relative;*/
+/*}*/
+
+/*.message:before {*/
+/*    content: "";*/
+/*    position: absolute;*/
+/*    z-index: 0;*/
+/*    bottom: 0;*/
+/*    right: -8px;*/
+/*    height: 20px;*/
+/*    width: 20px;*/
+/*    background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%) fixed;*/
+/*    border-bottom-left-radius: 15px;*/
+/*}*/
+
+/*.message:after {*/
+/*    content: "";*/
+/*    position: absolute;*/
+/*    z-index: 1;*/
+/*    bottom: 0;*/
+/*    right: -10px;*/
+/*    width: 10px;*/
+/*    height: 20px;*/
+/*    background: white;*/
+/*    border-bottom-left-radius: 10px;*/
+/*}*/
+
+/*.message textarea {*/
+/*    font-family: 'Manrope', sans-serif;*/
+/*    background: transparent;*/
+/*    border-radius: 20px;*/
+/*    display: inline-block;*/
+/*    color: white;*/
+/*    padding: 7px 13px 7px 13px;*/
+/*    outline: none;*/
+/*    height: 100%;*/
+/*    !*border: none;*!*/
+/*}*/
+
+.comment-form {
+    font-family: 'Manrope', sans-serif;
+    margin: 1rem;
+    background-color: #0086ff;
+    padding: 1rem;
+    border-radius: 20px;
+    display: block;
+}
+
+.comment-form textarea {
+    background: transparent;
+    display: block;
+    width: 100%;
+    min-height: 100px;
+    resize: vertical;
+    box-sizing: border-box;
+    color: #ffffff;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.comment-form textarea::placeholder {
+    color: #ccd3de;
+}
+
+.comment-form label {
+    color: #ffffff;
+}
+
+.comment-form button {
+    background: transparent;
+    color: #ffffff;
+    outline: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    float: right;
+}
+
+/* child and parent */
+.comment {
+    margin: 1rem;
+    padding: 1rem;
+    font-family: 'Manrope', sans-serif;
+    border-radius: 20px 20px 20px 0;
+}
+
+.comment.parent {
+    background-color: #ccd3de;
+    color: #000000;
+}
+
+.comment.child {
+    background-color: #0086ff;
+    color: #ffffff;
+    display: inline-block;
+    margin: 0 3rem 1rem;
+}

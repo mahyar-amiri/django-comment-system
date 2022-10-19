@@ -1,3 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import redirect
+from django.urls import reverse
+from django.utils import timezone
+from django.views.generic import CreateView
+from django.contrib.contenttypes.models import ContentType
+from comment.forms import CommentForm
 
-# Create your views here.
+
+class create_view(CreateView):
+
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(data=request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+
+            comment.user = request.user
+            app_name = request.POST.get('app_name', None)
+            model_name = request.POST.get('model_name', None)
+            object_id = request.POST.get('object_id', None)
+            parent_comment = request.POST.get('parent_comment', None)
+            time_posted = timezone.now()
+            comment.content_type = ContentType.objects.get(app_label=app_name, model=model_name.lower())
+            comment.object_id = object_id
+            comment.parent = parent_comment
+            comment.posted = time_posted
+
+            comment.save()
+
+        return redirect(reverse('blog:home'))

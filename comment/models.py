@@ -2,13 +2,16 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-from .utils import id_generator
-from . import settings
+from comment.utils import id_generator
+from comment import settings
 
 User = get_user_model()
 
 
 class CommentManager(models.Manager):
+    def parent_comments(self):
+        return self.filter(parent__isnull=True)
+
     @staticmethod
     def generate_urlhash():
         return id_generator(
@@ -21,7 +24,7 @@ class CommentManager(models.Manager):
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     content = models.TextField()
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='children', null=True, blank=True)
     is_spoiler = models.BooleanField(default=False)
     STATUS_CHOICES = (('d', 'Delivered'), ('a', 'Accepted'), ('r', 'Rejected'))
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='d')
@@ -54,3 +57,7 @@ class Comment(models.Model):
     @property
     def is_updated(self):
         return True if self.updated.timestamp() > self.posted.timestamp() else False
+
+    @property
+    def is_parent(self):
+        return self.parent is None
