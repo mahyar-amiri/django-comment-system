@@ -2,10 +2,10 @@
     {% for comment in object.comments.parent_comments %}
         <div>
 
-            <div class="comment parent"><b>{{ comment.user.username }}:</b> {{ comment.content }}</div>
+            {% include 'comment/comment_parent.html' %}
 
             {% for child in comment.children.all %}
-                <div class="comment child"><b>{{ child.user.username }}:</b> {{ child.content }}</div>
+                {% include 'comment/comment_child.html' %}
             {% endfor %}
 
         </div>

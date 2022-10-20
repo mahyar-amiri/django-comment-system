@@ -104,6 +104,10 @@
 .comment.child {
     background-color: #0086ff;
     color: #ffffff;
-    display: inline-block;
     margin: 0 3rem 1rem;
+}
+
+.comment-posted {
+    float: right;
+    font-size: smaller;
 }

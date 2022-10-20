@@ -1,5 +1,4 @@
 from django import template
-from comment.forms import CommentForm
 from django.contrib.contenttypes.models import ContentType
 
 register = template.Library()

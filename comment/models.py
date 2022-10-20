@@ -40,9 +40,9 @@ class Comment(models.Model):
 
     def __str__(self):
         if not self.parent:
-            return f'{self.urlhash} - {self.content[:20]}'
+            return f'{self.content[:20]}'
         else:
-            return f'[RE] : {self.urlhash} - {self.content[:15]}'
+            return f'[RE] ({self.parent.content[:10]}) : {self.content[:15]}'
 
     def set_unique_urlhash(self):
         if not self.urlhash:
@@ -54,9 +54,10 @@ class Comment(models.Model):
         self.set_unique_urlhash()
         super(Comment, self).save(*args, **kwargs)
 
-    @property
     def is_updated(self):
         return True if self.updated.timestamp() > self.posted.timestamp() else False
+
+    is_updated.boolean = True
 
     @property
     def is_parent(self):
