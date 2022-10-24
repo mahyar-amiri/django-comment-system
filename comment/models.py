@@ -38,6 +38,9 @@ class Comment(models.Model):
 
     objects = CommentManager()
 
+    class Meta:
+        ordering = ('-posted',)
+
     def __str__(self):
         if not self.parent:
             return f'{self.content[:20]}'
@@ -53,6 +56,9 @@ class Comment(models.Model):
     def save(self, *args, **kwargs):
         self.set_unique_urlhash()
         super(Comment, self).save(*args, **kwargs)
+
+    def get_hash(self):
+        return self.urlhash.replace(settings.COMMENT_URL_PREFIX, '').replace(settings.COMMENT_URL_SUFFIX, '')
 
     def is_updated(self):
         return True if self.updated.timestamp() > self.posted.timestamp() else False
