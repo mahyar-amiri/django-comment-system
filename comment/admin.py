@@ -4,7 +4,7 @@ from comment.models import Comment
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'user', 'is_spoiler', 'status', 'content_object')
+    list_display = ('__str__', 'user', 'is_spoiler', 'status', 'content_object', 'posted')
     ordering = ('-posted',)
     search_fields = ('content',)
     list_filter = ('is_spoiler', 'status')
