@@ -1,15 +1,16 @@
-<form method="POST" action="{% url 'comment:create' %}">
+<form method="post" action="{% url 'comment:create' %}">
     {% csrf_token %}
 
     {% include 'comment/object_info.html' with object_info=object_info %}
 
-    <div class="comment-form">
-        <textarea name="content" id="id_content" rows="5" placeholder="Write Something..."></textarea>
+    <div class="m-4 bg-blue-600 p-4 block rounded-3xl">
+        <textarea name="content" id="id_content" rows="5" placeholder="Write Something..." class="bg-transparent block w-full resize-y box-border text-white text-base mb-2 border-none outline-0 min-h-[120px] placeholder:text-gray-300"></textarea>
         <label>
             <input type="checkbox" name="is_spoiler" id="id_is_spoiler">
-            <span>SPOILER Alert!</span>
+            <span class="text-white">SPOILER Alert!</span>
         </label>
-        <button type="submit" value="ok">Send</button>
+
+        <button type="submit" class="bg-transparent text-white text-xl cursor-pointer float-right border-none outline-0">Send</button>
     </div>
 
 </form>

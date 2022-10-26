@@ -1,14 +1,16 @@
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.views.generic import CreateView, DeleteView, UpdateView
 from django.contrib.contenttypes.models import ContentType
+
+from comment.mixins import CommentMixin
 from comment.models import Comment
 from comment.forms import CommentForm
 
 
-class CreateComment(CreateView):
-
+class CreateComment(CommentMixin, CreateView):
     def post(self, request, *args, **kwargs):
         form = CommentForm(data=request.POST)
         if form.is_valid():
@@ -32,16 +34,17 @@ class CreateComment(CreateView):
 
             comment.save()
 
-        return redirect(reverse('blog:home'))
+        return JsonResponse({'a': 'b'})
+        # return redirect('blog:home')
 
 
-class UpdateComment(UpdateView):
+class UpdateComment(CommentMixin, UpdateView):
     model = Comment
     form_class = CommentForm
     success_url = reverse_lazy('blog:home')
 
 
-class DeleteComment(DeleteView):
+class DeleteComment(CommentMixin, DeleteView):
     model = Comment
     template_name = 'comment/comment_delete.html'
     success_url = reverse_lazy('blog:home')
