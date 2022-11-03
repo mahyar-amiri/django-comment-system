@@ -2,23 +2,29 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-from comment.utils import id_generator
 from comment import settings
+from random import choice
+from string import ascii_lowercase
 
 User = get_user_model()
 
 
-class CommentManager(models.Manager):
-    def parent_comments(self):
+class CommentQuerySet(models.QuerySet):
+    def filter_accepted(self):
+        return self.filter(status='a')
+
+    def filter_parents(self):
         return self.filter(parent__isnull=True)
+
+    def order_newest(self):
+        return self.order_by('-posted')
+
+    def order_oldest(self):
+        return self.order_by('posted')
 
     @staticmethod
     def generate_urlhash():
-        return id_generator(
-            prefix=settings.COMMENT_URL_PREFIX,
-            len_id=settings.COMMENT_URL_ID_LENGTH,
-            suffix=settings.COMMENT_URL_SUFFIX
-        )
+        return ''.join(choice(ascii_lowercase) for _ in range(settings.COMMENT_URLHASH_LENGTH))
 
 
 class Comment(models.Model):
@@ -36,7 +42,7 @@ class Comment(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 
-    objects = CommentManager()
+    objects = CommentQuerySet.as_manager()
 
     class Meta:
         ordering = ('-posted',)
@@ -56,9 +62,6 @@ class Comment(models.Model):
     def save(self, *args, **kwargs):
         self.set_unique_urlhash()
         super(Comment, self).save(*args, **kwargs)
-
-    def get_hash(self):
-        return self.urlhash.replace(settings.COMMENT_URL_PREFIX, '').replace(settings.COMMENT_URL_SUFFIX, '')
 
     def is_updated(self):
         return True if self.updated.timestamp() > self.posted.timestamp() else False

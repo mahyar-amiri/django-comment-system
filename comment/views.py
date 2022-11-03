@@ -1,16 +1,33 @@
 from django.http import JsonResponse
-from django.shortcuts import redirect, render
-from django.urls import reverse, reverse_lazy
+from django.shortcuts import render
 from django.utils import timezone
-from django.views.generic import CreateView, DeleteView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, TemplateView
 from django.contrib.contenttypes.models import ContentType
 
 from comment.mixins import CommentMixin
 from comment.models import Comment
 from comment.forms import CommentForm
+from comment import settings
 
 
-class CreateComment(CommentMixin, CreateView):
+class CommentList(ListView):
+    context_object_name = 'comments'
+    template_name = 'comment/comment_list.html'
+
+    def get_queryset(self):
+        queryset = None
+        if self.request.GET:
+            app_name = self.request.GET.get('app_name')
+            model_name = self.request.GET.get('model_name')
+            object_id = self.request.GET.get('object_id')
+            content_type = ContentType.objects.get(app_label=app_name, model=model_name.lower())
+            queryset = Comment.objects.filter(content_type=content_type, object_id=object_id)
+            queryset = queryset.filter_accepted().filter_parents()
+            queryset = queryset.order_newest()
+        return queryset
+
+
+class CommentCreate(CommentMixin, CreateView):
     def post(self, request, *args, **kwargs):
         form = CommentForm(data=request.POST)
         if form.is_valid():
@@ -32,19 +49,31 @@ class CreateComment(CommentMixin, CreateView):
                 comment.parent = None
             comment.posted = time_posted
 
+            if not settings.COMMENT_STATUS_CHECK:
+                comment.status = 'a'
+
             comment.save()
+            return JsonResponse({'result': 'success'}, status=200)
+        return JsonResponse({'result': 'fail'})
 
-        return JsonResponse({'a': 'b'})
-        # return redirect('blog:home')
 
-
-class UpdateComment(CommentMixin, UpdateView):
+class CommentUpdate(CommentMixin, UpdateView):
     model = Comment
     form_class = CommentForm
-    success_url = reverse_lazy('blog:home')
+    success_url = '/'
+
+    def form_valid(self, form):
+        super().form_valid(form)
+        return JsonResponse({'result': 'success'}, status=200)
 
 
-class DeleteComment(CommentMixin, DeleteView):
-    model = Comment
-    template_name = 'comment/comment_delete.html'
-    success_url = reverse_lazy('blog:home')
+class CommentDelete(CommentMixin, TemplateView):
+    def get(self, request, urlhash, *args, **kwargs):
+        return render(request, 'forms/comment_form_delete.html', context={'urlhash': urlhash})
+
+    def post(self, request, urlhash, *args, **kwargs):
+        comment = Comment.objects.get(urlhash=urlhash)
+        if comment:
+            comment.delete()
+            return JsonResponse({'result': 'success'}, status=200)
+        return JsonResponse({'result': f'fail'})

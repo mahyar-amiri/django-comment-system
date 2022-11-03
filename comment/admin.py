@@ -3,12 +3,29 @@ from django.contrib import admin, messages
 from comment.models import Comment
 
 
+class ListFilterByParent(admin.SimpleListFilter):
+    title = 'parent'
+    parameter_name = 'parent'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('parent', 'Comments'), ('child', 'Replies')
+        )
+
+    def queryset(self, request, queryset):
+        if self.value():
+            if self.value() == 'parent':
+                return queryset.filter(parent__isnull=True)
+            elif self.value() == 'child':
+                return queryset.filter(parent__isnull=False)
+
+
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'user', 'is_spoiler', 'status', 'content_object', 'posted')
     ordering = ('-posted',)
     search_fields = ('content',)
-    list_filter = ('is_spoiler', 'status')
-    readonly_fields = ('content', 'user', 'parent', 'content_object', 'content_type', 'object_id')
+    list_filter = ('is_spoiler', 'status', ListFilterByParent)
+    readonly_fields = ('content', 'user', 'parent', 'content_type', 'content_object', 'object_id', 'urlhash', 'posted')
     list_editable = ('is_spoiler', 'status')
     actions = ['accept_comment', 'reject_comment']
 

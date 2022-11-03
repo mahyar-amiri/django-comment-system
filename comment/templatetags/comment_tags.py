@@ -1,6 +1,8 @@
 from django import template
 from django.contrib.contenttypes.models import ContentType
 
+from comment import settings
+
 register = template.Library()
 
 
@@ -17,3 +19,18 @@ def render_comments(request, obj):
         }
     }
     return context
+
+
+@register.simple_tag
+def comment_count_children(parent_comment):
+    return parent_comment.children.filter_accepted().count()
+
+
+@register.simple_tag
+def comment_login_url():
+    return settings.LOGIN_URL
+
+
+@register.inclusion_tag('utils/IMPORTS.html')
+def render_imports():
+    return {'offline_imports': settings.COMMENT_OFFLINE_IMPORTS}
