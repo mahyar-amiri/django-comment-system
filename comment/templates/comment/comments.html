@@ -1,13 +1,21 @@
+{% load static %}
 {% load comment_tags %}
-{% include 'IMPORTS.html' %}
 
-<div id="comments">
+{% render_imports %}
 
-{#    <button onclick="ajx()" class="bg-gray-300 rounded-full m-4 p-4">click</button>#}
+<div id="comments" class="m-4">
 
-    {% include 'comment/comment_form.html' %}
+    {# COMMENT MODAL #}
+    <div id="comment-modal"></div>
 
-    {#% include 'comment/comments_list.html' %}#}
-    {% include 'comment/comment.html' %}
+    {# CREATE COMMENT FORM #}
+    {% include 'forms/comment_form_create.html' %}
+
+    {# COMMENTS LIST #}
+    <div id="comment-list">
+        {% include 'utils/comment_list_loader.html' %}
+    </div>
 
 </div>
+
+{% include 'utils/SCRIPTS.html' %}

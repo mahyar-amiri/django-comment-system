@@ -1,0 +1,73 @@
+{% load static %}
+{% load comment_tags %}
+
+<input type="checkbox" class="peer sr-only" id="toggle-spoiler-{{ comment.urlhash }}">
+<div class="flex justify-between mb-2">
+
+    {#COMMENT INFO#}
+    <div class="inline-block align-middle">
+        {#TODO PROFILE#}
+        {#<img src="{% static 'img/profile.png' %}" alt="Profile" class="inline-block w-12 rounded-full"/>#}
+        <span class="ml-2 text-lg font-semibold">{{ comment.user.username }}</span>
+        <span class="mx-1 text-gray-500">•</span>
+        <span class="text-sm text-gray-500">{{ comment.posted }}</span>
+    </div>
+
+    {#COMMENT OPTIONS#}
+    <div class="grid content-center mr-2">
+        {% if request.user.is_authenticated and comment.user == request.user %}
+            <div class="group flex flex-row-reverse space-x-3 space-x-reverse rounded-full bg-gray-100 p-2 border-2">
+                {% include 'icons/icon_dots.html' with class='inline w-6 h-6 fill-gray-500' %}
+                <label for="toggle-edit-{{ comment.urlhash }}" class="hidden group-hover:inline">{% include 'icons/icon_edit.html' with class='w-6 h-6 cursor-pointer fill-green-700' %}</label>
+                <span onclick="DeleteCommentFormLoad('{{ comment.urlhash }}')" class="hidden group-hover:inline">{% include 'icons/icon_delete.html' with class='w-6 h-6 cursor-pointer fill-red-500' %}</span>
+
+                {% if comment.is_spoiler %}
+                    {% include 'icons/icon_eye_off.html' with class='hidden w-6 h-6 fill-none fill-gray-900 group-hover:inline' %}
+                {% endif %}
+            </div>
+        {% elif comment.is_spoiler %}
+            <label for="toggle-spoiler-{{ comment.urlhash }}" class="rounded-full bg-gray-100 p-2 cursor-pointer border-2">
+                {% include 'icons/icon_eye.html' with class='inline w-6 h-6 fill-none stroke-gray-500' %}
+            </label>
+        {% endif %}
+    </div>
+</div>
+
+{#COMMENT SECTION#}
+<div class="{% if comment.is_spoiler and not comment.user == request.user %}hidden peer-checked:block{% endif %}">
+
+    {#COMMENT CONTENT#}
+    <input type="checkbox" class="peer sr-only" id="toggle-edit-{{ comment.urlhash }}">
+    <div class="p-2 text-justify block peer-checked:hidden">{{ comment.content }}</div>
+    <div class="p-1 text-justify hidden peer-checked:block">
+        {% if request.user.is_authenticated and comment.user == request.user %}
+            {% include 'forms/comment_form_edit.html' with comment=comment %}
+        {% endif %}
+    </div>
+
+    <div class="mt-2 flex justify-between">
+
+        {#COMMENT REACTION#}
+        <div class="flex space-x-2">
+            {#TODO REACTION#}
+            {#<span class="rounded-full border-2 border-blue-200 bg-blue-100 py-1 px-2"><span>👍</span> {{ comment.posted.minute }}</span>#}
+            {#<span class="rounded-full border-2 border-gray-200 bg-gray-100 py-1 px-2"><span>👎</span> {{ comment.posted.hour }}</span>#}
+        </div>
+
+        {#COMMENT REPLY#}
+        {% if comment.is_parent %}
+            {% comment_count_children comment as count_children %}
+            <label for="toggle-reply-{{ comment.urlhash }}">
+                <span class="cursor-pointer text-blue-700 px-1">
+                    {% if count_children > 1 %}
+                        {{ count_children }} Replies
+                    {% elif count_children == 1 %}
+                        {{ count_children }} Reply
+                    {% else %}
+                        Reply
+                    {% endif %}
+                </span>
+            </label>
+        {% endif %}
+    </div>
+</div>

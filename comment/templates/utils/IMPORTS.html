@@ -1,0 +1,56 @@
+{% load static %}
+
+{% if offline_imports %}
+    {# load from source #}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+{% else %}
+    {# load from url #}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+
+        :root {
+            --primary: #e5e7eb;
+            --secondary: #9ca3af;
+        }
+
+        /* Firefox */
+        textarea {
+            scrollbar-width: thin;
+            scrollbar-color: var(--secondary) var(--primary);
+        }
+
+        /* Chrome, Edge, and Safari */
+        textarea::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        textarea::-webkit-scrollbar-track {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        textarea::-webkit-scrollbar-thumb {
+            background-color: var(--secondary);
+            border-radius: 5px;
+            border: 3px solid var(--primary);
+        }
+
+        textarea::-webkit-resizer {
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--primary) var(--secondary) var(--secondary) var(--primary);
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+{% endif %}
