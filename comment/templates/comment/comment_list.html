@@ -1,34 +1,39 @@
 {# COMMENTS COUNT #}
 {% include 'comment/comment_counter.html' with count=comments.count %}
 
-{% for comment in comments.order_newest %}
-    <div class="flex flex-col space-y-4">
+<div class="flex flex-col space-y-2">
+    {% for comment in comments.order_newest %}
+        <div class="flex flex-col space-y-2">
 
-        {# PARENT #}
-        <input type="checkbox" class="peer sr-only" name="reply-section" id="toggle-reply-{{ comment.urlhash }}">
-        <div id="comment-{{ comment.urlhash }}" class="rounded-lg border-2 border-gray-200 p-2">
-            {% include 'comment/comment_body.html' with comment=comment %}
-        </div>
-
-        {# REPLY SECTION #}
-        <div class="hidden border-l-2 border-gray-600 m-4 mr-0 pl-4 peer-checked:block">
-
-            <div class="flex flex-col space-y-2">
-                {# CHILDREN #}
-                {% for child in comment.children.filter_accepted.order_oldest %}
-                    <div id="comment-{{ comment.urlhash }}" class="rounded-lg border-2 border-indigo-300 p-2">
-                        {% include 'comment/comment_body.html' with comment=child %}
-                    </div>
-                {% endfor %}
-
-                {# REPLY-FORM #}
-                {% include 'forms/comment_form_reply.html' with comment=comment %}
-
+            {% if settings.COMMENT_ALLOW_REPLY %}<input type="checkbox" class="peer sr-only" name="reply-section" id="toggle-reply-{{ comment.urlhash }}">{% endif %}
+            {# PARENT #}
+            <div id="comment-{{ comment.urlhash }}" class="rounded-lg border-2 border-gray-200 p-2">
+                {% include 'comment/comment_body.html' with comment=comment %}
             </div>
+
+            {#ALLOW_REPLY#}
+            {% if settings.COMMENT_ALLOW_REPLY %}
+
+                {# REPLY SECTION #}
+                <div class="hidden border-l-2 border-gray-600 m-4 mr-0 pl-4 peer-checked:block">
+
+                    <div class="flex flex-col space-y-2">
+                        {# CHILDREN #}
+                        {% for child in comment.children.filter_accepted.order_oldest %}
+                            <div id="comment-{{ comment.urlhash }}" class="rounded-lg border-2 border-indigo-300 p-2">
+                                {% include 'comment/comment_body.html' with comment=child %}
+                            </div>
+                        {% endfor %}
+
+                        {# REPLY-FORM #}
+                        {% include 'forms/comment_form_reply.html' with comment=comment %}
+
+                    </div>
+                </div>
+            {% endif %}
+
         </div>
-
-    </div>
-{% empty %}
-    {% include 'utils/comment_list_empty.html' %}
-{% endfor %}
-
+    {% empty %}
+        {% include 'utils/comment_list_empty.html' %}
+    {% endfor %}
+</div>

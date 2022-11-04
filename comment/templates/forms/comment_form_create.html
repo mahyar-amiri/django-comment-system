@@ -10,13 +10,17 @@
             <textarea name="content" id="id_content" rows="5" placeholder="Write Something..." spellcheck="false" class="mb-4 box-border block min-h-[120px] w-full resize-y border-none bg-transparent px-2 text-base outline-0 selection:bg-indigo-200 placeholder:text-gray-500"></textarea>
 
             <div class="flex justify-end">
-                <label class="mr-4 grid content-center">
-                    <input type="checkbox" name="is_spoiler" id="id_is_spoiler" class="peer sr-only"/>
-                    {#ICON EYE#}
-                    <span class="block cursor-pointer peer-checked:hidden">{% include 'icons/icon_eye.html' with class='inline-block w-8 fill-none stroke-gray-500' %}</span>
-                    {#ICON EYE OFF#}
-                    <span class="hidden cursor-pointer peer-checked:block">{% include 'icons/icon_eye_off.html' with class='inline-block w-8 fill-gray-500' %}</span>
-                </label>
+                {#ALLOW_SPOILER#}
+                {% get_settings 'COMMENT_ALLOW_SPOILER' as COMMENT_ALLOW_SPOILER %}
+                {% if COMMENT_ALLOW_SPOILER %}
+                    <label class="mr-4 grid content-center">
+                        <input type="checkbox" name="is_spoiler" id="id_is_spoiler" class="peer sr-only"/>
+                        {#ICON EYE#}
+                        <span class="block cursor-pointer peer-checked:hidden">{% include 'icons/icon_eye.html' with class='inline-block w-8 fill-none stroke-gray-500' %}</span>
+                        {#ICON EYE OFF#}
+                        <span class="hidden cursor-pointer peer-checked:block">{% include 'icons/icon_eye_off.html' with class='inline-block w-8 fill-gray-500' %}</span>
+                    </label>
+                {% endif %}
                 <button type="button" onclick="CreateComment('form-comment-create')" class="rounded-xl border-none bg-black py-2 px-6 text-xl text-white outline-0 shadow-md">Send</button>
             </div>
         {% else %}

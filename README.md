@@ -95,8 +95,16 @@ COMMENT_URLHASH_LENGTH = 8
 # if True comment status will be set as d(Delivered) otherwise it will be set as a(Accepted).
 COMMENT_STATUS_CHECK = False
 
-# If true, tailwindcss and jquery package will be loaded from static files.
+# if true, tailwindcss and jquery package will be loaded from static files.
 COMMENT_OFFLINE_IMPORTS = True
+
+# if None comments will be shown without profile image
+# you should set this value as profile image field name
+# for example our abstract user profile picture field is profile_image
+# <img src="{{ user.profile_image.url }}" /> so we set COMMENT_PROFILE_IMAGE_FIELD = 'profile.image'
+# see link blew to create abstract user model
+# https://docs.djangoproject.com/en/4.1/topics/auth/customizing/#substituting-a-custom-user-model
+COMMENT_PROFILE_IMAGE_FIELD = None
 ```
 
 ## Front-End

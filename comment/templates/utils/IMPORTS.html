@@ -20,14 +20,14 @@
         @tailwind utilities;
 
         :root {
-            --scrollbar-primary: #e5e7eb;
-            --scrollbar-secondary: #9ca3af;
+            --scrollbarprimary: #e5e7eb;
+            --scrollbarsecondary: #9ca3af;
         }
 
         /* Firefox */
         textarea {
             scrollbar-width: thin;
-            scrollbar-color: var(--scrollbar-secondary) var(--scrollbar-primary);
+            scrollbar-color: var(--scrollbarsecondary) var(--scrollbarprimary);
         }
 
         /* Chrome, Edge, and Safari */
@@ -36,20 +36,20 @@
         }
 
         textarea::-webkit-scrollbar-track {
-            background: var(--scrollbar-primary);
+            background: var(--scrollbarprimary);
             border-radius: 5px;
         }
 
         textarea::-webkit-scrollbar-thumb {
-            background-color: var(--scrollbar-secondary);
+            background-color: var(--scrollbarsecondary);
             border-radius: 5px;
-            border: 3px solid var(--scrollbar-primary);
+            border: 3px solid var(--scrollbarprimary);
         }
 
         textarea::-webkit-resizer {
             border-width: 5px;
             border-style: solid;
-            border-color: var(--scrollbar-primary) var(--scrollbar-secondary) var(--scrollbar-secondary) var(--scrollbar-primary);
+            border-color: var(--scrollbarprimary) var(--scrollbarsecondary) var(--scrollbarsecondary) var(--scrollbarprimary);
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>

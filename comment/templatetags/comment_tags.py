@@ -1,5 +1,6 @@
 from django import template
 from django.contrib.contenttypes.models import ContentType
+from django.templatetags.static import static
 
 from comment import settings
 
@@ -31,6 +32,23 @@ def comment_login_url():
     return settings.LOGIN_URL
 
 
+@register.simple_tag
+def get_settings(settings_parameter):
+    return getattr(settings, settings_parameter)
+
+
 @register.inclusion_tag('utils/IMPORTS.html')
 def render_imports():
     return {'offline_imports': settings.COMMENT_OFFLINE_IMPORTS}
+
+
+@register.simple_tag
+def get_profile_image(user):
+    if settings.COMMENT_PROFILE_IMAGE_FIELD:
+        profile = getattr(user, settings.COMMENT_PROFILE_IMAGE_FIELD)
+        if profile:
+            return profile.url
+        else:
+            return static(settings.COMMENT_PROFILE_IMAGE_DEFAULT)
+    else:
+        return None

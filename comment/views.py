@@ -26,6 +26,16 @@ class CommentList(ListView):
             queryset = queryset.order_newest()
         return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super(CommentList, self).get_context_data(**kwargs)
+        context['settings'] = {
+            'COMMENT_ALLOW_SPOILER': settings.COMMENT_ALLOW_SPOILER,
+            'COMMENT_ALLOW_REPLY': settings.COMMENT_ALLOW_REPLY,
+            'COMMENT_ALLOW_EDIT': settings.COMMENT_ALLOW_EDIT,
+            'COMMENT_ALLOW_DELETE': settings.COMMENT_ALLOW_DELETE,
+        }
+        return context
+
 
 class CommentCreate(CommentMixin, CreateView):
     def post(self, request, *args, **kwargs):

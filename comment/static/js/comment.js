@@ -23,6 +23,12 @@ function LoadCommentList() {
     );
 }
 
+function LoadDeleteCommentForm(urlhash) {
+    $("#comment-modal").load(
+        `/comment/delete/${urlhash}`
+    );
+}
+
 function ResetCreateCommentForm() {
     $(`#form-comment-create [name='content']`).val('').height('120px');
     $(`#form-comment-create [name='is_spoiler']`).prop('checked', false);
@@ -94,7 +100,7 @@ function EditComment(form_id) {
     });
 }
 
-function DeleteCommentForm(urlhash) {
+function DeleteComment(urlhash) {
     let form = $(`#form-comment-delete-${urlhash}`);
     let method = form.prop('method');
     let action = form.prop('action');
@@ -116,14 +122,8 @@ function DeleteCommentForm(urlhash) {
     });
 }
 
-function DeleteCommentFormLoad(urlhash) {
-    $("#comment-modal").load(
-        `/comment/delete/${urlhash}`
-    );
-}
-
 $(document).ready(function () {
     setTimeout(function () {
         LoadCommentList();
-    }, 1000);
+    }, 100);
 });
