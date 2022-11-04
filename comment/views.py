@@ -33,6 +33,7 @@ class CommentList(ListView):
             'COMMENT_ALLOW_REPLY': settings.COMMENT_ALLOW_REPLY,
             'COMMENT_ALLOW_EDIT': settings.COMMENT_ALLOW_EDIT,
             'COMMENT_ALLOW_DELETE': settings.COMMENT_ALLOW_DELETE,
+            'COMMENT_CONTENT_WORDS_COUNT': settings.COMMENT_CONTENT_WORDS_COUNT,
         }
         return context
 

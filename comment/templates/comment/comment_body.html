@@ -46,7 +46,18 @@
 <div class="mt-2 {% if comment.is_spoiler and not comment.user == request.user %}hidden peer-checked:block{% endif %}">
     {#COMMENT CONTENT#}
     {% if settings.COMMENT_ALLOW_EDIT %}<input type="checkbox" class="peer sr-only" id="toggle-edit-{{ comment.urlhash }}">{% endif %}
-    <div class="p-2 text-justify block peer-checked:hidden">{{ comment.content }}</div>
+    <div class="p-2 text-justify block peer-checked:hidden">
+        {#CONTENT#}
+        {% if comment.content|wordcount > settings.COMMENT_CONTENT_WORDS_COUNT %}
+            <input type="checkbox" class="peer sr-only" id="toggle-more-{{ comment.urlhash }}">
+            <span class="inline-block peer-checked:hidden">{{ comment.content|truncatewords:settings.COMMENT_CONTENT_WORDS_COUNT }}</span>
+            <span class="hidden peer-checked:block">{{ comment.content }}</span>
+            <label for="toggle-more-{{ comment.urlhash }}" class="block peer-checked:hidden text-blue-700">Read More {% include 'icons/icon_down.html' with class='w-6 inline-block' %}</label>
+            <label for="toggle-more-{{ comment.urlhash }}" class="hidden peer-checked:block text-blue-700">Read Less {% include 'icons/icon_up.html' with class='w-6 inline-block' %}</label>
+        {% else %}
+            <span>{{ comment.content }}</span>
+        {% endif %}
+    </div>
     <div class="p-1 text-justify hidden peer-checked:block">
         {% if request.user.is_authenticated and comment.user == request.user and settings.COMMENT_ALLOW_EDIT %}
             {% include 'forms/comment_form_edit.html' with comment=comment %}

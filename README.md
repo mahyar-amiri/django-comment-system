@@ -105,6 +105,20 @@ COMMENT_OFFLINE_IMPORTS = True
 # see link blew to create abstract user model
 # https://docs.djangoproject.com/en/4.1/topics/auth/customizing/#substituting-a-custom-user-model
 COMMENT_PROFILE_IMAGE_FIELD = None
+# default profile image static path
+COMMENT_PROFILE_IMAGE_DEFAULT = 'img/profile.png'
+
+# activate spoiler comment mode 
+COMMENT_ALLOW_SPOILER = True
+# let users reply to comment  
+COMMENT_ALLOW_REPLY = True
+# let users edit their comment  
+COMMENT_ALLOW_EDIT = True
+# let users delete their comment  
+COMMENT_ALLOW_DELETE = True
+
+# more than this value will have Read More button in comment content
+COMMENT_CONTENT_WORDS_COUNT = 40
 ```
 
 ## Front-End
