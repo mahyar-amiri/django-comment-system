@@ -123,7 +123,7 @@ function DeleteComment(urlhash) {
 }
 
 $(document).ready(function () {
-    setTimeout(function () {
-        LoadCommentList();
-    }, 100);
+    // setTimeout(function () {
+    LoadCommentList();
+    // }, 100);
 });
