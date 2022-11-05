@@ -159,11 +159,13 @@ templates
 ```text
 static
    ├── css
-   │    └── style.css
+   │    ├── style.css
+   │    └── style.min.css
    ├── img
    │    └── profile.png
    └── js
         ├── comment.js
+        ├── comment.min.js
         └── jquery.min.js
 ```
 
@@ -185,7 +187,8 @@ static
    └── toggles
         ├── #toggle-spoiler-{urlhash}
         ├── #toggle-edit-{urlhash}
-        └── #toggle-reply-{urlhash}
+        ├── #toggle-reply-{urlhash}
+        └── #toggle-more-{urlhash}
 ```
 
 ## Handle 403 ERROR Template Page
@@ -202,4 +205,16 @@ static
    ```python
    # urls.py
    handler403 = 'my_project.views.custom_error_403'
+   ```
+
+## Minify Static Files
+
+1. Installation
+   ```shell
+   npm i minify -g
+   ```
+2. Usage
+   ```shell
+   npm static/css/style.css > static/css/style.min.css
+   npm static/js/comment.js > static/js/comment.min.js
    ```
