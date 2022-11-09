@@ -1,6 +1,7 @@
-from django.utils.translation import ngettext
 from django.contrib import admin, messages
-from comment.models import Comment
+from django.utils.translation import ngettext
+
+from comment.models import Comment, React, Reaction
 
 
 class ListFilterByParent(admin.SimpleListFilter):
@@ -48,4 +49,17 @@ class CommentAdmin(admin.ModelAdmin):
     reject_comment.short_description = 'Reject selected comments'
 
 
+class ReactionAdmin(admin.ModelAdmin):
+    list_display = ('user', 'comment', 'react')
+    list_filter = ('react__emoji',)
+    search_fields = ('user', 'comment')
+
+
+class ReactAdmin(admin.ModelAdmin):
+    list_display = ('slug', 'emoji', 'source_file')
+    search_fields = ('slug', 'emoji')
+
+
 admin.site.register(Comment, CommentAdmin)
+admin.site.register(Reaction, ReactionAdmin)
+admin.site.register(React, ReactAdmin)

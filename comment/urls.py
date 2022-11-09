@@ -7,4 +7,5 @@ urlpatterns = [
     path('create/', views.CommentCreate.as_view(), name='create'),
     path('update/<int:pk>/', views.CommentUpdate.as_view(), name='update'),
     path('delete/<str:urlhash>/', views.CommentDelete.as_view(), name='delete'),
+    path('react/', views.CommentReact.as_view(), name='react'),
 ]

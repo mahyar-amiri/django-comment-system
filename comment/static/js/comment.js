@@ -29,6 +29,12 @@ function LoadDeleteCommentForm(urlhash) {
     );
 }
 
+function LoadCommentReactions(urlhash) {
+    $(`#form-comment-react-${urlhash} #comment-react-list`).load(
+        `/comment/react?urlhash=${urlhash}`
+    );
+}
+
 function ResetCreateCommentForm() {
     $(`#form-comment-create [name='content']`).val('').height('120px');
     $(`#form-comment-create [name='is_spoiler']`).prop('checked', false);
@@ -60,7 +66,7 @@ function CreateComment(form_id) {
             "X-Requested-With": "XMLHttpRequest",
             "X-CSRFToken": getCookie("csrftoken"),
         },
-        data: formData,
+        data: foCrmData,
         success: function (data) {
             if (data.result === 'success') {
                 ResetCreateCommentForm();
@@ -118,6 +124,27 @@ function DeleteComment(urlhash) {
             } else if (data.result === 'fail') {
                 alert('ERROR in CreateComment function!')
             }
+        }
+    });
+}
+
+function ReactComment(urlhash, react_slug) {
+    let form = $(`#form-comment-react-${urlhash}`);
+    let method = form.prop('method');
+    let action = form.prop('action');
+    $.ajax({
+        type: method,
+        url: action,
+        data: {
+            urlhash,
+            react_slug
+        },
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRFToken": getCookie("csrftoken"),
+        },
+        success: function (data) {
+            LoadCommentReactions(urlhash);
         }
     });
 }

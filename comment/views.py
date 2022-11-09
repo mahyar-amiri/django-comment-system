@@ -1,13 +1,13 @@
+from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 from django.views.generic import ListView, CreateView, UpdateView, TemplateView
-from django.contrib.contenttypes.models import ContentType
 
-from comment.mixins import CommentMixin
-from comment.models import Comment
-from comment.forms import CommentForm
 from comment import settings
+from comment.forms import CommentForm
+from comment.mixins import CommentMixin
+from comment.models import Comment, Reaction, React
 
 
 class CommentList(ListView):
@@ -88,3 +88,33 @@ class CommentDelete(CommentMixin, TemplateView):
             comment.delete()
             return JsonResponse({'result': 'success'}, status=200)
         return JsonResponse({'result': f'fail'})
+
+
+class CommentReact(CommentMixin, TemplateView):
+    def get(self, request, *args, **kwargs):
+        urlhash = request.GET.get('urlhash')
+        comment = Comment.objects.get(urlhash=urlhash)
+        return render(request, 'comment/comment_reactions.html', context={'comment': comment})
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        comment_urlhash = request.POST.get('urlhash', None)
+        react_slug = request.POST.get('react_slug', None)
+
+        reaction = Reaction.objects.filter(user=user, comment__urlhash=comment_urlhash).first()
+
+        if reaction:
+            if reaction.react.slug == react_slug:
+                reaction.delete()
+                # return JsonResponse({'result': f'Delete [{reaction}]'})
+            else:
+                react = React.objects.get(slug=react_slug)
+                reaction.react = react
+                reaction.save()
+                # return JsonResponse({'result': f'Change [{reaction}]'})
+        else:
+            comment = Comment.objects.get(urlhash=comment_urlhash)
+            react = React.objects.get(slug=react_slug)
+            reaction = Reaction.objects.create(user=user, comment=comment, react=react)
+            # return JsonResponse({'result': f'New [{reaction}]'})
+        return JsonResponse({'result': 'success'})
