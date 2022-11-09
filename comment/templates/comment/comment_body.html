@@ -24,7 +24,7 @@
                 <div class="group flex flex-row-reverse space-x-3 space-x-reverse rounded-full bg-gray-100 p-2 border-2">
                     {% include 'icons/icon_dots.html' with class='inline w-6 h-6 fill-gray-500' %}
                     {% if settings.COMMENT_ALLOW_EDIT %}
-                        <label for="toggle-edit-{{ comment.urlhash }}" class="hidden group-hover:inline">{% include 'icons/icon_edit.html' with class='w-6 h-6 cursor-pointer fill-green-700' %}</label>
+                        <label for="toggle-edit-{{ comment.urlhash }}" class="hidden group-hover:inline">{% include 'icons/icon_edit.html' with class='w-6 h-6 cursor-pointer fill-green-600' %}</label>
                     {% endif %}
                     {% if settings.COMMENT_ALLOW_DELETE %}
                         <span onclick="LoadDeleteCommentForm('{{ comment.urlhash }}')" class="hidden group-hover:inline">{% include 'icons/icon_delete.html' with class='w-6 h-6 cursor-pointer fill-red-500' %}</span>
@@ -58,7 +58,7 @@
             <span>{{ comment.content }}</span>
         {% endif %}
     </div>
-    <div class="p-1 text-justify hidden peer-checked:block">
+    <div class="text-justify hidden peer-checked:block">
         {% if request.user.is_authenticated and comment.user == request.user and settings.COMMENT_ALLOW_EDIT %}
             {% include 'forms/comment_form_edit.html' with comment=comment %}
         {% endif %}

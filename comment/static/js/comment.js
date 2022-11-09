@@ -66,7 +66,7 @@ function CreateComment(form_id) {
             "X-Requested-With": "XMLHttpRequest",
             "X-CSRFToken": getCookie("csrftoken"),
         },
-        data: foCrmData,
+        data: formData,
         success: function (data) {
             if (data.result === 'success') {
                 ResetCreateCommentForm();

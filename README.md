@@ -81,6 +81,28 @@
    {% render_comments request obj=article %}
    ```
 
+## Reactions
+
+1. Setup Reaction in `settings.py`.
+   ```python
+   # settings.py
+   
+   COMMENT_ALLOW_REACTION = True
+   ```
+2. Use admin panel to add react emoji. you will need an emoji and an emoji name as slug.
+
+### you can use image or gif instead of emoji character :
+
+3. In your admin panel, add image or gif file in React object.
+4. Setup Reaction type in `settings.py`.
+
+   you have only 2 options : `emoji` or `source`
+   ```python
+   # settings.py
+   
+   COMMENT_REACTION_TYPE = 'source'  # emoji / source
+   ```
+
 ## Settings
 
 You can customize settings by adding keywords in `settings.py`.
@@ -110,7 +132,7 @@ COMMENT_PROFILE_IMAGE_DEFAULT = 'img/profile.png'
 
 # activate spoiler comment mode 
 COMMENT_ALLOW_SPOILER = True
-# let users reply to comment  
+# let users reply to a comment  
 COMMENT_ALLOW_REPLY = True
 # let users edit their comment  
 COMMENT_ALLOW_EDIT = True
@@ -119,6 +141,11 @@ COMMENT_ALLOW_DELETE = True
 
 # more than this value will have Read More button in comment content
 COMMENT_CONTENT_WORDS_COUNT = 40
+
+# let users react to a comment  
+COMMENT_ALLOW_REACTION = False
+# get emoji or from file source  
+COMMENT_REACTION_TYPE = 'emoji'  # emoji / source
 ```
 
 ## Front-End
@@ -132,6 +159,7 @@ templates
    │    ├── comment_list.html
    │    ├── comment_counter.html
    │    ├── comment_body.html
+   │    ├── comment_reactions.html
    │    └── object_info.html
    │
    ├── forms
@@ -175,6 +203,7 @@ static
 #comments
    ├── #comment-modal
    ├── #comment-list
+   ├── #react-list
    │
    ├── #comment-{urlhash}
    │
@@ -182,7 +211,8 @@ static
    │    ├── #form-comment-create
    │    ├── #form-comment-edit-{urlhash}
    │    ├── #form-comment-delete-{urlhash}
-   │    └── #form-comment-reply-{urlhash}
+   │    ├── #form-comment-reply-{urlhash}
+   │    └── #form-comment-react-{urlhash}
    │
    └── toggles
         ├── #toggle-spoiler-{urlhash}

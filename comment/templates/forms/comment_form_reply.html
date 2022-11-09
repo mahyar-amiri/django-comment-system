@@ -22,7 +22,7 @@
                         <span class="hidden cursor-pointer peer-checked:block">{% include 'icons/icon_eye_off.html' with class='inline-block w-8 fill-gray-500' %}</span>
                     </label>
                 {% endif %}
-                <button type="button" onclick="CreateComment('form-comment-reply-{{ comment.urlhash }}')" class="rounded-lg border-none bg-black py-2 px-6 text-xl text-white outline-0 shadow-md">Reply</button>
+                <button type="button" onclick="CreateComment('form-comment-reply-{{ comment.urlhash }}')" class="rounded-lg border-none bg-blue-600 py-2 px-6 text-xl text-white outline-0 shadow-md">Reply</button>
             </div>
         {% else %}
             <div><a href="{% comment_login_url %}" class="font-bold text-blue-700">Login</a> to reply!</div>

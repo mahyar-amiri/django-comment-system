@@ -53,6 +53,7 @@ class ReactionAdmin(admin.ModelAdmin):
     list_display = ('user', 'comment', 'react')
     list_filter = ('react__emoji',)
     search_fields = ('user', 'comment')
+    readonly_fields = ('user', 'comment', 'react')
 
 
 class ReactAdmin(admin.ModelAdmin):
