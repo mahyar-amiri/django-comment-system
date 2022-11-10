@@ -85,18 +85,19 @@
 
         {#COMMENT REPLY#}
         {% if COMMENT_ALLOW_REPLY and comment.is_parent %}
-            {% comment_count_children comment as count_children %}
-            <label for="toggle-reply-{{ comment.urlhash }}">
+            {% with count_children=comment.children.filter_accepted.count %}
+                <label for="toggle-reply-{{ comment.urlhash }}">
                 <span class="cursor-pointer text-blue-700 px-1">
                     {% if count_children > 1 %}
-                        {{ count_children }} Replies
+                        {{ count_children|number }} Replies
                     {% elif count_children == 1 %}
                         {{ count_children }} Reply
                     {% else %}
                         Reply
                     {% endif %}
                 </span>
-            </label>
+                </label>
+            {% endwith %}
         {% endif %}
     </div>
 </div>

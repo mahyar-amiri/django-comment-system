@@ -7,6 +7,11 @@ from comment import settings
 register = template.Library()
 
 
+@register.inclusion_tag('utils/IMPORTS.html')
+def render_imports():
+    return {'offline_imports': settings.COMMENT_OFFLINE_IMPORTS}
+
+
 @register.inclusion_tag('comment/comments.html')
 def render_comments(request, obj):
     context = {
@@ -23,23 +28,8 @@ def render_comments(request, obj):
 
 
 @register.simple_tag
-def comment_count_children(parent_comment):
-    return parent_comment.children.filter_accepted().count()
-
-
-@register.simple_tag
-def comment_login_url():
-    return settings.LOGIN_URL
-
-
-@register.simple_tag
 def get_settings(settings_parameter):
     return getattr(settings, settings_parameter)
-
-
-@register.inclusion_tag('utils/IMPORTS.html')
-def render_imports():
-    return {'offline_imports': settings.COMMENT_OFFLINE_IMPORTS}
 
 
 @register.simple_tag
@@ -52,3 +42,21 @@ def get_profile_image(user):
             return static(settings.COMMENT_PROFILE_IMAGE_DEFAULT)
     else:
         return None
+
+
+@register.filter
+def number(value, floating_points=None):
+    converters = {
+        3: 'K',
+        6: 'M',
+        9: 'B',
+    }
+
+    if floating_points is not None and (10 ** 12 > value >= 1000):
+        for exponent, converter in converters.items():
+            large_number = 10 ** exponent
+            if value >= large_number * 1000:
+                continue
+            return f'{value / large_number:,.{floating_points}f} {converter}'
+    else:
+        return f'{value:,}'

@@ -8,6 +8,6 @@
         {% else %}
             <span class="w-6 h-6 inline text-base">{{ react.emoji }}</span>
         {% endif %}
-        {% if reaction.count %} {{ reaction.count }}{% endif %}
+        {% if reaction.count %} <span class="pr-1">{{ reaction.count|number:0 }}</span>{% endif %}
     </button>
 {% endfor %}

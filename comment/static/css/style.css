@@ -1073,6 +1073,10 @@ video {
   padding-left: 1rem;
 }
 
+.pr-1 {
+  padding-right: 0.25rem;
+}
+
 .pt-5 {
   padding-top: 1.25rem;
 }

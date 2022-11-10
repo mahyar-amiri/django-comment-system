@@ -27,7 +27,7 @@
                 <button type="button" onclick="CreateComment('form-comment-reply-{{ comment.urlhash }}')" class="rounded-lg border-none bg-blue-600 py-2 px-6 text-xl text-white outline-0 shadow-md">Reply</button>
             </div>
         {% else %}
-            <div><a href="{% comment_login_url %}" class="font-bold text-blue-700">Login</a> to reply!</div>
+            <div><a href="{% get_settings 'LOGIN_URL' %}" class="font-bold text-blue-700">Login</a> to reply!</div>
         {% endif %}
     </div>
 
