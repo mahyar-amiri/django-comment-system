@@ -203,7 +203,7 @@ static
 #comments
    ├── #comment-modal
    ├── #comment-list
-   ├── #react-list
+   ├── #comment-react-list
    │
    ├── #comment-{urlhash}
    │

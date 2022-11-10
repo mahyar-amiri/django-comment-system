@@ -1,6 +1,12 @@
 {% load static %}
 {% load comment_tags %}
 
+{% get_settings 'COMMENT_ALLOW_EDIT' as COMMENT_ALLOW_EDIT %}
+{% get_settings 'COMMENT_ALLOW_REPLY' as COMMENT_ALLOW_REPLY %}
+{% get_settings 'COMMENT_ALLOW_DELETE' as COMMENT_ALLOW_DELETE %}
+{% get_settings 'COMMENT_ALLOW_REACTION' as COMMENT_ALLOW_REACTION %}
+{% get_settings 'COMMENT_CONTENT_WORDS_COUNT' as COMMENT_CONTENT_WORDS_COUNT %}
+
 <input type="checkbox" class="peer sr-only" id="toggle-spoiler-{{ comment.urlhash }}">
 <div class="flex justify-between">
 
@@ -20,13 +26,13 @@
     {#COMMENT OPTIONS#}
     <div class="grid content-center mr-2">
         {% if request.user.is_authenticated and comment.user == request.user %}
-            {% if comment.is_spoiler or settings.COMMENT_ALLOW_EDIT or settings.COMMENT_ALLOW_DELETE %}
+            {% if comment.is_spoiler or COMMENT_ALLOW_EDIT or COMMENT_ALLOW_DELETE %}
                 <div class="group flex flex-row-reverse space-x-3 space-x-reverse rounded-full bg-gray-100 p-2 border-2">
                     {% include 'icons/icon_dots.html' with class='inline w-6 h-6 fill-gray-500' %}
-                    {% if settings.COMMENT_ALLOW_EDIT %}
+                    {% if COMMENT_ALLOW_EDIT %}
                         <label for="toggle-edit-{{ comment.urlhash }}" class="hidden group-hover:inline">{% include 'icons/icon_edit.html' with class='w-6 h-6 cursor-pointer fill-green-600' %}</label>
                     {% endif %}
-                    {% if settings.COMMENT_ALLOW_DELETE %}
+                    {% if COMMENT_ALLOW_DELETE %}
                         <span onclick="LoadDeleteCommentForm('{{ comment.urlhash }}')" class="hidden group-hover:inline">{% include 'icons/icon_delete.html' with class='w-6 h-6 cursor-pointer fill-red-500' %}</span>
                     {% endif %}
                     {% if comment.is_spoiler %}
@@ -45,12 +51,12 @@
 {#COMMENT SECTION#}
 <div class="mt-2 {% if comment.is_spoiler and not comment.user == request.user %}hidden peer-checked:block{% endif %}">
     {#COMMENT CONTENT#}
-    {% if settings.COMMENT_ALLOW_EDIT %}<input type="checkbox" class="peer sr-only" id="toggle-edit-{{ comment.urlhash }}">{% endif %}
+    {% if COMMENT_ALLOW_EDIT %}<input type="checkbox" class="peer sr-only" id="toggle-edit-{{ comment.urlhash }}">{% endif %}
     <div class="p-2 text-justify block peer-checked:hidden">
         {#CONTENT#}
-        {% if comment.content|wordcount > settings.COMMENT_CONTENT_WORDS_COUNT %}
+        {% if comment.content|wordcount > COMMENT_CONTENT_WORDS_COUNT %}
             <input type="checkbox" class="peer sr-only" id="toggle-more-{{ comment.urlhash }}">
-            <span class="inline-block peer-checked:hidden">{{ comment.content|truncatewords:settings.COMMENT_CONTENT_WORDS_COUNT }}</span>
+            <span class="inline-block peer-checked:hidden">{{ comment.content|truncatewords:COMMENT_CONTENT_WORDS_COUNT }}</span>
             <span class="hidden peer-checked:block">{{ comment.content }}</span>
             <label for="toggle-more-{{ comment.urlhash }}" class="inline peer-checked:hidden cursor-pointer text-blue-700">Read More {% include 'icons/icon_down.html' with class='w-6 inline-block' %}</label>
             <label for="toggle-more-{{ comment.urlhash }}" class="hidden peer-checked:block cursor-pointer text-blue-700">Read Less {% include 'icons/icon_up.html' with class='w-6 inline-block' %}</label>
@@ -59,7 +65,7 @@
         {% endif %}
     </div>
     <div class="text-justify hidden peer-checked:block">
-        {% if request.user.is_authenticated and comment.user == request.user and settings.COMMENT_ALLOW_EDIT %}
+        {% if request.user.is_authenticated and comment.user == request.user and COMMENT_ALLOW_EDIT %}
             {% include 'forms/comment_form_edit.html' with comment=comment %}
         {% endif %}
     </div>
@@ -68,7 +74,6 @@
 
         {#COMMENT REACTION#}
         <div class="flex space-x-2">
-            {% get_settings 'COMMENT_ALLOW_REACTION' as COMMENT_ALLOW_REACTION %}
             {% if COMMENT_ALLOW_REACTION %}
                 <form id="form-comment-react-{{ comment.urlhash }}" method="post" action="{% url 'comment:react' %}">{% csrf_token %}
                     <div id="comment-react-list">
@@ -79,7 +84,7 @@
         </div>
 
         {#COMMENT REPLY#}
-        {% if settings.COMMENT_ALLOW_REPLY and comment.is_parent %}
+        {% if COMMENT_ALLOW_REPLY and comment.is_parent %}
             {% comment_count_children comment as count_children %}
             <label for="toggle-reply-{{ comment.urlhash }}">
                 <span class="cursor-pointer text-blue-700 px-1">

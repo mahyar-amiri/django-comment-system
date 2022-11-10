@@ -1,5 +1,5 @@
 from django.contrib.contenttypes.models import ContentType
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.utils import timezone
 from django.views.generic import ListView, CreateView, UpdateView, TemplateView
@@ -8,6 +8,17 @@ from comment import settings
 from comment.forms import CommentForm
 from comment.mixins import CommentMixin
 from comment.models import Comment, Reaction, React
+
+
+class CommentDetail(TemplateView):
+    template_name = 'comment/comment_body.html'
+
+    def get(self, request, *args, **kwargs):
+        urlhash = request.GET.get('urlhash')
+        context = {
+            'comment': Comment.objects.get(urlhash=urlhash)
+        }
+        return render(request, self.template_name, context=context)
 
 
 class CommentList(ListView):
@@ -25,17 +36,6 @@ class CommentList(ListView):
             queryset = queryset.filter_accepted().filter_parents()
             queryset = queryset.order_newest()
         return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super(CommentList, self).get_context_data(**kwargs)
-        context['settings'] = {
-            'COMMENT_ALLOW_SPOILER': settings.COMMENT_ALLOW_SPOILER,
-            'COMMENT_ALLOW_REPLY': settings.COMMENT_ALLOW_REPLY,
-            'COMMENT_ALLOW_EDIT': settings.COMMENT_ALLOW_EDIT,
-            'COMMENT_ALLOW_DELETE': settings.COMMENT_ALLOW_DELETE,
-            'COMMENT_CONTENT_WORDS_COUNT': settings.COMMENT_CONTENT_WORDS_COUNT,
-        }
-        return context
 
 
 class CommentCreate(CommentMixin, CreateView):
@@ -64,8 +64,9 @@ class CommentCreate(CommentMixin, CreateView):
                 comment.status = 'a'
 
             comment.save()
-            return JsonResponse({'result': 'success'}, status=200)
-        return JsonResponse({'result': 'fail'})
+            return HttpResponse(status=200)
+        else:
+            return HttpResponseBadRequest()
 
 
 class CommentUpdate(CommentMixin, UpdateView):
@@ -75,7 +76,11 @@ class CommentUpdate(CommentMixin, UpdateView):
 
     def form_valid(self, form):
         super().form_valid(form)
-        return JsonResponse({'result': 'success'}, status=200)
+        return JsonResponse({'urlhash': self.object.urlhash}, status=200)
+
+    def form_invalid(self, form):
+        super().form_invalid(form)
+        return HttpResponseBadRequest()
 
 
 class CommentDelete(CommentMixin, TemplateView):
@@ -86,15 +91,15 @@ class CommentDelete(CommentMixin, TemplateView):
         comment = Comment.objects.get(urlhash=urlhash)
         if comment:
             comment.delete()
-            return JsonResponse({'result': 'success'}, status=200)
-        return JsonResponse({'result': f'fail'})
+            return HttpResponse(status=200)
+        return HttpResponseBadRequest()
 
 
 class CommentReact(CommentMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         urlhash = request.GET.get('urlhash')
-        comment = Comment.objects.get(urlhash=urlhash)
-        return render(request, 'comment/comment_reactions.html', context={'comment': comment})
+        context = {'comment': Comment.objects.get(urlhash=urlhash)}
+        return render(request, 'comment/comment_reactions.html', context=context)
 
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -103,18 +108,16 @@ class CommentReact(CommentMixin, TemplateView):
 
         reaction = Reaction.objects.filter(user=user, comment__urlhash=comment_urlhash).first()
 
-        if reaction:
-            if reaction.react.slug == react_slug:
+        if reaction:  # Update Previous Reaction
+            if reaction.react.slug == react_slug:  # Delete Previous Reaction
                 reaction.delete()
-                # return JsonResponse({'result': f'Delete [{reaction}]'})
-            else:
+            else:  # Change Previous Reaction
                 react = React.objects.get(slug=react_slug)
                 reaction.react = react
                 reaction.save()
-                # return JsonResponse({'result': f'Change [{reaction}]'})
-        else:
+        else:  # Create New Reaction
             comment = Comment.objects.get(urlhash=comment_urlhash)
             react = React.objects.get(slug=react_slug)
-            reaction = Reaction.objects.create(user=user, comment=comment, react=react)
-            # return JsonResponse({'result': f'New [{reaction}]'})
-        return JsonResponse({'result': 'success'})
+            Reaction.objects.create(user=user, comment=comment, react=react)
+
+        return HttpResponse(status=200)
