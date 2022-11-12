@@ -1,10 +1,10 @@
 {% load comment_tags %}
 
 {# COMMENTS COUNT #}
-{% include 'comment/comment_counter.html' with count=comments.count %}
+{% include 'comment/comment_counter.html' with count=comments.paginator.count %}
 
 <div class="flex flex-col space-y-2">
-    {% for comment in comments.order_newest %}
+    {% for comment in comments.object_list %}
         <div class="flex flex-col space-y-2">
 
             {% get_settings 'COMMENT_ALLOW_REPLY' as COMMENT_ALLOW_REPLY %}
@@ -29,7 +29,7 @@
                         {% endfor %}
 
                         {# REPLY-FORM #}
-                        {% include 'forms/comment_form_reply.html' with comment=comment %}
+                        {% include 'forms/comment_form_reply.html' with comment=comment page=comments.number %}
 
                     </div>
                 </div>
@@ -39,4 +39,7 @@
     {% empty %}
         {% include 'utils/comment_list_empty.html' %}
     {% endfor %}
+
+    {#PAGINATION#}
+    {% include 'utils/pagination.html' with paginator=comments %}
 </div>

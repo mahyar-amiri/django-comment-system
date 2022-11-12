@@ -60,3 +60,21 @@ def number(value, floating_points=None):
             return f'{value / large_number:,.{floating_points}f} {converter}'
     else:
         return f'{value:,}'
+
+
+@register.filter
+def to_range(end, start=1):
+    return range(start, end + 1)
+
+
+@register.simple_tag
+def get_pagination(paginator):
+    if paginator.paginator.num_pages <= 9:
+        return paginator.paginator.page_range
+    else:
+        if paginator.number <= 5:
+            return [*range(1, 7), 0, paginator.paginator.num_pages]
+        elif paginator.number > paginator.paginator.num_pages - 5:
+            return [1, 0, *range(paginator.paginator.num_pages - 5, paginator.paginator.num_pages + 1)]
+        else:
+            return [1, 0, paginator.number - 2, paginator.number - 1, paginator.number, paginator.number + 1, paginator.number + 2, 0, paginator.paginator.num_pages]

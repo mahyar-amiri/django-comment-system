@@ -1,4 +1,5 @@
 from django.contrib.contenttypes.models import ContentType
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.utils import timezone
@@ -35,6 +36,17 @@ class CommentList(ListView):
             queryset = Comment.objects.filter(content_type=content_type, object_id=object_id)
             queryset = queryset.filter_accepted().filter_parents()
             queryset = queryset.order_newest()
+
+            # Pagination
+            page = self.request.GET.get('page', 1)
+            paginator = Paginator(queryset, settings.COMMENT_PER_PAGE)
+            try:
+                queryset = paginator.page(page)
+            except PageNotAnInteger:
+                queryset = paginator.page(1)
+            except EmptyPage:
+                queryset = paginator.page(paginator.num_pages)
+
         return queryset
 
 

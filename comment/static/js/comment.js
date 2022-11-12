@@ -20,12 +20,12 @@ function LoadComment(urlhash) {
     );
 }
 
-function LoadCommentList() {
+function LoadCommentList(page = 1) {
     let app_name = $("#form-comment-create [name='app_name']").val();
     let model_name = $("#form-comment-create [name='model_name']").val();
     let object_id = $("#form-comment-create [name='object_id']").val();
     $("#comment-list").load(
-        `/comment/list?app_name=${app_name}&model_name=${model_name}&object_id=${object_id}`
+        `/comment/list?app_name=${app_name}&model_name=${model_name}&object_id=${object_id}&page=${page}`
     );
 }
 
@@ -84,8 +84,13 @@ function CreateComment(form_id) {
         },
         data: formData,
         success: function () {
-            ResetCreateCommentForm();
-            LoadCommentList();
+            if (formData.parent_id) {
+                let page = $(`#form-comment-reply-${formData.parent_id} [name='page']`).val();
+                LoadCommentList(page);
+            } else {
+                ResetCreateCommentForm();
+                LoadCommentList();
+            }
         },
         error: function () {
             let textarea = $(`#${form_id} textarea`);
