@@ -154,7 +154,9 @@ COMMENT_PER_PAGE = 10
 
 ## Front-End
 
-### Templates Folder Tree
+<details>
+<summary>Templates Folder Tree</summary>
+<p>
 
 ```text
 templates
@@ -191,7 +193,13 @@ templates
         └── SCRIPTS.html
 ```
 
-### Static Folder Tree
+</p>
+</details>
+
+
+<details>
+<summary>Static Folder Tree</summary>
+<p>
 
 ```text
 static
@@ -206,7 +214,13 @@ static
         └── jquery.min.js
 ```
 
-### IDs
+</p>
+</details>
+
+
+<details>
+<summary>IDs</summary>
+<p>
 
 ```text
 #comments
@@ -230,7 +244,12 @@ static
         └── #toggle-more-{urlhash}
 ```
 
-## Handle 403 ERROR Template Page
+</p>
+</details>
+
+
+<details><summary>Handle 403 ERROR Template Page</summary>
+<p>
 
 1. Create `403.html` in your template path.
 2. Add custom view in `views.py`.
@@ -246,7 +265,13 @@ static
    handler403 = 'my_project.views.custom_error_403'
    ```
 
-## Minify Static Files
+</p>
+</details>
+
+
+<details>
+<summary>Minify Static Files</summary>
+<p>
 
 1. Installation
    ```shell
@@ -257,3 +282,6 @@ static
    npm static/css/style.css > static/css/style.min.css
    npm static/js/comment.js > static/js/comment.min.js
    ```
+
+</p>
+</details>
