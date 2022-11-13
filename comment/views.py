@@ -39,7 +39,10 @@ class CommentList(ListView):
 
             # Pagination
             page = self.request.GET.get('page', 1)
-            paginator = Paginator(queryset, settings.COMMENT_PER_PAGE)
+            if settings.COMMENT_PER_PAGE == 0:
+                paginator = Paginator(queryset, queryset.count())
+            else:
+                paginator = Paginator(queryset, settings.COMMENT_PER_PAGE)
             try:
                 queryset = paginator.page(page)
             except PageNotAnInteger:

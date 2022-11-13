@@ -17,4 +17,4 @@ COMMENT_ALLOW_DELETE = True
 COMMENT_ALLOW_REACTION = False
 COMMENT_REACTION_TYPE = 'emoji'  # emoji / source
 
-COMMENT_PER_PAGE = 2
+COMMENT_PER_PAGE = 10  # 0 means no pagination

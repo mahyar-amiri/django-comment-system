@@ -69,6 +69,7 @@ def to_range(end, start=1):
 
 @register.simple_tag
 def get_pagination(paginator):
+
     if paginator.paginator.num_pages <= 9:
         return paginator.paginator.page_range
     else:

@@ -41,5 +41,7 @@
     {% endfor %}
 
     {#PAGINATION#}
-    {% include 'utils/pagination.html' with paginator=comments %}
+    {% if comments.paginator.num_pages != 1 %}
+        {% include 'utils/comment_list_pagination.html' with paginator=comments %}
+    {% endif %}
 </div>

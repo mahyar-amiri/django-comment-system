@@ -146,6 +146,10 @@ COMMENT_CONTENT_WORDS_COUNT = 40
 COMMENT_ALLOW_REACTION = False
 # get emoji or from file source  
 COMMENT_REACTION_TYPE = 'emoji'  # emoji / source
+
+# number of comments per page
+# set 0 if you don't want pagination
+COMMENT_PER_PAGE = 10
 ```
 
 ## Front-End
@@ -169,15 +173,20 @@ templates
    │    └── comment_form_delete.html
    │
    ├── icons
-   │    ├── icon_dots.html
-   │    ├── icon_edit.html
+   │    ├── icon_arrow_backward.html
+   │    ├── icon_arrow_forward.html
    │    ├── icon_delete.html
+   │    ├── icon_dots.html
+   │    ├── icon_down.html
+   │    ├── icon_edit.html
    │    ├── icon_eye.html
-   │    └── icon_eye_off.html
+   │    ├── icon_eye_off.html
+   │    └── icon_up.html
    │
    └── utils
-        ├── comment_list_empty.html
+        ├── comment_list_pagination.html
         ├── comment_list_loader.html
+        ├── comment_list_empty.html
         ├── IMPORTS.html
         └── SCRIPTS.html
 ```
