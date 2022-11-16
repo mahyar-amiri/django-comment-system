@@ -56,12 +56,12 @@
         {#CONTENT#}
         {% if comment.content|wordcount > COMMENT_CONTENT_WORDS_COUNT %}
             <input type="checkbox" class="peer sr-only" id="toggle-more-{{ comment.urlhash }}">
-            <pre class="inline-block peer-checked:hidden">{{ comment.content|truncatewords:COMMENT_CONTENT_WORDS_COUNT }}</pre>
-            <pre class="hidden peer-checked:block">{{ comment.content }}</pre>
+            <div class="whitespace-pre-wrap inline-block peer-checked:hidden">{{ comment.content|truncatewords:COMMENT_CONTENT_WORDS_COUNT }}</div>
+            <div class="whitespace-pre-wrap hidden peer-checked:block">{{ comment.content }}</div>
             <label for="toggle-more-{{ comment.urlhash }}" class="inline peer-checked:hidden cursor-pointer text-blue-700">Read More {% include 'icons/icon_down.html' with class='w-6 inline-block' %}</label>
             <label for="toggle-more-{{ comment.urlhash }}" class="hidden peer-checked:block cursor-pointer text-blue-700">Read Less {% include 'icons/icon_up.html' with class='w-6 inline-block' %}</label>
         {% else %}
-            <pre>{{ comment.content }}</pre>
+            <div class="whitespace-pre-wrap">{{ comment.content }}</div>
         {% endif %}
     </div>
     <div class="text-justify hidden peer-checked:block">

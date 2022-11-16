@@ -20,13 +20,21 @@ function LoadComment(urlhash) {
     );
 }
 
-function LoadCommentList(page = 1) {
+function LoadCommentList(page = 1, at_start = false) {
     let app_name = $("#form-comment-create [name='app_name']").val();
     let model_name = $("#form-comment-create [name='model_name']").val();
     let object_id = $("#form-comment-create [name='object_id']").val();
-    $("#comment-list").load(
+    let comment_list = $("#comment-list")
+    comment_list.load(
         `/comment/list?app_name=${app_name}&model_name=${model_name}&object_id=${object_id}&page=${page}`
     );
+
+    // scroll to top when turned page
+    if (!at_start) {
+        $('html, body').animate({
+            scrollTop: comment_list.offset().top
+        }, 700);
+    }
 }
 
 function LoadDeleteCommentForm(urlhash) {
@@ -188,6 +196,6 @@ function ReactComment(urlhash, react_slug) {
 
 $(document).ready(function () {
     // setTimeout(function () {
-    LoadCommentList();
+    LoadCommentList(undefined, true);
     // }, 100);
 });
