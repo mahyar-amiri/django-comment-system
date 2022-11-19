@@ -18,3 +18,5 @@ COMMENT_ALLOW_REACTION = False
 COMMENT_REACTION_TYPE = 'emoji'  # emoji / source
 
 COMMENT_PER_PAGE = 10  # 0 means no pagination
+
+COMMENT_TIME_FROM_NOW = True

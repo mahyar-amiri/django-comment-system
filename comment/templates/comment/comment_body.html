@@ -4,6 +4,7 @@
 {% get_settings 'COMMENT_ALLOW_EDIT' as COMMENT_ALLOW_EDIT %}
 {% get_settings 'COMMENT_ALLOW_REPLY' as COMMENT_ALLOW_REPLY %}
 {% get_settings 'COMMENT_ALLOW_DELETE' as COMMENT_ALLOW_DELETE %}
+{% get_settings 'COMMENT_TIME_FROM_NOW' as COMMENT_TIME_FROM_NOW %}
 {% get_settings 'COMMENT_ALLOW_REACTION' as COMMENT_ALLOW_REACTION %}
 {% get_settings 'COMMENT_CONTENT_WORDS_COUNT' as COMMENT_CONTENT_WORDS_COUNT %}
 
@@ -21,8 +22,11 @@
             <span class="ml-2 text-lg font-semibold">{{ comment.user.username }}</span>
             <span class="mx-1 text-gray-500">•</span>
             <span class="text-sm text-gray-500">
-                {#{{ comment.posted|date:'SHORT_DATE_FORMAT' }} {{ comment.posted|time:'TIME_FORMAT' }}#}
-                {{ comment.posted|timesince }} ago
+                {% if COMMENT_TIME_FROM_NOW %}
+                    {{ comment.posted|timesince }} ago
+                {% else %}
+                    {{ comment.posted|date:'SHORT_DATE_FORMAT' }} {{ comment.posted|time:'TIME_FORMAT' }}
+                {% endif %}
             </span>
             <span class="ml-2">
                 {% if comment.is_pinned %}

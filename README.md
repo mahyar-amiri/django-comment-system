@@ -114,13 +114,13 @@ You can customize settings by adding keywords in `settings.py`.
 COMMENT_URLHASH_LENGTH = 8
 
 # the comments need to be set as a(Accepted) to be shown in the comments list.
-# if True comment status will be set as d(Delivered) otherwise it will be set as a(Accepted).
+# if True, comment status will be set as d(Delivered) otherwise it will be set as a(Accepted).
 COMMENT_STATUS_CHECK = False
 
-# if true, tailwindcss and jquery package will be loaded from static files.
+# if True, tailwindcss and jquery package will be loaded from static files.
 COMMENT_OFFLINE_IMPORTS = True
 
-# if None comments will be shown without profile image
+# if None, comments will be shown without profile image
 # you should set this value as profile image field name
 # for example our abstract user profile picture field is profile_image
 # <img src="{{ user.profile_image.url }}" /> so we set COMMENT_PROFILE_IMAGE_FIELD = 'profile.image'
@@ -150,6 +150,9 @@ COMMENT_REACTION_TYPE = 'emoji'  # emoji / source
 # number of comments per page
 # set 0 if you don't want pagination
 COMMENT_PER_PAGE = 10
+
+# if True, comment time will be shown since now instead of complete datetime
+COMMENT_TIME_FROM_NOW = True
 ```
 
 ## Front-End
