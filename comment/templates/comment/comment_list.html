@@ -22,7 +22,7 @@
 
                     <div class="flex flex-col space-y-2">
                         {# CHILDREN #}
-                        {% for child in comment.children.filter_accepted.order_oldest %}
+                        {% for child in comment.children.filter_accepted.order_pinned_oldest %}
                             <div id="comment-{{ child.urlhash }}" class="rounded-lg border-2 border-indigo-300 p-2">
                                 {% include 'comment/comment_body.html' with comment=child %}
                             </div>

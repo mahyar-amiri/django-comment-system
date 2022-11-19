@@ -651,12 +651,16 @@ video {
   height: 3rem;
 }
 
-.h-6 {
-  height: 1.5rem;
+.h-3\.5 {
+  height: 0.875rem;
 }
 
 .h-3 {
   height: 0.75rem;
+}
+
+.h-6 {
+  height: 1.5rem;
 }
 
 .h-4 {
@@ -685,6 +689,14 @@ video {
 
 .w-12 {
   width: 3rem;
+}
+
+.w-3\.5 {
+  width: 0.875rem;
+}
+
+.w-3 {
+  width: 0.75rem;
 }
 
 .w-6 {
@@ -853,6 +865,10 @@ video {
 
 .place-self-center {
   place-self: center;
+}
+
+.self-center {
+  align-self: center;
 }
 
 .overflow-hidden {

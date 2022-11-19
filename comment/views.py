@@ -35,7 +35,7 @@ class CommentList(ListView):
             content_type = ContentType.objects.get(app_label=app_name, model=model_name.lower())
             queryset = Comment.objects.filter(content_type=content_type, object_id=object_id)
             queryset = queryset.filter_accepted().filter_parents()
-            queryset = queryset.order_newest()
+            queryset = queryset.order_pinned_newest()
 
             # Pagination
             page = self.request.GET.get('page', 1)

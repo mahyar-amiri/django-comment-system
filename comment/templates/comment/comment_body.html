@@ -7,6 +7,7 @@
 {% get_settings 'COMMENT_ALLOW_REACTION' as COMMENT_ALLOW_REACTION %}
 {% get_settings 'COMMENT_CONTENT_WORDS_COUNT' as COMMENT_CONTENT_WORDS_COUNT %}
 
+
 <input type="checkbox" class="peer sr-only" id="toggle-spoiler-{{ comment.urlhash }}">
 <div class="flex justify-between">
 
@@ -19,7 +20,15 @@
         <span class="mt-2 inline-block">
             <span class="ml-2 text-lg font-semibold">{{ comment.user.username }}</span>
             <span class="mx-1 text-gray-500">•</span>
-            <span class="text-sm text-gray-500">{{ comment.posted }}</span>
+            <span class="text-sm text-gray-500">
+                {#{{ comment.posted|date:'SHORT_DATE_FORMAT' }} {{ comment.posted|time:'TIME_FORMAT' }}#}
+                {{ comment.posted|timesince }} ago
+            </span>
+            <span class="ml-2">
+                {% if comment.is_pinned %}
+                    {% include 'icons/icon_pin.html' with class='inline w-3.5 h-3.5 fill-gray-500' %}
+                {% endif %}
+            </span>
         </span>
     </div>
 
@@ -86,7 +95,7 @@
         {#COMMENT REPLY#}
         {% if COMMENT_ALLOW_REPLY and comment.is_parent %}
             {% with count_children=comment.children.filter_accepted.count %}
-                <label for="toggle-reply-{{ comment.urlhash }}">
+                <label for="toggle-reply-{{ comment.urlhash }}" class="grid self-center">
                 <span class="cursor-pointer text-blue-700 px-1">
                     {% if count_children > 1 %}
                         {{ count_children|number }} Replies

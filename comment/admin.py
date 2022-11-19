@@ -22,12 +22,12 @@ class ListFilterByParent(admin.SimpleListFilter):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'user', 'is_spoiler', 'status', 'content_object', 'posted')
+    list_display = ('__str__', 'user', 'is_spoiler', 'is_pinned', 'status', 'content_object', 'posted')
     ordering = ('-posted',)
     search_fields = ('content',)
     list_filter = ('is_spoiler', 'status', ListFilterByParent)
     readonly_fields = ('content', 'user', 'parent', 'content_type', 'content_object', 'object_id', 'urlhash', 'posted')
-    list_editable = ('is_spoiler', 'status')
+    list_editable = ('is_spoiler', 'is_pinned', 'status')
     actions = ['accept_comment', 'reject_comment']
 
     def accept_comment(self, request, queryset):

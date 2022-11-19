@@ -16,8 +16,14 @@ class CommentQuerySet(models.QuerySet):
     def order_newest(self):
         return self.order_by('-posted')
 
+    def order_pinned_newest(self):
+        return self.order_by('-is_pinned', '-posted')
+
     def order_oldest(self):
         return self.order_by('posted')
+
+    def order_pinned_oldest(self):
+        return self.order_by('-is_pinned', 'posted')
 
     @staticmethod
     def generate_urlhash():

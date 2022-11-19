@@ -14,6 +14,7 @@ class Comment(models.Model):
     content = models.TextField()
     parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='children', null=True, blank=True)
     is_spoiler = models.BooleanField(default=False)
+    is_pinned = models.BooleanField(default=False)
     STATUS_CHOICES = (('d', 'Delivered'), ('a', 'Accepted'), ('r', 'Rejected'))
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='d')
     urlhash = models.CharField(max_length=50, unique=True, editable=False)
@@ -27,7 +28,7 @@ class Comment(models.Model):
     objects = CommentQuerySet.as_manager()
 
     class Meta:
-        ordering = ('-posted',)
+        ordering = ('-is_pinned', '-posted')
 
     def __str__(self):
         if not self.parent:
