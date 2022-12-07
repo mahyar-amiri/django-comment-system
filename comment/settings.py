@@ -20,3 +20,6 @@ COMMENT_REACTION_TYPE = 'emoji'  # emoji / source
 COMMENT_PER_PAGE = 10  # 0 means no pagination
 
 COMMENT_TIME_FROM_NOW = True
+
+COMMENT_THEME_DIRECTION = 'ltr'  # ltr / rtl
+COMMENT_THEME_DARK_MODE = False

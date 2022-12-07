@@ -153,6 +153,11 @@ COMMENT_PER_PAGE = 10
 
 # if True, comment time will be shown since now instead of complete datetime
 COMMENT_TIME_FROM_NOW = True
+
+# set direction of comment section
+COMMENT_THEME_DIRECTION = 'ltr'  # ltr / rtl
+# set True for dark mode
+COMMENT_THEME_DARK_MODE = False
 ```
 
 ## Front-End

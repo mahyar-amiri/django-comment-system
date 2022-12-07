@@ -5,7 +5,7 @@
         {#PREVIOUS PAGE#}
         {% if paginator.has_previous %}
             <span onclick="LoadCommentList({{ paginator.previous_page_number }})" class="pt-3 cursor-pointer">
-            {% include 'icons/icon_arrow_backward.html' with class="h-5 w-5 fill-gray-400 hover:fill-gray-700" %}
+            {% include 'icons/icon_arrow_backward.html' with class="h-5 w-5 fill-gray-400 rtl:scale-x-[-1] hover:fill-gray-700 dark:hover:fill-gray-500" %}
             </span>
         {% endif %}
 
@@ -15,16 +15,16 @@
             {% if page == 0 %}
                 <span class="py-2">…</span>
             {% elif paginator.number == page %}
-                <span class="mx-1 rounded-md px-2 py-2 text-white bg-black cursor-default">{{ page }}</span>
+                <span class="mx-1 rounded-md px-2 py-2 text-white bg-black dark:bg-slate-600 cursor-default">{{ page }}</span>
             {% else %}
-                <span onclick="LoadCommentList({{ page }})" class="mx-1 rounded-md px-2 py-2 text-gray-400 cursor-pointer hover:bg-gray-400 hover:text-white">{{ page }}</span>
+                <span onclick="LoadCommentList({{ page }})" class="mx-1 rounded-md px-2 py-2 text-gray-400 cursor-pointer hover:bg-gray-400 dark:hover:bg-slate-700 hover:text-white">{{ page }}</span>
             {% endif %}
         {% endfor %}
 
         {#NEXT PAGE#}
         {% if paginator.has_next %}
             <span onclick="LoadCommentList({{ paginator.next_page_number }})" class="pt-3 cursor-pointer">
-            {% include 'icons/icon_arrow_forward.html' with class="h-5 w-5 fill-gray-400 hover:fill-gray-700" %}
+            {% include 'icons/icon_arrow_forward.html' with class="h-5 w-5 fill-gray-400 rtl:scale-x-[-1] hover:fill-gray-700 dark:hover:fill-gray-500" %}
             </span>
         {% endif %}
     </div>

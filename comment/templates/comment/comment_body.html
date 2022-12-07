@@ -13,49 +13,47 @@
 <div class="flex justify-between">
 
     {#COMMENT INFO#}
-    <div class="inline-block align-middle h-12">
+    <div class="h-12 flex items-center">
         {% get_profile_image comment.user as profile_image %}
         {% if profile_image %}
             <img src="{{ profile_image }}" alt="Profile" class="inline-block w-12 h-12 rounded-full"/>
         {% endif %}
-        <span class="mt-2 inline-block">
-            <span class="ml-2 text-lg font-semibold">{{ comment.user.username }}</span>
-            <span class="mx-1 text-gray-500">•</span>
-            <span class="text-sm text-gray-500">
-                {% if COMMENT_TIME_FROM_NOW %}
-                    {{ comment.posted|timesince }} ago
-                {% else %}
-                    {{ comment.posted|date:'SHORT_DATE_FORMAT' }} {{ comment.posted|time:'TIME_FORMAT' }}
-                {% endif %}
-            </span>
-            <span class="ml-2">
-                {% if comment.is_pinned %}
-                    {% include 'icons/icon_pin.html' with class='inline w-3.5 h-3.5 fill-gray-500' %}
-                {% endif %}
-            </span>
+        <span class="inline-block align-middle ltr:ml-2 rtl:mr-2 text-lg font-semibold dark:text-gray-100"><span dir="ltr">{{ comment.user.username }}</span></span>
+        <span class="mx-1 text-gray-500 dark:text-gray-300">•</span>
+        <span class="text-sm text-gray-500 dark:text-gray-300" dir="ltr">
+            {% if COMMENT_TIME_FROM_NOW %}
+                {{ comment.posted|timesince }} ago
+            {% else %}
+                {{ comment.posted|date:'SHORT_DATE_FORMAT' }} {{ comment.posted|time:'TIME_FORMAT' }}
+            {% endif %}
+        </span>
+        <span class="ltr:ml-2 rtl:mr-2 rtl:scale-x-[-1]">
+            {% if comment.is_pinned %}
+                {% include 'icons/icon_pin.html' with class='inline w-3 h-3 fill-gray-500 dark:fill-gray-300' %}
+            {% endif %}
         </span>
     </div>
 
     {#COMMENT OPTIONS#}
-    <div class="grid content-center mr-2">
+    <div class="grid content-center ltr:mr-1 rtl:ml-1">
         {% if request.user.is_authenticated and comment.user == request.user %}
             {% if comment.is_spoiler or COMMENT_ALLOW_EDIT or COMMENT_ALLOW_DELETE %}
-                <div class="group flex flex-row-reverse space-x-3 space-x-reverse rounded-full bg-gray-100 p-2 border-2">
-                    {% include 'icons/icon_dots.html' with class='inline w-6 h-6 fill-gray-500' %}
+                <div class="group flex flex-row-reverse space-x-3 ltr:space-x-reverse rounded-full bg-gray-100 dark:bg-slate-600 p-2 border-2 dark:border-gray-500">
+                    {% include 'icons/icon_dots.html' with class='inline w-6 h-6 fill-gray-500 dark:fill-gray-200' %}
                     {% if COMMENT_ALLOW_EDIT %}
-                        <label for="toggle-edit-{{ comment.urlhash }}" class="hidden group-hover:inline">{% include 'icons/icon_edit.html' with class='w-6 h-6 cursor-pointer fill-green-600' %}</label>
+                        <label for="toggle-edit-{{ comment.urlhash }}" class="hidden group-hover:inline">{% include 'icons/icon_edit.html' with class='w-6 h-6 cursor-pointer fill-green-600 dark:fill-green-400' %}</label>
                     {% endif %}
                     {% if COMMENT_ALLOW_DELETE %}
-                        <span onclick="LoadDeleteCommentForm('{{ comment.urlhash }}')" class="hidden group-hover:inline">{% include 'icons/icon_delete.html' with class='w-6 h-6 cursor-pointer fill-red-500' %}</span>
+                        <span onclick="LoadDeleteCommentForm('{{ comment.urlhash }}')" class="hidden group-hover:inline">{% include 'icons/icon_delete.html' with class='w-6 h-6 cursor-pointer fill-red-500 dark:fill-red-400' %}</span>
                     {% endif %}
                     {% if comment.is_spoiler %}
-                        {% include 'icons/icon_eye_off.html' with class='hidden w-6 h-6 fill-none fill-gray-900 group-hover:inline' %}
+                        {% include 'icons/icon_eye_off.html' with class='hidden w-6 h-6 fill-none fill-gray-900 dark:fill-gray-200 group-hover:inline' %}
                     {% endif %}
                 </div>
             {% endif %}
         {% elif comment.is_spoiler %}
-            <label for="toggle-spoiler-{{ comment.urlhash }}" class="rounded-full bg-gray-100 p-2 cursor-pointer border-2">
-                {% include 'icons/icon_eye.html' with class='inline w-6 h-6 fill-none stroke-gray-500' %}
+            <label for="toggle-spoiler-{{ comment.urlhash }}" class="rounded-full bg-gray-100 p-2 cursor-pointer border-2 dark:bg-slate-600 dark:border-gray-500">
+                {% include 'icons/icon_eye.html' with class='inline w-6 h-6 fill-none stroke-gray-500 dark:stroke-gray-200' %}
             </label>
         {% endif %}
     </div>
@@ -69,12 +67,12 @@
         {#CONTENT#}
         {% if comment.content|wordcount > COMMENT_CONTENT_WORDS_COUNT %}
             <input type="checkbox" class="peer sr-only" id="toggle-more-{{ comment.urlhash }}">
-            <div class="whitespace-pre-wrap inline-block peer-checked:hidden">{{ comment.content|truncatewords:COMMENT_CONTENT_WORDS_COUNT }}</div>
-            <div class="whitespace-pre-wrap hidden peer-checked:block">{{ comment.content }}</div>
-            <label for="toggle-more-{{ comment.urlhash }}" class="inline peer-checked:hidden cursor-pointer text-blue-700">Read More {% include 'icons/icon_down.html' with class='w-6 inline-block' %}</label>
-            <label for="toggle-more-{{ comment.urlhash }}" class="hidden peer-checked:block cursor-pointer text-blue-700">Read Less {% include 'icons/icon_up.html' with class='w-6 inline-block' %}</label>
+            <div class="whitespace-pre-wrap dark:text-white inline-block peer-checked:hidden">{{ comment.content|truncatewords:COMMENT_CONTENT_WORDS_COUNT }}</div>
+            <div class="whitespace-pre-wrap dark:text-white hidden peer-checked:block">{{ comment.content }}</div>
+            <label for="toggle-more-{{ comment.urlhash }}" class="inline peer-checked:hidden cursor-pointer text-blue-700 dark:text-blue-300">Read More {% include 'icons/icon_down.html' with class='w-6 inline-block' %}</label>
+            <label for="toggle-more-{{ comment.urlhash }}" class="hidden peer-checked:block cursor-pointer text-blue-700 dark:text-blue-300">Read Less {% include 'icons/icon_up.html' with class='w-6 inline-block' %}</label>
         {% else %}
-            <div class="whitespace-pre-wrap">{{ comment.content }}</div>
+            <div class="whitespace-pre-wrap dark:text-white">{{ comment.content }}</div>
         {% endif %}
     </div>
     <div class="text-justify hidden peer-checked:block">
@@ -99,8 +97,8 @@
         {#COMMENT REPLY#}
         {% if COMMENT_ALLOW_REPLY and comment.is_parent %}
             {% with count_children=comment.children.filter_accepted.count %}
-                <label for="toggle-reply-{{ comment.urlhash }}" class="grid self-center">
-                <span class="cursor-pointer text-blue-700 px-1">
+                <label for="toggle-reply-{{ comment.urlhash }}" class="grid self-center" dir="ltr">
+                <span class="cursor-pointer text-blue-700 dark:text-blue-300 px-1">
                     {% if count_children > 1 %}
                         {{ count_children|number }} Replies
                     {% elif count_children == 1 %}

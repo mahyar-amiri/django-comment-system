@@ -3,19 +3,23 @@
 
 {% render_imports %}
 
-<div id="comments" class="m-4">
+{% get_settings 'COMMENT_THEME_DIRECTION' as COMMENT_THEME_DIRECTION %}
+{% get_settings 'COMMENT_THEME_DARK_MODE' as COMMENT_THEME_DARK_MODE %}
 
-    {# COMMENT MODAL #}
-    <div id="comment-modal"></div>
+<div {% if COMMENT_THEME_DARK_MODE %} data-mode="dark" {% endif %} dir="{{ COMMENT_THEME_DIRECTION }}">
+    <div id="comments" class="p-4 dark:bg-slate-800">
 
-    {# CREATE COMMENT FORM #}
-    {% include 'forms/comment_form_create.html' %}
+        {# COMMENT MODAL #}
+        <div id="comment-modal"></div>
 
-    {# COMMENTS LIST #}
-    <div id="comment-list">
-        {% include 'utils/comment_list_loader.html' %}
+        {# CREATE COMMENT FORM #}
+        {% include 'forms/comment_form_create.html' %}
+
+        {# COMMENTS LIST #}
+        <div id="comment-list">
+            {% include 'utils/comment_list_loader.html' %}
+        </div>
+
     </div>
-
 </div>
-
 {% include 'utils/SCRIPTS.html' %}

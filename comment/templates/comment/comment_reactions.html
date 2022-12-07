@@ -2,12 +2,14 @@
 {% get_settings 'COMMENT_REACTION_TYPE' as COMMENT_REACTION_TYPE %}
 
 {% for react, reaction in comment.reactions.get_reacts.items %}
-    <button type="button" onclick="ReactComment('{{ comment.urlhash }}', '{{ react.slug }}')" class="group h-12 rounded-full border-2 py-2 px-2 {% if request.user in reaction.get_users %}border-blue-200 bg-blue-100{% else %}border-gray-200 bg-gray-100{% endif %}">
+    <button type="button"
+            {% if request.user.is_authenticated %} onclick="ReactComment('{{ comment.urlhash }}', '{{ react.slug }}')" {% endif %}
+            class="group h-12 rounded-full border-2 py-2 px-2 {% if request.user in reaction.get_users %}border-blue-200 bg-blue-100 dark:border-slate-400 dark:bg-slate-500{% else %}border-gray-200 bg-gray-100 dark:border-gray-500 dark:bg-slate-700{% endif %}">
         {% if COMMENT_REACTION_TYPE == 'source' and react.source %}
             <img src="{{ react.source.url }}" class="w-6 h-6 inline transition-transform duration-200 origin-bottom group-hover:scale-150">
         {% else %}
             <span class="w-6 h-6 inline text-base">{{ react.emoji }}</span>
         {% endif %}
-        {% if reaction.count %} <span class="pr-1">{{ reaction.count|number:0 }}</span>{% endif %}
+        {% if reaction.count %} <span class="ltr:pr-1 rtl:pl-1 dark:text-gray-100">{{ reaction.count|number:0 }}</span>{% endif %}
     </button>
 {% endfor %}
