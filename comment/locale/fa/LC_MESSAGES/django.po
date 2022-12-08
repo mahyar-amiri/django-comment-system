@@ -1,0 +1,125 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-08 18:50+0330\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: .\comment\admin.py:36
+#, python-brace-format
+msgid "{accepted} comment accepted."
+msgid_plural "{accepted} comments accepted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\comment\admin.py:45
+#, python-brace-format
+msgid "{rejected} comment rejected."
+msgid_plural "{rejected} comments rejected."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\comment\templates\comment\comment_body.html:26
+msgid "ago"
+msgstr "پیش"
+
+#: .\comment\templates\comment\comment_body.html:73
+msgid "Read More"
+msgstr "ادامه"
+
+#: .\comment\templates\comment\comment_body.html:74
+msgid "Read Less"
+msgstr "خلاصه"
+
+#: .\comment\templates\comment\comment_body.html:104
+msgctxt "reply-count"
+msgid "Replies"
+msgstr "پاسخ"
+
+#: .\comment\templates\comment\comment_body.html:106
+msgctxt "reply-count"
+msgid "Reply"
+msgstr "پاسخ"
+
+#: .\comment\templates\comment\comment_body.html:108
+msgctxt "verb"
+msgid "Reply"
+msgstr "پاسخ"
+
+#: .\comment\templates\comment\comment_counter.html:6
+#: .\comment\templates\utils\comment_list_loader.html:4
+msgid "Comments"
+msgstr "نظرات"
+
+#: .\comment\templates\forms\comment_form_create.html:12
+msgid "Write Something..."
+msgstr "یه چیزی بنویس..."
+
+#: .\comment\templates\forms\comment_form_create.html:26
+msgctxt "form-button"
+msgid "Send"
+msgstr "ارسال"
+
+#: .\comment\templates\forms\comment_form_create.html:29
+msgctxt "login-required"
+msgid "Login to comment"
+msgstr "برای ارسال دیدگاه وارد شوید"
+
+#: .\comment\templates\forms\comment_form_delete.html:12
+msgid "Delete Comment"
+msgstr "حذف دیدگاه"
+
+#: .\comment\templates\forms\comment_form_delete.html:15
+msgid ""
+"Are you sure you want to delete your comment? All of your replies will be "
+"permanently removed. This action can not be undone."
+msgstr ""
+"آیا مطمئن هستید که می خواهید نظر خود را حذف کنید؟ همه پاسخ های شما برای "
+"همیشه حذف خواهند شد. این عمل قابل لغو نیست."
+
+#: .\comment\templates\forms\comment_form_delete.html:22
+msgctxt "form-button"
+msgid "Delete"
+msgstr "حذف"
+
+#: .\comment\templates\forms\comment_form_delete.html:23
+#: .\comment\templates\forms\comment_form_edit.html:20
+msgctxt "form-button"
+msgid "Cancel"
+msgstr "انصراف"
+
+#: .\comment\templates\forms\comment_form_edit.html:21
+msgctxt "form-button"
+msgid "Edit"
+msgstr "ویرایش"
+
+#: .\comment\templates\forms\comment_form_reply.html:15
+msgid "Reply to"
+msgstr "پاسخ به"
+
+#: .\comment\templates\forms\comment_form_reply.html:29
+msgctxt "form-button"
+msgid "Reply"
+msgstr "پاسخ"
+
+#: .\comment\templates\forms\comment_form_reply.html:32
+msgctxt "login-required"
+msgid "Login to reply"
+msgstr "برای ارسال پاسخ وارد شوید"
+
+#: .\comment\templates\utils\comment_list_empty.html:34
+msgid "No comment yet"
+msgstr "هیچ دیدگاهی وجود ندارد"

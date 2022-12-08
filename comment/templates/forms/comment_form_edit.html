@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load comment_tags %}
 
 <form id="form-comment-edit-{{ comment.urlhash }}" method="post" action="{% url 'comment:update' pk=comment.pk %}">{% csrf_token %}
@@ -16,8 +17,8 @@
                     <span class="hidden cursor-pointer peer-checked:block">{% include 'icons/icon_eye_off.html' with class='inline-block w-8 fill-gray-500 dark:fill-gray-200' %}</span>
                 </label>
             {% endif %}
-            <label for="toggle-edit-{{ comment.urlhash }}" onclick="ResetEditCommentForm('form-comment-edit-{{ comment.urlhash }}','{{ comment.content }}','{{ comment.is_spoiler }}')" class="inline cursor-pointer rounded-lg border-none bg-gray-500 dark:bg-slate-200 py-2 px-6 text-xl text-white dark:text-black outline-0 shadow-md ltr:mr-2 rtl:ml-2">Cancel</label>
-            <button type="button" onclick="EditComment('form-comment-edit-{{ comment.urlhash }}')" class="rounded-lg border-none bg-green-600 py-2 px-6 text-xl text-white outline-0 shadow-md">Edit</button>
+            <label for="toggle-edit-{{ comment.urlhash }}" onclick="ResetEditCommentForm('form-comment-edit-{{ comment.urlhash }}','{{ comment.content }}','{{ comment.is_spoiler }}')" class="inline cursor-pointer rounded-lg border-none bg-gray-500 dark:bg-slate-200 py-2 px-6 text-xl text-white dark:text-black outline-0 shadow-md ltr:mr-2 rtl:ml-2">{% trans 'Cancel' context 'form-button' %}</label>
+            <button type="button" onclick="EditComment('form-comment-edit-{{ comment.urlhash }}')" class="rounded-lg border-none bg-green-600 py-2 px-6 text-xl text-white outline-0 shadow-md">{% trans 'Edit' context 'form-button' %}</button>
         </div>
     </div>
 </form>

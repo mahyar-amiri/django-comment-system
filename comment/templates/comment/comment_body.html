@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load static %}
 {% load comment_tags %}
 
@@ -20,9 +21,9 @@
         {% endif %}
         <span class="inline-block align-middle ltr:ml-2 rtl:mr-2 text-lg font-semibold dark:text-gray-100"><span dir="ltr">{{ comment.user.username }}</span></span>
         <span class="mx-1 text-gray-500 dark:text-gray-300">•</span>
-        <span class="text-sm text-gray-500 dark:text-gray-300" dir="ltr">
+        <span class="text-sm text-gray-500 dark:text-gray-300">
             {% if COMMENT_TIME_FROM_NOW %}
-                {{ comment.posted|timesince }} ago
+                {{ comment.posted|timesince }} {% trans 'ago' %}
             {% else %}
                 {{ comment.posted|date:'SHORT_DATE_FORMAT' }} {{ comment.posted|time:'TIME_FORMAT' }}
             {% endif %}
@@ -69,8 +70,8 @@
             <input type="checkbox" class="peer sr-only" id="toggle-more-{{ comment.urlhash }}">
             <div class="whitespace-pre-wrap dark:text-white inline-block peer-checked:hidden">{{ comment.content|truncatewords:COMMENT_CONTENT_WORDS_COUNT }}</div>
             <div class="whitespace-pre-wrap dark:text-white hidden peer-checked:block">{{ comment.content }}</div>
-            <label for="toggle-more-{{ comment.urlhash }}" class="inline peer-checked:hidden cursor-pointer text-blue-700 dark:text-blue-300">Read More {% include 'icons/icon_down.html' with class='w-6 inline-block' %}</label>
-            <label for="toggle-more-{{ comment.urlhash }}" class="hidden peer-checked:block cursor-pointer text-blue-700 dark:text-blue-300">Read Less {% include 'icons/icon_up.html' with class='w-6 inline-block' %}</label>
+            <label for="toggle-more-{{ comment.urlhash }}" class="inline peer-checked:hidden cursor-pointer text-blue-700 dark:text-blue-300">{% trans 'Read More' %} {% include 'icons/icon_down.html' with class='w-6 inline-block' %}</label>
+            <label for="toggle-more-{{ comment.urlhash }}" class="hidden peer-checked:block cursor-pointer text-blue-700 dark:text-blue-300">{% trans 'Read Less' %} {% include 'icons/icon_up.html' with class='w-6 inline-block' %}</label>
         {% else %}
             <div class="whitespace-pre-wrap dark:text-white">{{ comment.content }}</div>
         {% endif %}
@@ -97,14 +98,14 @@
         {#COMMENT REPLY#}
         {% if COMMENT_ALLOW_REPLY and comment.is_parent %}
             {% with count_children=comment.children.filter_accepted.count %}
-                <label for="toggle-reply-{{ comment.urlhash }}" class="grid self-center" dir="ltr">
+                <label for="toggle-reply-{{ comment.urlhash }}" class="grid self-center">
                 <span class="cursor-pointer text-blue-700 dark:text-blue-300 px-1">
                     {% if count_children > 1 %}
-                        {{ count_children|number }} Replies
+                        {{ count_children|number }} {% trans 'Replies' context 'reply-count' %}
                     {% elif count_children == 1 %}
-                        {{ count_children }} Reply
+                        {{ count_children }} {% trans 'Reply' context 'reply-count' %}
                     {% else %}
-                        Reply
+                        {% trans 'Reply' context 'verb' %}
                     {% endif %}
                 </span>
                 </label>
