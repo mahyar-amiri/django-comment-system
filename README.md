@@ -103,6 +103,42 @@
    COMMENT_REACTION_TYPE = 'source'  # emoji / source
    ```
 
+## Translation
+
+1. Add `locale` folder to your app folder.
+2. Run command below to create `django.po` file for your language.
+
+   Find your language code [here](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
+   ```shell
+   python manage.py makemessages -l MY_LANGUAGE_CODE
+   # for generating translations corresponding to javascript code
+   python manage.py makemessages -l MY_LANGUAGE_CODE -d djangojs
+   ```
+
+   e.g. The persian language code is `fa`.
+
+   ```shell
+   python manage.py makemessages -l fa
+   python manage.py makemessages -l fa -d djangojs
+   ```
+   This will create two `.po` files inside the `locale/{MY_LANGUAGE_CODE}/LC_MESSAGES/` directory.
+
+3. After adding translation to both files, run the following command to verify everything is working.
+   ```shell
+   python manage.py compilemessages -l MY_LANGUAGE_CODE
+   # e.g. for persian translation use fa instead of MY_LANGUAGE_CODE
+   ```
+   If you don't see an error in the last command, your translations have been added in the correct format.
+
+4. In `settings.py` to enable internationalization in your django applications.
+   ```python
+   # settings.py
+
+   USE_I18N = True
+   USE_L18N = True
+   LANGUAGE_CODE = '{MY_LANGUAGE_CODE}'  # 'en-us' for english , 'fa-ir' for persian , ...
+   ```
+
 ## Settings
 
 You can customize settings by adding keywords in `settings.py`.
