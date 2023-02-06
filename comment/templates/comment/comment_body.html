@@ -4,8 +4,9 @@
 
 {% get_settings 'COMMENT_ALLOW_EDIT' as COMMENT_ALLOW_EDIT %}
 {% get_settings 'COMMENT_ALLOW_REPLY' as COMMENT_ALLOW_REPLY %}
+{% get_settings 'COMMENT_TIME_TYPE' as COMMENT_TIME_TYPE %}
+{% get_settings 'COMMENT_TIME_DAYS' as COMMENT_TIME_DAYS %}
 {% get_settings 'COMMENT_ALLOW_DELETE' as COMMENT_ALLOW_DELETE %}
-{% get_settings 'COMMENT_TIME_FROM_NOW' as COMMENT_TIME_FROM_NOW %}
 {% get_settings 'COMMENT_ALLOW_REACTION' as COMMENT_ALLOW_REACTION %}
 {% get_settings 'COMMENT_CONTENT_WORDS_COUNT' as COMMENT_CONTENT_WORDS_COUNT %}
 
@@ -22,9 +23,13 @@
         <span class="inline-block align-middle ltr:ml-2 rtl:mr-2 text-lg font-semibold text-comment-name-text-light dark:text-comment-name-text-dark"><span dir="ltr">{{ comment.user.username }}</span></span>
         <span class="mx-1 text-comment-time-text-light dark:text-comment-time-text-dark">•</span>
         <span class="text-sm text-comment-time-text-light dark:text-comment-time-text-dark">
-            {% if COMMENT_TIME_FROM_NOW %}
+            {% if COMMENT_TIME_TYPE == 1 and comment.posted|is_time_lt_days:COMMENT_TIME_DAYS %}
                 {{ comment.posted|timesince }} {% trans 'ago' %}
-            {% else %}
+            {% elif COMMENT_TIME_TYPE == 1 and not comment.posted|is_time_lt_days:COMMENT_TIME_DAYS %}
+                {{ comment.posted|date:'SHORT_DATE_FORMAT' }} {{ comment.posted|time:'TIME_FORMAT' }}
+            {% elif COMMENT_TIME_TYPE == 2 %}
+                {{ comment.posted|timesince }} {% trans 'ago' %}
+            {% elif COMMENT_TIME_TYPE == 3 %}
                 {{ comment.posted|date:'SHORT_DATE_FORMAT' }} {{ comment.posted|time:'TIME_FORMAT' }}
             {% endif %}
         </span>

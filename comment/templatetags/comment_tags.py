@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta, timezone
+
 from django import template
 from django.contrib.contenttypes.models import ContentType
 from django.templatetags.static import static
@@ -62,14 +64,8 @@ def number(value, floating_points=None):
         return f'{value:,}'
 
 
-@register.filter
-def to_range(end, start=1):
-    return range(start, end + 1)
-
-
 @register.simple_tag
 def get_pagination(paginator):
-
     if paginator.paginator.num_pages <= 9:
         return paginator.paginator.page_range
     else:
@@ -79,3 +75,8 @@ def get_pagination(paginator):
             return [1, 0, *range(paginator.paginator.num_pages - 5, paginator.paginator.num_pages + 1)]
         else:
             return [1, 0, paginator.number - 2, paginator.number - 1, paginator.number, paginator.number + 1, paginator.number + 2, 0, paginator.paginator.num_pages]
+
+
+@register.filter
+def is_time_lt_days(time, days):
+    return True if datetime.now(tz=timezone.utc) - time < timedelta(days=days) else False
