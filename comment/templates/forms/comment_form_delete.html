@@ -5,22 +5,22 @@
 
     <div class="fixed inset-0 z-10 overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <div class="relative transform overflow-hidden rounded-lg bg-white ltr:text-left rtl:text-right shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                <div class="bg-white dark:bg-slate-600 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div class="relative transform overflow-hidden rounded-lg bg-delete-from-bg-light dark:bg-delete-from-bg-dark ltr:text-left rtl:text-right shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                <div class="bg-delete-from-bg-light dark:bg-delete-from-bg-dark px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="mt-3 text-center sm:mt-0 sm:ltr:ml-4 sm:rtl:mr-4 ltr:sm:text-left rtl:sm:text-right">
-                            <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100" id="modal-title">{% trans 'Delete Comment' %}</h3>
+                            <h3 class="text-lg font-medium leading-6 text-delete-from-text-light dark:text-delete-from-text-dark" id="modal-title">{% trans 'Delete Comment' %}</h3>
                             <div class="mt-2">
-                                <p class="text-sm text-gray-500 dark:text-gray-300">
+                                <p class="text-sm text-delete-from-subtext-light dark:text-delete-from-subtext-dark">
                                     {% blocktrans %}Are you sure you want to delete your comment? All of your replies will be permanently removed. This action can not be undone.{% endblocktrans %}
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <form id="form-comment-delete-{{ urlhash }}" method="post" action="{% url 'comment:delete' urlhash %}" class="bg-white dark:bg-slate-600 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">{% csrf_token %}
-                    <button type="button" onclick="DeleteComment('{{ urlhash }}')" class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 dark:bg-red-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ltr:ml-3 sm:rtl:mr-3 sm:w-auto sm:text-sm">{% trans 'Delete' context 'form-button' %}</button>
-                    <button type="button" onclick="ResetDeleteCommentForm()" class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white dark:bg-slate-200 px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ltr:ml-3 sm:rtl:mr-3 sm:w-auto sm:text-sm">{% trans 'Cancel' context 'form-button' %}</button>
+                <form id="form-comment-delete-{{ urlhash }}" method="post" action="{% url 'comment:delete' urlhash %}" class="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">{% csrf_token %}
+                    <button type="button" onclick="DeleteComment('{{ urlhash }}')" class="inline-flex w-full justify-center rounded-md border border-transparent bg-btn-delete-bg-light dark:bg-btn-delete-bg-dark text-btn-delete-text-light dark:text-btn-delete-text-dark px-4 py-2 text-base font-medium shadow-sm sm:ltr:ml-3 sm:rtl:mr-3 sm:w-auto sm:text-sm">{% trans 'Delete' context 'form-button' %}</button>
+                    <button type="button" onclick="ResetDeleteCommentForm()" class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-btn-cancel-bg-light dark:bg-btn-cancel-bg-dark text-btn-cancel-text-light dark:text-btn-cancel-text-dark px-4 py-2 text-base font-medium shadow-sm sm:mt-0 sm:ltr:ml-3 sm:rtl:mr-3 sm:w-auto sm:text-sm">{% trans 'Cancel' context 'form-button' %}</button>
                 </form>
             </div>
         </div>

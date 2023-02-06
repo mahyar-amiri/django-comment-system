@@ -56,7 +56,7 @@ function ResetCreateCommentForm() {
 
 function ResetEditCommentForm(form_id, content, is_spoiler) {
     let form = $(`#${form_id}`);
-    form.find('textarea').val(content).removeClass('animate-[pulse_500ms_linear_infinite] border-red-400').addClass('border-gray-200');
+    form.find('textarea').val(content).removeClass('animate-[pulse_500ms_linear_infinite] border-textarea-border-empty-light dark:border-textarea-border-empty-dark').addClass('border-textarea-bg-light dark:border-textarea-bg-dark');
     if (is_spoiler === 'True') {
         form.find("[name='is_spoiler']").prop('checked', true);
     } else {
@@ -112,9 +112,9 @@ function CreateComment(form_id) {
 function CheckEditTextarea(form_id) {
     let textarea = $(`#${form_id} textarea`)
     if (textarea.val().trim() === '') {
-        textarea.removeClass('border-gray-200').addClass('border-red-400');
+        textarea.removeClass('border-textarea-bg-light dark:border-textarea-bg-dark').addClass('border-textarea-border-empty-light dark:border-textarea-border-empty-dark');
     } else {
-        textarea.removeClass('border-red-400 animate-[pulse_500ms_linear_infinite]').addClass('border-gray-200');
+        textarea.removeClass('border-textarea-border-empty-light dark:border-textarea-border-empty-dark animate-[pulse_500ms_linear_infinite]').addClass('border-textarea-bg-light dark:border-textarea-bg-dark');
     }
 }
 
@@ -144,7 +144,7 @@ function EditComment(form_id) {
         error: function () {
             let textarea = $(`#${form_id} textarea`);
             if (textarea.val().trim() === '') {
-                textarea.removeClass('border-gray-200').addClass('animate-[pulse_500ms_linear_infinite] border-red-400');
+                textarea.removeClass('border-textarea-bg-light dark:border-textarea-bg-dark').addClass('animate-[pulse_500ms_linear_infinite] border-textarea-border-empty-light dark:border-textarea-border-empty-dark');
             } else {
                 alert('ERROR in Creating Comment!')
             }

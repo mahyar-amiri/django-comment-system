@@ -19,9 +19,9 @@
         {% if profile_image %}
             <img src="{{ profile_image }}" alt="Profile" class="inline-block w-12 h-12 rounded-full"/>
         {% endif %}
-        <span class="inline-block align-middle ltr:ml-2 rtl:mr-2 text-lg font-semibold dark:text-gray-100"><span dir="ltr">{{ comment.user.username }}</span></span>
-        <span class="mx-1 text-gray-500 dark:text-gray-300">•</span>
-        <span class="text-sm text-gray-500 dark:text-gray-300">
+        <span class="inline-block align-middle ltr:ml-2 rtl:mr-2 text-lg font-semibold text-comment-name-text-light dark:text-comment-name-text-dark"><span dir="ltr">{{ comment.user.username }}</span></span>
+        <span class="mx-1 text-comment-time-text-light dark:text-comment-time-text-dark">•</span>
+        <span class="text-sm text-comment-time-text-light dark:text-comment-time-text-dark">
             {% if COMMENT_TIME_FROM_NOW %}
                 {{ comment.posted|timesince }} {% trans 'ago' %}
             {% else %}
@@ -30,7 +30,7 @@
         </span>
         <span class="ltr:ml-2 rtl:mr-2 rtl:scale-x-[-1]">
             {% if comment.is_pinned %}
-                {% include 'icons/icon_pin.html' with class='inline w-3 h-3 fill-gray-500 dark:fill-gray-300' %}
+                {% include 'icons/icon_pin.html' with class='inline w-3 h-3 fill-icon-pin-light dark:fill-icon-pin-dark' %}
             {% endif %}
         </span>
     </div>
@@ -39,22 +39,22 @@
     <div class="grid content-center ltr:mr-1 rtl:ml-1">
         {% if request.user.is_authenticated and comment.user == request.user %}
             {% if comment.is_spoiler or COMMENT_ALLOW_EDIT or COMMENT_ALLOW_DELETE %}
-                <div class="group flex flex-row-reverse space-x-3 ltr:space-x-reverse rounded-full bg-gray-100 dark:bg-slate-600 p-2 border-2 dark:border-gray-500">
-                    {% include 'icons/icon_dots.html' with class='inline w-6 h-6 fill-gray-500 dark:fill-gray-200' %}
+                <div class="group flex flex-row-reverse space-x-3 ltr:space-x-reverse rounded-full bg-comment-option-bg-light dark:bg-comment-option-bg-dark p-2 border-2 border-comment-option-border-light dark:border-comment-option-border-dark">
+                    {% include 'icons/icon_dots.html' with class='inline w-6 h-6 fill-icon-dots-light dark:fill-icon-dots-dark' %}
                     {% if COMMENT_ALLOW_EDIT %}
-                        <label for="toggle-edit-{{ comment.urlhash }}" class="hidden group-hover:inline">{% include 'icons/icon_edit.html' with class='w-6 h-6 cursor-pointer fill-green-600 dark:fill-green-400' %}</label>
+                        <label for="toggle-edit-{{ comment.urlhash }}" class="hidden group-hover:inline">{% include 'icons/icon_edit.html' with class='w-6 h-6 cursor-pointer fill-icon-edit-light dark:fill-icon-edit-dark' %}</label>
                     {% endif %}
                     {% if COMMENT_ALLOW_DELETE %}
-                        <span onclick="LoadDeleteCommentForm('{{ comment.urlhash }}')" class="hidden group-hover:inline">{% include 'icons/icon_delete.html' with class='w-6 h-6 cursor-pointer fill-red-500 dark:fill-red-400' %}</span>
+                        <span onclick="LoadDeleteCommentForm('{{ comment.urlhash }}')" class="hidden group-hover:inline">{% include 'icons/icon_delete.html' with class='w-6 h-6 cursor-pointer fill-icon-delete-light dark:fill-icon-delete-dark' %}</span>
                     {% endif %}
                     {% if comment.is_spoiler %}
-                        {% include 'icons/icon_eye_off.html' with class='hidden w-6 h-6 fill-none fill-gray-900 dark:fill-gray-200 group-hover:inline' %}
+                        {% include 'icons/icon_eye_off.html' with class='hidden w-6 h-6 fill-none fill-icon-spoiler-option-light dark:fill-icon-spoiler-option-dark group-hover:inline' %}
                     {% endif %}
                 </div>
             {% endif %}
         {% elif comment.is_spoiler %}
-            <label for="toggle-spoiler-{{ comment.urlhash }}" class="rounded-full bg-gray-100 p-2 cursor-pointer border-2 dark:bg-slate-600 dark:border-gray-500">
-                {% include 'icons/icon_eye.html' with class='inline w-6 h-6 fill-none stroke-gray-500 dark:stroke-gray-200' %}
+            <label for="toggle-spoiler-{{ comment.urlhash }}" class="rounded-full p-2 cursor-pointer border-2 bg-comment-option-bg-light dark:bg-comment-option-bg-dark border-comment-option-border-light dark:border-comment-option-border-dark">
+                {% include 'icons/icon_eye.html' with class='inline w-6 h-6 fill-none stroke-icon-spoiler-light dark:stroke-icon-spoiler-dark' %}
             </label>
         {% endif %}
     </div>
@@ -68,12 +68,12 @@
         {#CONTENT#}
         {% if comment.content|wordcount > COMMENT_CONTENT_WORDS_COUNT %}
             <input type="checkbox" class="peer sr-only" id="toggle-more-{{ comment.urlhash }}">
-            <div class="whitespace-pre-wrap dark:text-white inline-block peer-checked:hidden">{{ comment.content|truncatewords:COMMENT_CONTENT_WORDS_COUNT }}</div>
-            <div class="whitespace-pre-wrap dark:text-white hidden peer-checked:block">{{ comment.content }}</div>
-            <label for="toggle-more-{{ comment.urlhash }}" class="inline peer-checked:hidden cursor-pointer text-blue-700 dark:text-blue-300">{% trans 'Read More' %} {% include 'icons/icon_down.html' with class='w-6 inline-block' %}</label>
-            <label for="toggle-more-{{ comment.urlhash }}" class="hidden peer-checked:block cursor-pointer text-blue-700 dark:text-blue-300">{% trans 'Read Less' %} {% include 'icons/icon_up.html' with class='w-6 inline-block' %}</label>
+            <div class="whitespace-pre-wrap dark:text-white inline-block peer-checked:hidden {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% else %}font-default{% endif %}">{{ comment.content|truncatewords:COMMENT_CONTENT_WORDS_COUNT }}</div>
+            <div class="whitespace-pre-wrap dark:text-white hidden peer-checked:block {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% else %}font-default{% endif %}">{{ comment.content }}</div>
+            <label for="toggle-more-{{ comment.urlhash }}" class="inline peer-checked:hidden cursor-pointer text-comment-read-more-light dark:text-comment-read-more-dark">{% trans 'Read More' %} {% include 'icons/icon_down.html' with class='w-6 inline-block' %}</label>
+            <label for="toggle-more-{{ comment.urlhash }}" class="hidden peer-checked:block cursor-pointer text-comment-read-more-light dark:text-comment-read-more-dark">{% trans 'Read Less' %} {% include 'icons/icon_up.html' with class='w-6 inline-block' %}</label>
         {% else %}
-            <div class="whitespace-pre-wrap dark:text-white">{{ comment.content }}</div>
+            <div class="whitespace-pre-wrap dark:text-white {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% else %}font-default{% endif %}">{{ comment.content }}</div>
         {% endif %}
     </div>
     <div class="text-justify hidden peer-checked:block">
@@ -99,7 +99,7 @@
         {% if COMMENT_ALLOW_REPLY and comment.is_parent %}
             {% with count_children=comment.children.filter_accepted.count %}
                 <label for="toggle-reply-{{ comment.urlhash }}" class="grid self-center">
-                <span class="cursor-pointer text-blue-700 dark:text-blue-300 px-1">
+                <span class="cursor-pointer text-reply-text-light dark:text-reply-text-dark px-1">
                     {% if count_children > 1 %}
                         {{ count_children|number }} {% trans 'Replies' context 'reply-count' %}
                     {% elif count_children == 1 %}
