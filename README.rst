@@ -1,4 +1,4 @@
-Django Comments
+Django Tailwind Comments
 ===============
 
 Installation & Configuration
@@ -8,7 +8,7 @@ Installation & Configuration
 
    .. code::
 
-      git clone https://github.com/lordmahyar/django-comments.git
+      git clone https://github.com/lordmahyar/django-tailwind-comments.git
 
 2. Copy ``comment`` folder and paste in project folder.
 
