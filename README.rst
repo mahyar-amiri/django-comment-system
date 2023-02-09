@@ -4,7 +4,13 @@ Django Tailwind Comments
 Installation & Configuration
 ----------------------------
 
-1. Clone the repository
+1. Install using pip
+
+   .. code::
+
+      python -m pip install django-tailwind-comments
+
+   or Clone the repository
 
    .. code::
 

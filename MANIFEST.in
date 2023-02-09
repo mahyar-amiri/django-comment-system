@@ -1,0 +1,9 @@
+global-exclude *.py[cod]
+include VERSION
+include README.rst
+include pyproject.toml
+recursive-include comment *.py
+recursive-include comment/locale *
+recursive-include comment/static *
+recursive-include comment/templates *
+recursive-include comment/templatetags *
