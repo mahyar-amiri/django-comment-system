@@ -8,7 +8,7 @@
 {% get_settings 'LANGUAGE_CODE' as LANGUAGE_CODE %}
 
 <div {% if COMMENT_THEME_DARK_MODE %} data-mode="dark" {% endif %} dir="{{ COMMENT_THEME_DIRECTION }}">
-    <div id="comments" class="p-4 bg-background-light dark:bg-background-dark {% if LANGUAGE_CODE == 'fa-ir' %}font-Vazir-FD{% endif %}">
+    <div id="comments" class="p-4 bg-background-light dark:bg-background-dark {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% endif %}">
 
         {# COMMENT MODAL #}
         <div id="comment-modal"></div>
