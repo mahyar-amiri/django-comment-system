@@ -15,8 +15,10 @@ class CommentDetail(TemplateView):
 
     def get(self, request, *args, **kwargs):
         urlhash = request.GET.get('urlhash')
+        settings_slug = request.GET.get('settings_slug')
         context = {
-            'comment': Comment.objects.get(urlhash=urlhash)
+            'comment': Comment.objects.get(urlhash=urlhash),
+            'settings': CommentSettings.objects.get(slug=settings_slug)
         }
         return render(request, self.template_name, context=context)
 

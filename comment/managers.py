@@ -13,6 +13,12 @@ class CommentQuerySet(models.QuerySet):
     def filter_parents(self):
         return self.filter(parent__isnull=True)
 
+    def filter_updated(self):
+        return self.filter(updated__gt=models.F('posted'))
+
+    def filter_not_updated(self):
+        return self.filter(updated=models.F('posted'))
+
     def order_newest(self):
         return self.order_by('-posted')
 

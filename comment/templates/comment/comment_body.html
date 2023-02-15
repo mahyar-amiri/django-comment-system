@@ -25,6 +25,11 @@
             {% endif %}
         </span>
         <span class="ltr:ml-2 rtl:mr-2 rtl:scale-x-[-1]">
+            {% if comment.is_updated %}
+                {% include 'icons/icon_pen.html' with class='inline w-3 h-3 fill-icon-pin-light dark:fill-icon-pin-dark' %}
+            {% endif %}
+        </span>
+        <span class="ltr:ml-2 rtl:mr-2 rtl:scale-x-[-1]">
             {% if comment.is_pinned %}
                 {% include 'icons/icon_pin.html' with class='inline w-3 h-3 fill-icon-pin-light dark:fill-icon-pin-dark' %}
             {% endif %}
