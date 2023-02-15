@@ -20,7 +20,7 @@ class CommentSettings(models.Model):
     allow_reply = models.BooleanField(default=True)
     allow_edit = models.BooleanField(default=True)
     allow_delete = models.BooleanField(default=True)
-    allow_reaction = models.BooleanField(default=False, help_text='First, create a react emoji in React models')
+    allow_reaction = models.BooleanField(default=True, help_text='First, create a react emoji in React models')
     reaction_type = models.CharField(max_length=6, choices=(('emoji', 'Emoji'), ('source', 'Source')), default='emoji', help_text='Add source in React model')
     per_page = models.PositiveSmallIntegerField(default=10, help_text='Set 0 if you don\'t want pagination (All comments will be shown at once)')
     time_type = models.PositiveSmallIntegerField(default=1, choices=((1, 'Compound'), (2, 'From Now'), (3, 'Date & Time')), help_text='Comment posted time style')
