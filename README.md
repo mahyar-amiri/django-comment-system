@@ -1,4 +1,8 @@
-# Django Tailwind Comments [![PyPI version](https://img.shields.io/pypi/v/django-tailwind-comments.svg?logo=pypi&logoColor=FFE873)](https://pypi.org/project/django-tailwind-comments/)
+# Django Tailwind Comments
+
+[![PyPI version](https://img.shields.io/pypi/v/django-tailwind-comments.svg?logo=pypi&logoColor=FFE873)](https://pypi.org/project/django-tailwind-comments/)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/django-tailwind-comments?color=092E20&logo=django)
+![GitHub](https://img.shields.io/github/license/lordmahyar/django-tailwind-comments)
 
 ## Installation & Configuration
 
