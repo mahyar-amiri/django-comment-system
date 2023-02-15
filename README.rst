@@ -6,13 +6,13 @@ Installation & Configuration
 
 1. Install using pip
 
-   .. code::
+   .. code:: shell
 
       python -m pip install django-tailwind-comments
 
    or Clone the repository
 
-   .. code::
+   .. code:: shell
 
       git clone https://github.com/lordmahyar/django-tailwind-comments.git
 
@@ -21,7 +21,7 @@ Installation & Configuration
 3. Add ``comment.apps.CommentConfig`` to installed_apps in the
    ``settings.py`` file after ``django.contrib.auth``.
 
-   .. code::
+   .. code:: python
 
       # setting.py
 
@@ -40,7 +40,7 @@ Installation & Configuration
 4. Add ``path('comment/', include('comment.urls')),`` to urlpatterns in
    the ``urls.py`` file.
 
-   .. code::
+   .. code:: python
 
       # urls.py
 
@@ -56,7 +56,7 @@ Installation & Configuration
    **NOTE:** Please note that the field name must be ``comments``
    **NOT** ``comment``.
 
-   .. code::
+   .. code:: python
 
       # models.py
 
@@ -72,30 +72,29 @@ Installation & Configuration
 
 6. Do migrations
 
-   .. code::
+   .. code:: shell
 
-      python manage.py makemigrations
       python manage.py migrate
 
 Usage
 -----
 
-1. In the template (e.g. post_detail.html) add the following template
+1. In the template (e.g. post_detail.html) add the following template
    tags where obj is the instance of post model.
 
-   .. code::
+   .. code:: html
 
       {% load comment_tags %}
 
 2. Add the following template tags where you want to render comments.
 
-   .. code::
+   .. code:: html
 
-      {% render_comments request obj %}  {# Render all the comments belong to the passed object "obj" #}
+      {% render_comments request obj settings_slug='default-config' %}  {# Render all the comments belong to the passed object "obj" #}
 
-   if your context_object_name is not ``obj`` (e.g. article) replace obj
+   if your context_object_name is not ``obj`` (e.g article) replace obj
    with context_object_name.
 
-   .. code::
+   .. code:: html
 
-      {% render_comments request obj=article %}
+      {% render_comments request obj=article settings_slug='default-config' %}

@@ -1,4 +1,4 @@
-# Django Tailwind Comments
+# Django Tailwind Comments [![PyPI version](https://img.shields.io/pypi/v/django-tailwind-comments.svg?logo=pypi&logoColor=FFE873)](https://pypi.org/project/django-tailwind-comments/)
 
 ## Installation & Configuration
 
@@ -67,7 +67,6 @@
 
 6. Do migrations
    ```shell
-   python manage.py makemigrations
    python manage.py migrate
    ```
 
@@ -80,34 +79,20 @@
 
 2. Add the following template tags where you want to render comments.
    ```html
-   {% render_comments request obj %}  {# Render all the comments belong to the passed object "obj" #}
+   {% render_comments request obj settings_slug='default-config' %}  {# Render all the comments belong to the passed object "obj" #}
    ```
    if your context_object_name is not `obj` (e.g. article) replace obj with context_object_name.
    ```html
-   {% render_comments request obj=article %}
+   {% render_comments request obj=article settings_slug='default-config' %}
    ```
 
 ## Reactions
 
-1. Setup Reaction in `settings.py`.
-   ```python
-   # settings.py
-   
-   COMMENT_ALLOW_REACTION = True
-   ```
-2. Use admin panel to add react emoji. you will need an emoji and an emoji name as slug.
+1. Use admin panel to add react emoji. you will need an emoji and an emoji name as slug.
 
-### you can use image or gif instead of emoji character :
+2. you can use image or gif instead of emoji character: In your admin panel, add image or gif file in React object.
 
-3. In your admin panel, add image or gif file in React object.
-4. Setup Reaction type in `settings.py`.
-
-   you have only 2 options : `emoji` or `source`
-   ```python
-   # settings.py
-   
-   COMMENT_REACTION_TYPE = 'source'  # emoji / source
-   ```
+3. Setup Reaction type to `source` in admin panel Comments Settings.
 
 ## Translation
 
@@ -147,206 +132,173 @@
 
 ## Settings
 
-You can customize settings by adding keywords in `settings.py`.
+You can customize global settings by adding keywords to `COMMENT_SETTINGS` dictionary in `settings.py`.
 
 ```python
 # setting.py
+COMMENTS_SETTINGS = {
+    # generated urlhash length
+    'URLHASH_LENGTH': 8,
 
-# generated urlhash length
-COMMENT_URLHASH_LENGTH = 8
+    # if True, tailwindcss and jquery package will be loaded from static files.
+    'OFFLINE_IMPORTS': True,
 
-# the comments need to be set as a(Accepted) to be shown in the comments list.
-# if True, comment status will be set as d(Delivered) otherwise it will be set as a(Accepted).
-COMMENT_STATUS_CHECK = False
-
-# if True, tailwindcss and jquery package will be loaded from static files.
-COMMENT_OFFLINE_IMPORTS = True
-
-# if None, comments will be shown without profile image
-# you should set this value as profile image field name
-# for example our abstract user profile picture field is profile_image
-# <img src="{{ user.profile_image.url }}" /> so we set COMMENT_PROFILE_IMAGE_FIELD = 'profile.image'
-# see link blew to create abstract user model
-# https://docs.djangoproject.com/en/4.1/topics/auth/customizing/#substituting-a-custom-user-model
-COMMENT_PROFILE_IMAGE_FIELD = None
-# default profile image static path
-COMMENT_PROFILE_IMAGE_DEFAULT = 'img/profile.png'
-
-# activate spoiler comment mode 
-COMMENT_ALLOW_SPOILER = True
-# let users reply to a comment  
-COMMENT_ALLOW_REPLY = True
-# let users edit their comment  
-COMMENT_ALLOW_EDIT = True
-# let users delete their comment  
-COMMENT_ALLOW_DELETE = True
-
-# more than this value will have Read More button in comment content
-COMMENT_CONTENT_WORDS_COUNT = 40
-
-# let users react to a comment  
-COMMENT_ALLOW_REACTION = False
-# get emoji or from file source  
-COMMENT_REACTION_TYPE = 'emoji'  # emoji / source
-
-# number of comments per page
-# set 0 if you don't want pagination
-COMMENT_PER_PAGE = 10
-
-COMMENT_TIME_TYPE = 1  # 1.both 2.from_now 3.date_time
-COMMENT_TIME_DAYS = 3  # less will use type 2 , more will use type 3
-
-# set direction of comment section
-COMMENT_THEME_DIRECTION = 'ltr'  # ltr / rtl
-# set True for dark mode
-COMMENT_THEME_DARK_MODE = False
+    # if None, comments will be shown without profile image
+    # you should set this value as profile image field name
+    # for example our abstract user profile picture field is profile_image
+    # <img src="{{ user.profile_image.url }}" /> so we set PROFILE_IMAGE_FIELD = 'profile.image'
+    # see link blew to create abstract user model
+    # https://docs.djangoproject.com/en/4.1/topics/auth/customizing/#substituting-a-custom-user-model
+    'PROFILE_IMAGE_FIELD': None,
+    # default profile image static path
+    'PROFILE_IMAGE_DEFAULT': 'img/profile.png'
+}
 ```
 
 ## Front-End
-
 
 <details>
 <summary>Tailwind Colors Customization</summary>
 <p>
 
-```js
+```text
 colors: {
-  // LIGHT
-  'text-light': '#ffffff',
-  'background-light': '#f8fafc',
-  // TEXTAREA
-  'textarea-bg-light': '#e5e7eb',
-  'textarea-scroll-light': '#9ca3af',
-  'textarea-text-light': '#000000',
-  'textarea-text-selection-light': '#c7d2fe',
-  'textarea-text-placeholder-light': '#6b7280',
-  'textarea-border-empty-light': '#f87171',
-  // ICON
-  'icon-spoiler-light': '#6b7280',
-  'icon-spoiler-option-light': '#111827',
-  'icon-dots-light': '#6b7280',
-  'icon-pin-light': '#6b7280',
-  'icon-edit-light': '#16a34a',
-  'icon-delete-light': '#ef4444',
-  'icon-pagination-light': '#9ca3af',
-  'icon-pagination-hover-light': '#374151',
-  // BUTTON
-  'btn-send-bg-light': '#000000',
-  'btn-send-text-light': '#ffffff',
-  'btn-edit-bg-light': '#16a34a',
-  'btn-edit-text-light': '#ffffff',
-  'btn-reply-bg-light': '#2563eb',
-  'btn-reply-text-light': '#ffffff',
-  'btn-delete-bg-light': '#dc2626',
-  'btn-delete-text-light': '#ffffff',
-  'btn-cancel-bg-light': '#6b7280',
-  'btn-cancel-text-light': '#ffffff',
-  'btn-login-text-light': '#1d4ed8',
-  // DELETE FORM
-  'delete-from-bg-light': '#ffffff',
-  'delete-from-text-light': '#111827',
-  'delete-from-subtext-light': '#6b7280',
-  // COUNTER
-  'section-primary-light': '#e5e7eb',
-  'section-secondary-light': '#000000',
-  'section-text-light': '#000000',
-  'section-number-bg-light': '#e5e7eb',
-  'section-number-text-light': '#000000',
-  // PAGINATION
-  'page-current-bg-light': '#000000',
-  'page-current-text-light': '#ffffff',
-  'page-bg-light': 'transparent',
-  'page-bg-hover-light': '#9ca3af',
-  'page-text-light': '#9ca3af',
-  'page-text-hover-light': '#ffffff',
-  // COMMENT
-  'comment-parent-bg-light': '#f8fafc',
-  'comment-parent-border-light': '#e5e7eb',
-  'comment-child-bg-light': '#f8fafc',
-  'comment-child-border-light': '#a5b4fc',
-  // REPLY
-  'reply-text-light': '#1d4ed8',
-  'reply-border-light': '#4b5563',
-  // REACTION
-  'react-default-bg-light': '#f3f4f6',
-  'react-default-border-light': '#e5e7eb',
-  'react-selected-bg-light': '#dbeafe',
-  'react-selected-border-light': '#bfdbfe',
-  'react-count-text-light': '#000000',
-  // COMMENT BODY
-  'comment-name-text-light': '#000000',
-  'comment-time-text-light': '#6b7280',
-  'comment-option-bg-light': '#f3f4f6',
-  'comment-option-borer-light': '#6b7280',
-  'comment-read-more-light': '#1d4ed8',
-  // DARK
-  'text-dark': '#000000',
-  'background-dark': '#1e293b',
-  // TEXTAREA
-  'textarea-bg-dark': '#475569',
-  'textarea-scroll-dark': '#9ca3af',
-  'textarea-text-dark': '#f3f4f6',
-  'textarea-text-selection-dark': '#4338ca',
-  'textarea-text-placeholder-dark': '#94a3b8',
-  'textarea-border-empty-dark': '#f87171',
-  // ICON
-  'icon-spoiler-dark': '#e5e7eb',
-  'icon-spoiler-option-dark': '#e5e7eb',
-  'icon-dots-dark': '#e5e7eb',
-  'icon-pin-dark': '#d1d5db',
-  'icon-edit-dark': '#4ade80',
-  'icon-delete-dark': '#f87171',
-  'icon-pagination-dark': '#9ca3af',
-  'icon-pagination-hover-dark': '#6b7280',
-  // BUTTON
-  'btn-send-bg-dark': '#e2e8f0',
-  'btn-send-text-dark': '#000000',
-  'btn-edit-bg-dark': '#16a34a',
-  'btn-edit-text-dark': '#ffffff',
-  'btn-reply-bg-dark': '#2563eb',
-  'btn-reply-text-dark': '#ffffff',
-  'btn-delete-bg-dark': '#ef4444',
-  'btn-delete-text-dark': '#ffffff',
-  'btn-cancel-bg-dark': '#e2e8f0',
-  'btn-cancel-text-dark': '#000000',
-  'btn-login-text-dark': '#60a5fa',
-  // COUNTER
-  'section-primary-dark': '#374151',
-  'section-secondary-dark': '#e5e7eb',
-  'section-text-dark': '#ffffff',
-  'section-number-bg-dark': '#4b5563',
-  'section-number-text-dark': '#000000',
-  // DELETE FORM
-  'delete-from-bg-dark': '#475569',
-  'delete-from-text-dark': '#f3f4f6',
-  'delete-from-subtext-dark': '#d1d5db',
-  // PAGINATION
-  'page-current-bg-dark': '#475569',
-  'page-current-text-dark': '#ffffff',
-  'page-bg-dark': 'transparent',
-  'page-bg-hover-dark': '#334155',
-  'page-text-dark': '#9ca3af',
-  'page-text-hover-dark': '#ffffff',
-  // COMMENT
-  'comment-parent-bg-dark': '#1e293b',
-  'comment-parent-border-dark': '#4b5563',
-  'comment-child-bg-dark': '#1e293b',
-  'comment-child-border-dark': '#a5b4fc',
-  // REPLY
-  'reply-text-dark': '#93c5fd',
-  'reply-border-dark': '#4b5563',
-  // REACTION
-  'react-default-bg-dark': '#334155',
-  'react-default-border-dark': '#6b7280',
-  'react-selected-bg-dark': '#64748b',
-  'react-selected-border-dark': '#1e293b',
-  'react-count-text-dark': '#f3f4f6',
-  // COMMENT BODY
-  'comment-name-text-dark': '#f3f4f6',
-  'comment-time-text-dark': '#d1d5db',
-  'comment-option-bg-dark': '#475569',
-  'comment-option-borer-dark': '#6b7280',
-  'comment-read-more-dark': '#93c5fd',
+   // LIGHT
+   'text-light': '#ffffff',
+   'background-light': '#f8fafc',
+   // TEXTAREA
+   'textarea-bg-light': '#e5e7eb',
+   'textarea-scroll-light': '#9ca3af',
+   'textarea-text-light': '#000000',
+   'textarea-text-selection-light': '#c7d2fe',
+   'textarea-text-placeholder-light': '#6b7280',
+   'textarea-border-empty-light': '#f87171',
+   // ICON
+   'icon-spoiler-light': '#6b7280',
+   'icon-spoiler-option-light': '#111827',
+   'icon-dots-light': '#6b7280',
+   'icon-pin-light': '#6b7280',
+   'icon-edit-light': '#16a34a',
+   'icon-delete-light': '#ef4444',
+   'icon-pagination-light': '#9ca3af',
+   'icon-pagination-hover-light': '#374151',
+   // BUTTON
+   'btn-send-bg-light': '#000000',
+   'btn-send-text-light': '#ffffff',
+   'btn-edit-bg-light': '#16a34a',
+   'btn-edit-text-light': '#ffffff',
+   'btn-reply-bg-light': '#2563eb',
+   'btn-reply-text-light': '#ffffff',
+   'btn-delete-bg-light': '#dc2626',
+   'btn-delete-text-light': '#ffffff',
+   'btn-cancel-bg-light': '#6b7280',
+   'btn-cancel-text-light': '#ffffff',
+   'btn-login-text-light': '#1d4ed8',
+   // DELETE FORM
+   'delete-from-bg-light': '#ffffff',
+   'delete-from-text-light': '#111827',
+   'delete-from-subtext-light': '#6b7280',
+   // COUNTER
+   'section-primary-light': '#e5e7eb',
+   'section-secondary-light': '#000000',
+   'section-text-light': '#000000',
+   'section-number-bg-light': '#e5e7eb',
+   'section-number-text-light': '#000000',
+   // PAGINATION
+   'page-current-bg-light': '#000000',
+   'page-current-text-light': '#ffffff',
+   'page-bg-light': 'transparent',
+   'page-bg-hover-light': '#9ca3af',
+   'page-text-light': '#9ca3af',
+   'page-text-hover-light': '#ffffff',
+   // COMMENT
+   'comment-parent-bg-light': '#f8fafc',
+   'comment-parent-border-light': '#e5e7eb',
+   'comment-child-bg-light': '#f8fafc',
+   'comment-child-border-light': '#a5b4fc',
+   // REPLY
+   'reply-text-light': '#1d4ed8',
+   'reply-border-light': '#4b5563',
+   // REACTION
+   'react-default-bg-light': '#f3f4f6',
+   'react-default-border-light': '#e5e7eb',
+   'react-selected-bg-light': '#dbeafe',
+   'react-selected-border-light': '#bfdbfe',
+   'react-count-text-light': '#000000',
+   // COMMENT BODY
+   'comment-name-text-light': '#000000',
+   'comment-time-text-light': '#6b7280',
+   'comment-option-bg-light': '#f3f4f6',
+   'comment-option-borer-light': '#6b7280',
+   'comment-read-more-light': '#1d4ed8',
+   // DARK
+   'text-dark': '#000000',
+   'background-dark': '#1e293b',
+   // TEXTAREA
+   'textarea-bg-dark': '#475569',
+   'textarea-scroll-dark': '#9ca3af',
+   'textarea-text-dark': '#f3f4f6',
+   'textarea-text-selection-dark': '#4338ca',
+   'textarea-text-placeholder-dark': '#94a3b8',
+   'textarea-border-empty-dark': '#f87171',
+   // ICON
+   'icon-spoiler-dark': '#e5e7eb',
+   'icon-spoiler-option-dark': '#e5e7eb',
+   'icon-dots-dark': '#e5e7eb',
+   'icon-pin-dark': '#d1d5db',
+   'icon-edit-dark': '#4ade80',
+   'icon-delete-dark': '#f87171',
+   'icon-pagination-dark': '#9ca3af',
+   'icon-pagination-hover-dark': '#6b7280',
+   // BUTTON
+   'btn-send-bg-dark': '#e2e8f0',
+   'btn-send-text-dark': '#000000',
+   'btn-edit-bg-dark': '#16a34a',
+   'btn-edit-text-dark': '#ffffff',
+   'btn-reply-bg-dark': '#2563eb',
+   'btn-reply-text-dark': '#ffffff',
+   'btn-delete-bg-dark': '#ef4444',
+   'btn-delete-text-dark': '#ffffff',
+   'btn-cancel-bg-dark': '#e2e8f0',
+   'btn-cancel-text-dark': '#000000',
+   'btn-login-text-dark': '#60a5fa',
+   // COUNTER
+   'section-primary-dark': '#374151',
+   'section-secondary-dark': '#e5e7eb',
+   'section-text-dark': '#ffffff',
+   'section-number-bg-dark': '#4b5563',
+   'section-number-text-dark': '#000000',
+   // DELETE FORM
+   'delete-from-bg-dark': '#475569',
+   'delete-from-text-dark': '#f3f4f6',
+   'delete-from-subtext-dark': '#d1d5db',
+   // PAGINATION
+   'page-current-bg-dark': '#475569',
+   'page-current-text-dark': '#ffffff',
+   'page-bg-dark': 'transparent',
+   'page-bg-hover-dark': '#334155',
+   'page-text-dark': '#9ca3af',
+   'page-text-hover-dark': '#ffffff',
+   // COMMENT
+   'comment-parent-bg-dark': '#1e293b',
+   'comment-parent-border-dark': '#4b5563',
+   'comment-child-bg-dark': '#1e293b',
+   'comment-child-border-dark': '#a5b4fc',
+   // REPLY
+   'reply-text-dark': '#93c5fd',
+   'reply-border-dark': '#4b5563',
+   // REACTION
+   'react-default-bg-dark': '#334155',
+   'react-default-border-dark': '#6b7280',
+   'react-selected-bg-dark': '#64748b',
+   'react-selected-border-dark': '#1e293b',
+   'react-count-text-dark': '#f3f4f6',
+   // COMMENT BODY
+   'comment-name-text-dark': '#f3f4f6',
+   'comment-time-text-dark': '#d1d5db',
+   'comment-option-bg-dark': '#475569',
+   'comment-option-borer-dark': '#6b7280',
+   'comment-read-more-dark': '#93c5fd',
 }
 ```
 
@@ -405,12 +357,18 @@ static
    ├── css
    │    ├── style.css
    │    └── style.min.css
+   ├── font
+   │    ├── Vazir
+   │    └── Vazir-FD
    ├── img
    │    └── profile.png
-   └── js
-        ├── comment.js
-        ├── comment.min.js
-        └── jquery.min.js
+   ├── js
+   │    ├── comment.js
+   │    ├── comment.min.js
+   │    └── jquery.min.js
+   └── tailwindcss
+        ├── style.css
+        └── tailwind.config.js
 ```
 
 </p>

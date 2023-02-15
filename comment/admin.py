@@ -62,6 +62,8 @@ class ReactAdmin(admin.ModelAdmin):
 
 
 class SettingAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug')
+    search_fields = ('name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
 
 

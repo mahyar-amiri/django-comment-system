@@ -28,6 +28,10 @@ class CommentSettings(models.Model):
     theme_direction = models.CharField(max_length=3, choices=(('ltr', 'LTR (Left to Right)'), ('rtl', 'RTL (Right to Left)')), default='ltr')
     theme_dark_mode = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name = 'Comment Settings'
+        verbose_name_plural = 'Comment Settings'
+
     def __str__(self):
         return f'{self.name} - [{self.slug}]'
 
