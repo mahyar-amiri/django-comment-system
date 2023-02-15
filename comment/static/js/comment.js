@@ -14,9 +14,9 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function LoadComment(urlhash) {
+function LoadComment(urlhash, settings_slug) {
     $(`#comment-${urlhash}`).load(
-        `/comment/detail?urlhash=${urlhash}`
+        `/comment/detail?urlhash=${urlhash}&settings_slug=${settings_slug}`
     );
 }
 
@@ -120,7 +120,7 @@ function CheckEditTextarea(form_id) {
     }
 }
 
-function EditComment(form_id) {
+function EditComment(form_id, settings_slug) {
     let form = $(`#${form_id}`);
     let method = form.prop('method');
     let action = form.prop('action');
@@ -128,7 +128,7 @@ function EditComment(form_id) {
         //FORM INPUTS
         content: $(`#${form_id} [name='content']`).val(),
         is_spoiler: $(`#${form_id} [name='is_spoiler']`).is(':checked'),
-        urlhash: form_id.replace('form-comment-edit-', '')
+        urlhash: form_id.replace('form-comment-edit-', ''),
     };
     $.ajax({
         type: method,
@@ -140,7 +140,7 @@ function EditComment(form_id) {
         data: formData,
         success: function (data) {
             if (data.urlhash) {
-                LoadComment(data.urlhash);
+                LoadComment(data.urlhash, settings_slug);
             }
         },
         error: function () {
