@@ -2,15 +2,6 @@
 {% load static %}
 {% load comment_tags %}
 
-{% get_settings 'COMMENT_ALLOW_EDIT' as COMMENT_ALLOW_EDIT %}
-{% get_settings 'COMMENT_ALLOW_REPLY' as COMMENT_ALLOW_REPLY %}
-{% get_settings 'COMMENT_TIME_TYPE' as COMMENT_TIME_TYPE %}
-{% get_settings 'COMMENT_TIME_DAYS' as COMMENT_TIME_DAYS %}
-{% get_settings 'COMMENT_ALLOW_DELETE' as COMMENT_ALLOW_DELETE %}
-{% get_settings 'COMMENT_ALLOW_REACTION' as COMMENT_ALLOW_REACTION %}
-{% get_settings 'COMMENT_CONTENT_WORDS_COUNT' as COMMENT_CONTENT_WORDS_COUNT %}
-
-
 <input type="checkbox" class="peer sr-only" id="toggle-spoiler-{{ comment.urlhash }}">
 <div class="flex justify-between">
 
@@ -23,13 +14,13 @@
         <span class="inline-block align-middle ltr:ml-2 rtl:mr-2 text-lg font-semibold text-comment-name-text-light dark:text-comment-name-text-dark"><span dir="ltr">{{ comment.user.username }}</span></span>
         <span class="mx-1 text-comment-time-text-light dark:text-comment-time-text-dark">•</span>
         <span class="text-sm text-comment-time-text-light dark:text-comment-time-text-dark">
-            {% if COMMENT_TIME_TYPE == 1 and comment.posted|is_time_lt_days:COMMENT_TIME_DAYS %}
+            {% if settings.time_type == 1 and comment.posted|is_time_lt_days:settings.time_days %}
                 {{ comment.posted|timesince }} {% trans 'ago' %}
-            {% elif COMMENT_TIME_TYPE == 1 and not comment.posted|is_time_lt_days:COMMENT_TIME_DAYS %}
+            {% elif settings.time_type == 1 and not comment.posted|is_time_lt_days:settings.time_days %}
                 {{ comment.posted|date:'SHORT_DATE_FORMAT' }} {{ comment.posted|time:'TIME_FORMAT' }}
-            {% elif COMMENT_TIME_TYPE == 2 %}
+            {% elif settings.time_type == 2 %}
                 {{ comment.posted|timesince }} {% trans 'ago' %}
-            {% elif COMMENT_TIME_TYPE == 3 %}
+            {% elif settings.time_type == 3 %}
                 {{ comment.posted|date:'SHORT_DATE_FORMAT' }} {{ comment.posted|time:'TIME_FORMAT' }}
             {% endif %}
         </span>
@@ -43,13 +34,13 @@
     {#COMMENT OPTIONS#}
     <div class="grid content-center ltr:mr-1 rtl:ml-1">
         {% if request.user.is_authenticated and comment.user == request.user %}
-            {% if comment.is_spoiler or COMMENT_ALLOW_EDIT or COMMENT_ALLOW_DELETE %}
+            {% if comment.is_spoiler or settings.allow_edit or settings.allow_delete %}
                 <div class="group flex flex-row-reverse space-x-3 ltr:space-x-reverse rounded-full bg-comment-option-bg-light dark:bg-comment-option-bg-dark p-2 border-2 border-comment-option-border-light dark:border-comment-option-border-dark">
                     {% include 'icons/icon_dots.html' with class='inline w-6 h-6 fill-icon-dots-light dark:fill-icon-dots-dark' %}
-                    {% if COMMENT_ALLOW_EDIT %}
+                    {% if settings.allow_edit %}
                         <label for="toggle-edit-{{ comment.urlhash }}" class="hidden group-hover:inline">{% include 'icons/icon_edit.html' with class='w-6 h-6 cursor-pointer fill-icon-edit-light dark:fill-icon-edit-dark' %}</label>
                     {% endif %}
-                    {% if COMMENT_ALLOW_DELETE %}
+                    {% if settings.allow_delete %}
                         <span onclick="LoadDeleteCommentForm('{{ comment.urlhash }}')" class="hidden group-hover:inline">{% include 'icons/icon_delete.html' with class='w-6 h-6 cursor-pointer fill-icon-delete-light dark:fill-icon-delete-dark' %}</span>
                     {% endif %}
                     {% if comment.is_spoiler %}
@@ -68,12 +59,12 @@
 {#COMMENT SECTION#}
 <div class="mt-2 {% if comment.is_spoiler and not comment.user == request.user %}hidden peer-checked:block{% endif %}">
     {#COMMENT CONTENT#}
-    {% if COMMENT_ALLOW_EDIT %}<input type="checkbox" class="peer sr-only" id="toggle-edit-{{ comment.urlhash }}">{% endif %}
+    {% if settings.allow_edit %}<input type="checkbox" class="peer sr-only" id="toggle-edit-{{ comment.urlhash }}">{% endif %}
     <div class="p-2 text-justify block peer-checked:hidden">
         {#CONTENT#}
-        {% if comment.content|wordcount > COMMENT_CONTENT_WORDS_COUNT %}
+        {% if comment.content|wordcount > settings.content_words_count %}
             <input type="checkbox" class="peer sr-only" id="toggle-more-{{ comment.urlhash }}">
-            <div class="whitespace-pre-wrap dark:text-white inline-block peer-checked:hidden {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% else %}font-default{% endif %}">{{ comment.content|truncatewords:COMMENT_CONTENT_WORDS_COUNT }}</div>
+            <div class="whitespace-pre-wrap dark:text-white inline-block peer-checked:hidden {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% else %}font-default{% endif %}">{{ comment.content|truncatewords:settings.content_words_count }}</div>
             <div class="whitespace-pre-wrap dark:text-white hidden peer-checked:block {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% else %}font-default{% endif %}">{{ comment.content }}</div>
             <label for="toggle-more-{{ comment.urlhash }}" class="inline peer-checked:hidden cursor-pointer text-comment-read-more-light dark:text-comment-read-more-dark">{% trans 'Read More' %} {% include 'icons/icon_down.html' with class='w-6 inline-block' %}</label>
             <label for="toggle-more-{{ comment.urlhash }}" class="hidden peer-checked:block cursor-pointer text-comment-read-more-light dark:text-comment-read-more-dark">{% trans 'Read Less' %} {% include 'icons/icon_up.html' with class='w-6 inline-block' %}</label>
@@ -82,8 +73,8 @@
         {% endif %}
     </div>
     <div class="text-justify hidden peer-checked:block">
-        {% if request.user.is_authenticated and comment.user == request.user and COMMENT_ALLOW_EDIT %}
-            {% include 'forms/comment_form_edit.html' with comment=comment %}
+        {% if request.user.is_authenticated and comment.user == request.user and settings.allow_edit %}
+            {% include 'forms/comment_form_edit.html' with comment=comment settings=settings %}
         {% endif %}
     </div>
 
@@ -91,7 +82,7 @@
 
         {#COMMENT REACTION#}
         <div class="flex space-x-2">
-            {% if COMMENT_ALLOW_REACTION %}
+            {% if settings.allow_reaction %}
                 <form id="form-comment-react-{{ comment.urlhash }}" method="post" action="{% url 'comment:react' %}">{% csrf_token %}
                     <div id="comment-react-list">
                         {% include 'comment/comment_reactions.html' %}
@@ -101,7 +92,7 @@
         </div>
 
         {#COMMENT REPLY#}
-        {% if COMMENT_ALLOW_REPLY and comment.is_parent %}
+        {% if settings.allow_reply and comment.is_parent %}
             {% with count_children=comment.children.filter_accepted.count %}
                 <label for="toggle-reply-{{ comment.urlhash }}" class="grid self-center">
                 <span class="cursor-pointer text-reply-text-light dark:text-reply-text-dark px-1">

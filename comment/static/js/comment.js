@@ -24,9 +24,10 @@ function LoadCommentList(page = 1, at_start = false) {
     let app_name = $("#form-comment-create [name='app_name']").val();
     let model_name = $("#form-comment-create [name='model_name']").val();
     let object_id = $("#form-comment-create [name='object_id']").val();
+    let settings_slug = $("#form-comment-create [name='settings_slug']").val();
     let comment_list = $("#comment-list")
     comment_list.load(
-        `/comment/list?app_name=${app_name}&model_name=${model_name}&object_id=${object_id}&page=${page}`
+        `/comment/list?app_name=${app_name}&model_name=${model_name}&object_id=${object_id}&page=${page}&settings_slug=${settings_slug}`
     );
 
     // scroll to top when turned page
@@ -78,6 +79,7 @@ function CreateComment(form_id) {
         model_name: $("#form-comment-create [name='model_name']").val(),
         content_type: $("#form-comment-create [name='content_type']").val(),
         object_id: $("#form-comment-create [name='object_id']").val(),
+        settings_slug: $("#form-comment-create [name='settings_slug']").val(),
         //FORM INPUTS
         content: $(`#${form_id} [name='content']`).val(),
         is_spoiler: $(`#${form_id} [name='is_spoiler']`).is(':checked'),

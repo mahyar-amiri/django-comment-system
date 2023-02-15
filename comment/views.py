@@ -5,10 +5,9 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.views.generic import ListView, CreateView, UpdateView, TemplateView
 
-from comment import settings
 from comment.forms import CommentForm
 from comment.mixins import CommentMixin
-from comment.models import Comment, Reaction, React
+from comment.models import Comment, Reaction, React, CommentSettings
 
 
 class CommentDetail(TemplateView):
@@ -26,12 +25,20 @@ class CommentList(ListView):
     context_object_name = 'comments'
     template_name = 'comment/comment_list.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        settings_slug = self.request.GET.get('settings_slug')
+        context['settings'] = CommentSettings.objects.get(slug=settings_slug)
+        return context
+
     def get_queryset(self):
         queryset = None
         if self.request.GET:
             app_name = self.request.GET.get('app_name')
             model_name = self.request.GET.get('model_name')
             object_id = self.request.GET.get('object_id')
+            settings_slug = self.request.GET.get('settings_slug')
+            comment_settings = CommentSettings.objects.get(slug=settings_slug)
             content_type = ContentType.objects.get(app_label=app_name, model=model_name.lower())
             queryset = Comment.objects.filter(content_type=content_type, object_id=object_id)
             queryset = queryset.filter_accepted().filter_parents()
@@ -39,10 +46,10 @@ class CommentList(ListView):
 
             # Pagination
             page = self.request.GET.get('page', 1)
-            if settings.COMMENT_PER_PAGE == 0:
+            if comment_settings.per_page == 0:
                 paginator = Paginator(queryset, queryset.count())
             else:
-                paginator = Paginator(queryset, settings.COMMENT_PER_PAGE)
+                paginator = Paginator(queryset, comment_settings.per_page)
             try:
                 queryset = paginator.page(page)
             except PageNotAnInteger:
@@ -64,6 +71,8 @@ class CommentCreate(CommentMixin, CreateView):
             model_name = request.POST.get('model_name', None)
             object_id = request.POST.get('object_id', None)
             parent_id = request.POST.get('parent_id', None)
+            settings_slug = request.POST.get('settings_slug', None)
+            comment_settings = CommentSettings.objects.get(slug=settings_slug)
             time_posted = timezone.now()
             comment.content_type = ContentType.objects.get(app_label=app_name, model=model_name.lower())
             comment.object_id = object_id
@@ -75,7 +84,7 @@ class CommentCreate(CommentMixin, CreateView):
                 comment.parent = None
             comment.posted = time_posted
 
-            if not settings.COMMENT_STATUS_CHECK:
+            if not comment_settings.status_check:
                 comment.status = 'a'
 
             comment.save()

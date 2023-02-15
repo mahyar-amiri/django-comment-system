@@ -1,7 +1,7 @@
 from django.contrib import admin, messages
 from django.utils.translation import ngettext
 
-from comment.models import Comment, React, Reaction
+from comment.models import Comment, React, Reaction, CommentSettings
 
 
 class ListFilterByParent(admin.SimpleListFilter):
@@ -61,6 +61,11 @@ class ReactAdmin(admin.ModelAdmin):
     search_fields = ('slug', 'emoji')
 
 
+class SettingAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('name',)}
+
+
+admin.site.register(CommentSettings, SettingAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Reaction, ReactionAdmin)
 admin.site.register(React, ReactAdmin)

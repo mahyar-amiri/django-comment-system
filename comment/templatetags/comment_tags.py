@@ -5,20 +5,22 @@ from django.contrib.contenttypes.models import ContentType
 from django.templatetags.static import static
 
 from comment import settings
+from comment.models import CommentSettings
 
 register = template.Library()
 
 
 @register.inclusion_tag('utils/IMPORTS.html')
 def render_imports():
-    return {'offline_imports': settings.COMMENT_OFFLINE_IMPORTS}
+    return {'offline_imports': settings.OFFLINE_IMPORTS}
 
 
 @register.inclusion_tag('comment/comments.html')
-def render_comments(request, obj):
+def render_comments(request, obj, settings_slug):
     context = {
         'object': obj,
         'request': request,
+        'settings': CommentSettings.objects.get(slug=settings_slug),
         'object_info': {
             'app_name': type(obj)._meta.app_label,
             'model_name': type(obj).__name__,
@@ -36,12 +38,12 @@ def get_settings(settings_parameter):
 
 @register.simple_tag
 def get_profile_image(user):
-    if settings.COMMENT_PROFILE_IMAGE_FIELD:
-        profile = getattr(user, settings.COMMENT_PROFILE_IMAGE_FIELD)
+    if settings.PROFILE_IMAGE_FIELD:
+        profile = getattr(user, settings.PROFILE_IMAGE_FIELD)
         if profile:
             return profile.url
         else:
-            return static(settings.COMMENT_PROFILE_IMAGE_DEFAULT)
+            return static(settings.PROFILE_IMAGE_DEFAULT)
     else:
         return None
 

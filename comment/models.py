@@ -3,10 +3,37 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.html import format_html
+from django.utils.text import slugify
 
 from comment.managers import CommentQuerySet, ReactionQuerySet
 
 User = get_user_model()
+
+
+class CommentSettings(models.Model):
+    name = models.CharField(max_length=30)
+    slug = models.SlugField(primary_key=True, help_text='This value will be used in render_comments tag')
+
+    content_words_count = models.PositiveSmallIntegerField(default=40, help_text='More than this value will have Read More button in comment content')
+    status_check = models.BooleanField(default=False, help_text='If True, comment status will be set as d(Delivered) otherwise it will be set as a(Accepted).')
+    allow_spoiler = models.BooleanField(default=True)
+    allow_reply = models.BooleanField(default=True)
+    allow_edit = models.BooleanField(default=True)
+    allow_delete = models.BooleanField(default=True)
+    allow_reaction = models.BooleanField(default=False, help_text='First, create a react emoji in React models')
+    reaction_type = models.CharField(max_length=6, choices=(('emoji', 'Emoji'), ('source', 'Source')), default='emoji', help_text='Add source in React model')
+    per_page = models.PositiveSmallIntegerField(default=10, help_text='Set 0 if you don\'t want pagination (All comments will be shown at once)')
+    time_type = models.PositiveSmallIntegerField(default=1, choices=((1, 'Compound'), (2, 'From Now'), (3, 'Date & Time')), help_text='Comment posted time style')
+    time_days = models.PositiveSmallIntegerField(default=3, help_text='Less than this value will use FROM NOW type , more will use DATE & TIME type')
+    theme_direction = models.CharField(max_length=3, choices=(('ltr', 'LTR (Left to Right)'), ('rtl', 'RTL (Right to Left)')), default='ltr')
+    theme_dark_mode = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.name} - [{self.slug}]'
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(CommentSettings, self).save(*args, **kwargs)
 
 
 class Comment(models.Model):

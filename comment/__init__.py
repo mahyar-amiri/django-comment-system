@@ -1,12 +1,13 @@
 import django
 from django.conf import settings as django_settings
 from django.utils.functional import LazyObject
+
 from comment import settings as app_settings
 
 
 class LazySettings(LazyObject):
     def _setup(self):
-        self._wrapped = Settings(app_settings, django_settings)
+        self._wrapped = Settings(app_settings.COMMENTS_SETTINGS, django_settings.COMMENTS_SETTINGS)
 
 
 class Settings(object):
@@ -20,9 +21,8 @@ class Settings(object):
 
     def __init__(self, *args):
         for item in args:
-            for attr in dir(item):
-                if attr.isupper() and attr not in self.DEPRECATED_SETTINGS:
-                    setattr(self, attr, getattr(item, attr))
+            for attr in item.keys():
+                setattr(self, attr, item.get(attr))
 
 
 settings = LazySettings()

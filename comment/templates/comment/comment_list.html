@@ -1,5 +1,3 @@
-{% load comment_tags %}
-
 {# COMMENTS COUNT #}
 {% include 'comment/comment_counter.html' with count=comments.paginator.count %}
 
@@ -7,15 +5,14 @@
     {% for comment in comments.object_list %}
         <div class="flex flex-col space-y-2">
 
-            {% get_settings 'COMMENT_ALLOW_REPLY' as COMMENT_ALLOW_REPLY %}
-            {% if COMMENT_ALLOW_REPLY %}<input type="checkbox" class="peer sr-only" name="reply-section" id="toggle-reply-{{ comment.urlhash }}">{% endif %}
+            {% if settings.allow_reply %}<input type="checkbox" class="peer sr-only" name="reply-section" id="toggle-reply-{{ comment.urlhash }}">{% endif %}
             {# PARENT #}
             <div id="comment-{{ comment.urlhash }}" class="rounded-lg border-2 bg-comment-parent-bg-light border-comment-parent-border-light p-2 dark:bg-comment-parent-bg-dark dark:border-comment-parent-border-dark">
                 {% include 'comment/comment_body.html' with comment=comment %}
             </div>
 
             {#ALLOW_REPLY#}
-            {% if COMMENT_ALLOW_REPLY %}
+            {% if settings.allow_reply %}
 
                 {# REPLY SECTION #}
                 <div class="hidden border-reply-border-light dark:border-reply-border-dark m-4 ltr:border-l-2 rtl:border-r-2 ltr:mr-0 rtl:ml-0 ltr:pl-4 rtl:pr-4 peer-checked:block">

@@ -17,8 +17,7 @@
 
             <div class="flex justify-end">
                 {# ALLOW_SPOILER#}
-                {% get_settings 'COMMENT_ALLOW_SPOILER' as COMMENT_ALLOW_SPOILER %}
-                {% if COMMENT_ALLOW_SPOILER %}
+                {% if settings.allow_spoiler %}
                     <label class="ltr:mr-4 rtl:ml-4 grid content-center">
                         <input type="checkbox" name="is_spoiler" id="id_is_spoiler" class="peer sr-only"/>
                         {#ICON EYE#}

@@ -4,17 +4,16 @@
 <form id="form-comment-create" method="post" action="{% url 'comment:create' %}">{% csrf_token %}
 
     {# render info inputs #}
-    {% include 'comment/object_info.html' with object_info=object_info %}
+    {% include 'comment/object_info.html' with object_info=object_info settings=settings %}
 
     {# main form #}
     <div class="block rounded-lg bg-textarea-bg-light dark:bg-textarea-bg-dark p-4">
         {% if request.user.is_authenticated %}
-            <textarea name="content" id="id_content" rows="5" placeholder="{% trans 'Write Something...'%}" spellcheck="false" class="mb-4 box-border block min-h-[124px] w-full resize-y bg-transparent px-2 text-base outline-0 text-textarea-text-light dark:text-textarea-text-dark selection:bg-textarea-text-selection-light dark:selection:bg-text-selection-dark placeholder:text-textarea-text-placeholder-light dark:placeholder:text-textarea-text-placeholder-dark {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% else %}font-default{% endif %}"></textarea>
+            <textarea name="content" id="id_content" rows="5" placeholder="{% trans 'Write Something...' %}" spellcheck="false" class="mb-4 box-border block min-h-[124px] w-full resize-y bg-transparent px-2 text-base outline-0 text-textarea-text-light dark:text-textarea-text-dark selection:bg-textarea-text-selection-light dark:selection:bg-text-selection-dark placeholder:text-textarea-text-placeholder-light dark:placeholder:text-textarea-text-placeholder-dark {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% else %}font-default{% endif %}"></textarea>
 
             <div class="flex justify-end">
                 {#ALLOW_SPOILER#}
-                {% get_settings 'COMMENT_ALLOW_SPOILER' as COMMENT_ALLOW_SPOILER %}
-                {% if COMMENT_ALLOW_SPOILER %}
+                {% if settings.allow_spoiler %}
                     <label class="ltr:mr-4 rtl:ml-4 grid content-center">
                         <input type="checkbox" name="is_spoiler" id="id_is_spoiler" class="peer sr-only"/>
                         {#ICON EYE#}

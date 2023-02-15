@@ -3,18 +3,16 @@
 
 {% render_imports %}
 
-{% get_settings 'COMMENT_THEME_DIRECTION' as COMMENT_THEME_DIRECTION %}
-{% get_settings 'COMMENT_THEME_DARK_MODE' as COMMENT_THEME_DARK_MODE %}
 {% get_settings 'LANGUAGE_CODE' as LANGUAGE_CODE %}
 
-<div {% if COMMENT_THEME_DARK_MODE %} data-mode="dark" {% endif %} dir="{{ COMMENT_THEME_DIRECTION }}">
+<div {% if settings.theme_dark_mode %} data-mode="dark" {% endif %} dir="{{ settings.theme_direction }}">
     <div id="comments" class="p-4 bg-background-light dark:bg-background-dark {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% endif %}">
 
         {# COMMENT MODAL #}
         <div id="comment-modal"></div>
 
         {# CREATE COMMENT FORM #}
-        {% include 'forms/comment_form_create.html' %}
+        {% include 'forms/comment_form_create.html' with settings=settings %}
 
         {# COMMENTS LIST #}
         <div id="comment-list">

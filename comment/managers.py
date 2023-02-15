@@ -27,7 +27,7 @@ class CommentQuerySet(models.QuerySet):
 
     @staticmethod
     def generate_urlhash():
-        return ''.join(choice(ascii_lowercase) for _ in range(settings.COMMENT_URLHASH_LENGTH))
+        return ''.join(choice(ascii_lowercase) for _ in range(settings.URLHASH_LENGTH))
 
 
 class ReactionQuerySet(models.QuerySet):

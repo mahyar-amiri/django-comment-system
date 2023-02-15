@@ -1,10 +1,9 @@
 {% load comment_tags %}
-{% get_settings 'COMMENT_REACTION_TYPE' as COMMENT_REACTION_TYPE %}
 
 {% for react, reaction in comment.reactions.get_reacts.items %}
     <button type="button" {% if request.user.is_authenticated %} onclick="ReactComment('{{ comment.urlhash }}', '{{ react.slug }}')" {% endif %}
             class="group h-12 rounded-full border-2 py-2 px-2 {% if request.user in reaction.get_users %}border-react-selected-border-light bg-react-selected-bg-light dark:border-react-selected-border-dark dark:bg-react-selected-bg-dark{% else %}border-react-default-border-light bg-react-default-bg-light dark:border-react-default-border-dark dark:bg-react-default-bg-dark{% endif %}">
-        {% if COMMENT_REACTION_TYPE == 'source' and react.source %}
+        {% if settings.reaction_type == 'source' and react.source %}
             <img src="{{ react.source.url }}" alt="{{ react.emoji }}" class="w-6 h-6 inline transition-transform duration-200 origin-bottom group-hover:scale-150">
         {% else %}
             <span class="w-6 h-6 inline text-base">{{ react.emoji }}</span>
