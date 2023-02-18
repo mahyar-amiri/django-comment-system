@@ -7,7 +7,7 @@ from comment import settings as app_settings
 
 class LazySettings(LazyObject):
     def _setup(self):
-        self._wrapped = Settings(app_settings.COMMENT_SETTINGS, django_settings.COMMENT_SETTINGS)
+        self._wrapped = Settings(getattr(app_settings, 'COMMENT_SETTINGS', {}), getattr(django_settings, 'COMMENT_SETTINGS', {}))
 
 
 class Settings(object):

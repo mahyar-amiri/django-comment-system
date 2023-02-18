@@ -113,13 +113,13 @@ class ReactAdmin(admin.ModelAdmin):
     search_fields = ('slug', 'emoji')
 
 
-class SettingAdmin(admin.ModelAdmin):
+class SettingsAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug')
     search_fields = ('name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
 
 
-admin.site.register(CommentSettings, SettingAdmin)
+admin.site.register(CommentSettings, SettingsAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Reaction, ReactionAdmin)
 admin.site.register(React, ReactAdmin)

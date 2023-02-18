@@ -1,6 +1,6 @@
 from django.conf import settings
 
-_COMMENT_SETTINGS = getattr(settings, "COMMENTS_SETTINGS", {})
+_COMMENT_SETTINGS = getattr(settings, "COMMENT_SETTINGS", {})
 
 COMMENT_SETTINGS = {
     'LOGIN_URL': getattr(settings, 'LOGIN_URL'),

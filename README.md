@@ -140,7 +140,7 @@ You can customize global settings by adding keywords to `COMMENT_SETTINGS` dicti
 
 ```python
 # setting.py
-COMMENTS_SETTINGS = {
+COMMENT_SETTINGS = {
     # generated urlhash length
     'URLHASH_LENGTH': 8,
 

@@ -13,3 +13,4 @@ recursive-include comment/migrations *
 recursive-include comment/static *
 recursive-include comment/templates *
 recursive-include comment/templatetags *
+global-exclude *.pyc
