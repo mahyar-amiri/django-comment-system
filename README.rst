@@ -8,17 +8,16 @@ Installation & Configuration
 
    .. code:: shell
 
-      python -m pip install django-tailwind-comments
+      python -m pip install django-comment-system
 
-   or Clone the repository
+   or Clone the repository and copy ``comment`` folder and paste in project folder.
 
    .. code:: shell
 
-      git clone https://github.com/lordmahyar/django-tailwind-comments.git
+      git clone https://github.com/mahyar-amiri/django-comment-system.git
 
-2. Copy ``comment`` folder and paste in project folder.
 
-3. Add ``comment.apps.CommentConfig`` to installed_apps in the
+2. Add ``comment.apps.CommentConfig`` to installed_apps in the
    ``settings.py`` file after ``django.contrib.auth``.
 
    .. code:: python
@@ -37,7 +36,7 @@ Installation & Configuration
           'comment.apps.CommentConfig',
       ]
 
-4. Add ``path('comment/', include('comment.urls')),`` to urlpatterns in
+3. Add ``path('comment/', include('comment.urls')),`` to urlpatterns in
    the ``urls.py`` file.
 
    .. code:: python
@@ -50,7 +49,7 @@ Installation & Configuration
            path('comment/', include('comment.urls')),
       ]
 
-5. Connect ``comments`` to target model. In ``models.py`` add the field
+4. Connect ``comments`` to target model. In ``models.py`` add the field
    ``comments`` as a GenericRelation field to the required model.
 
    **NOTE:** Please note that the field name must be ``comments``
@@ -70,7 +69,7 @@ Installation & Configuration
           # the field name should be comments
           comments = GenericRelation(Comment)
 
-6. Do migrations
+5. Do migrations
 
    .. code:: shell
 

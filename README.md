@@ -1,25 +1,24 @@
 # Django Tailwind Comments
 
-[![PyPI version](https://img.shields.io/pypi/v/django-tailwind-comments.svg?logo=pypi&logoColor=FFE873)](https://pypi.org/project/django-tailwind-comments/)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/django-tailwind-comments?color=092E20&logo=django)
-![GitHub](https://img.shields.io/github/license/lordmahyar/django-tailwind-comments)
+[![PyPI version](https://img.shields.io/pypi/v/django-comment-system.svg?logo=pypi&logoColor=FFE873)](https://pypi.org/project/django-comment-system/)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/django-comment-system?color=092E20&logo=django)
+![GitHub](https://img.shields.io/github/license/mahyar-amiri/django-comment-system)
 
 ## Installation & Configuration
 
 1. Install using pip
 
    ```shell
-   python -m pip install django-tailwind-comments
+   python -m pip install django-comment-system
    ```
 
-   or Clone the repository
+   or Clone the repository then copy `comment` folder and paste in project folder.
 
    ```shell
-   git clone https://github.com/lordmahyar/django-tailwind-comments.git
+   git clone https://github.com/mahyar-amiri/django-comment-system.git
    ```
 
-2. Copy `comment` folder and paste in project folder.
-3. Add `comment.apps.CommentConfig` to installed_apps in the `settings.py` file after `django.contrib.auth`.
+2. Add `comment.apps.CommentConfig` to installed_apps in the `settings.py` file after `django.contrib.auth`.
 
    ```python
    # setting.py
@@ -37,7 +36,7 @@
    ]
    ```
 
-4. Add `path('comment/', include('comment.urls')),` to urlpatterns in the `urls.py` file.
+3. Add `path('comment/', include('comment.urls')),` to urlpatterns in the `urls.py` file.
 
    ```python
    # urls.py
@@ -49,7 +48,7 @@
    ]
    ```
 
-5. Connect `comments` to target model. In `models.py` add the field `comments` as a GenericRelation field to the
+4. Connect `comments` to target model. In `models.py` add the field `comments` as a GenericRelation field to the
    required model.
 
    **NOTE:** Please note that the field name must be `comments` **NOT** `comment`.
@@ -69,7 +68,7 @@
 
    ```
 
-6. Do migrations
+5. Do migrations
    ```shell
    python manage.py migrate
    ```
@@ -94,9 +93,31 @@
 
 1. Use admin panel to add react emoji. you will need an emoji and an emoji name as slug.
 
-2. you can use image or gif instead of emoji character: In your admin panel, add image or gif file in React object.
+2. You can use image or gif instead of emoji character: In your admin panel, add image or gif file in React object.
 
-3. Setup Reaction type to `source` in admin panel Comments Settings.
+3. Add `MEDIA_URL` and `MEDIA_ROOT` in `settings.py`.
+
+   ```python
+   # settings.py
+
+   MEDIA_URL = '/media/'
+   MEDIA_ROOT = BASE_DIR / 'media'
+   ```
+
+4. Add root to `urlpatterns` in project `urls.py`.
+
+   ```python
+   # urls.py
+   
+   from django.conf import settings
+   from django.conf.urls.static import static
+   
+   urlpatterns = [...]
+   
+   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+   ```
+
+5. Rerun project and setup Reaction type to `source` in admin panel Comments Settings.
 
 ## Translation
 
@@ -136,7 +157,9 @@
 
 ## Settings
 
-You can customize global settings by adding keywords to `COMMENT_SETTINGS` dictionary in `settings.py`.
+### Global Settings
+
+You can customize global settings by adding keywords to `COMMENT_SETTINGS` dictionary in project `settings.py`.
 
 ```python
 # setting.py
@@ -157,6 +180,45 @@ COMMENT_SETTINGS = {
     # default profile image static path
     'PROFILE_IMAGE_DEFAULT': 'img/profile.png'
 }
+```
+
+### Settings
+
+This settings can be configured in admin panel. Set your config in `CommentSettings` model.
+
+```python
+# the comments need to be set as a(Accepted) to be shown in the comments list.
+# if True, comment status will be set as d(Delivered) otherwise it will be set as a(Accepted).
+STATUS_CHECK = False
+
+# activate spoiler comment mode
+ALLOW_SPOILER = True
+# let users reply to a comment
+ALLOW_REPLY = True
+# let users edit their comment
+ALLOW_EDIT = True
+# let users delete their comment
+ALLOW_DELETE = True
+
+# more than this value will have Read More button in comment content
+CONTENT_WORDS_COUNT = 40
+
+# let users react to a comment
+ALLOW_REACTION = True
+# get emoji or from file source
+REACTION_TYPE = 'emoji'  # emoji / source
+
+# number of comments per page
+# set 0 if you don't want pagination
+PER_PAGE = 10
+
+TIME_TYPE = 1  # 1.both 2.from_now 3.date_time
+TIME_DAYS = 3  # less will use type 2 , more will use type 3
+
+# set direction of comment section
+THEME_DIRECTION = 'ltr'  # ltr / rtl
+# set True for dark mode
+THEME_DARK_MODE = False
 ```
 
 ## Front-End
