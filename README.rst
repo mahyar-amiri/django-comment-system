@@ -1,5 +1,5 @@
-Django Tailwind Comments
-========================
+Django Comment System
+=====================
 
 Installation & Configuration
 ----------------------------

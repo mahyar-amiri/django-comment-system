@@ -1,10 +1,22 @@
-# Django Tailwind Comments
+# Django Comment System
 
-[![PyPI version](https://img.shields.io/pypi/v/django-comment-system.svg?logo=pypi&logoColor=FFE873)](https://pypi.org/project/django-comment-system/)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/django-comment-system?color=092E20&logo=django)
-![GitHub](https://img.shields.io/github/license/mahyar-amiri/django-comment-system)
+[![PyPI version](https://img.shields.io/pypi/v/django-comment-system.svg?logo=pypi&logoColor=FFE873)](https://pypi.org/project/django-comment-system)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/django-comment-system?color=092E20&logo=django)](https://pypi.org/project/django-comment-system)
+[![GitHub](https://img.shields.io/github/license/mahyar-amiri/django-comment-system)](LICENSE)
 
-## Installation & Configuration
+## Table of Contents
+
+* [Installation](#installation)
+* [Configuration](#configuration)
+* [Usage](#usage)
+* [Settings](#settings)
+    * [Global Settings](#global-settings)
+    * [Config Settings](#config-settings)
+* [Reactions](#reactions)
+* [Translation](#translation)
+* [Front-End](#front-end)
+
+## Installation
 
 1. Install using pip
 
@@ -18,7 +30,9 @@
    git clone https://github.com/mahyar-amiri/django-comment-system.git
    ```
 
-2. Add `comment.apps.CommentConfig` to installed_apps in the `settings.py` file after `django.contrib.auth`.
+## Configuration
+
+1. Add `comment.apps.CommentConfig` to installed_apps in the `settings.py` file after `django.contrib.auth`.
 
    ```python
    # setting.py
@@ -36,7 +50,7 @@
    ]
    ```
 
-3. Add `path('comment/', include('comment.urls')),` to urlpatterns in the `urls.py` file.
+2. Add `path('comment/', include('comment.urls')),` to urlpatterns in the `urls.py` file.
 
    ```python
    # urls.py
@@ -48,7 +62,7 @@
    ]
    ```
 
-4. Connect `comments` to target model. In `models.py` add the field `comments` as a GenericRelation field to the
+3. Connect `comments` to target model. In `models.py` add the field `comments` as a GenericRelation field to the
    required model.
 
    **NOTE:** Please note that the field name must be `comments` **NOT** `comment`.
@@ -68,7 +82,7 @@
 
    ```
 
-5. Do migrations
+4. Do migrations
    ```shell
    python manage.py migrate
    ```
@@ -87,72 +101,6 @@
    if your context_object_name is not `obj` (e.g. article) replace obj with context_object_name.
    ```html
    {% render_comments request obj=article settings_slug='default-config' %}
-   ```
-
-## Reactions
-
-1. Use admin panel to add react emoji. you will need an emoji and an emoji name as slug.
-
-2. You can use image or gif instead of emoji character: In your admin panel, add image or gif file in React object.
-
-3. Add `MEDIA_URL` and `MEDIA_ROOT` in `settings.py`.
-
-   ```python
-   # settings.py
-
-   MEDIA_URL = '/media/'
-   MEDIA_ROOT = BASE_DIR / 'media'
-   ```
-
-4. Add root to `urlpatterns` in project `urls.py`.
-
-   ```python
-   # urls.py
-   
-   from django.conf import settings
-   from django.conf.urls.static import static
-   
-   urlpatterns = [...]
-   
-   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-   ```
-
-5. Rerun project and setup Reaction type to `source` in admin panel Comments Settings.
-
-## Translation
-
-1. Add `locale` folder to your app folder.
-2. Run command below to create `django.po` file for your language.
-
-   Find your language code [here](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
-   ```shell
-   python manage.py makemessages -l MY_LANGUAGE_CODE
-   # for generating translations corresponding to javascript code
-   python manage.py makemessages -l MY_LANGUAGE_CODE -d djangojs
-   ```
-
-   e.g. The persian language code is `fa`.
-
-   ```shell
-   python manage.py makemessages -l fa
-   python manage.py makemessages -l fa -d djangojs
-   ```
-   This will create two `.po` files inside the `locale/{MY_LANGUAGE_CODE}/LC_MESSAGES/` directory.
-
-3. After adding translation to both files, run the following command to verify everything is working.
-   ```shell
-   python manage.py compilemessages -l MY_LANGUAGE_CODE
-   # e.g. for persian translation use fa instead of MY_LANGUAGE_CODE
-   ```
-   If you don't see an error in the last command, your translations have been added in the correct format.
-
-4. In `settings.py` to enable internationalization in your django applications.
-   ```python
-   # settings.py
-
-   USE_I18N = True
-   USE_L18N = True
-   LANGUAGE_CODE = '{MY_LANGUAGE_CODE}'  # 'en-us' for english , 'fa-ir' for persian , ...
    ```
 
 ## Settings
@@ -182,7 +130,7 @@ COMMENT_SETTINGS = {
 }
 ```
 
-### Settings
+### Config Settings
 
 This settings can be configured in admin panel. Set your config in `CommentSettings` model.
 
@@ -220,6 +168,70 @@ THEME_DIRECTION = 'ltr'  # ltr / rtl
 # set True for dark mode
 THEME_DARK_MODE = False
 ```
+
+## Reactions
+
+1. Use admin panel to add react emoji. you will need an emoji and an emoji name as slug. You can use image or gif instead of emoji character: In your admin panel, add image or gif file in React object.
+
+2. Add `MEDIA_URL` and `MEDIA_ROOT` in `settings.py`.
+
+   ```python
+   # settings.py
+
+   MEDIA_URL = '/media/'
+   MEDIA_ROOT = BASE_DIR / 'media'
+   ```
+
+3. Add root to `urlpatterns` in project `urls.py`.
+
+   ```python
+   # urls.py
+   
+   from django.conf import settings
+   from django.conf.urls.static import static
+   
+   urlpatterns = [...]
+   
+   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+   ```
+
+4. Rerun project and setup Reaction type to `source` in admin panel Comment Settings.
+
+## Translation
+
+1. Add `locale` folder to your app folder.
+2. Run command below to create `django.po` file for your language.
+
+   Find your language code [here](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
+   ```shell
+   python manage.py makemessages -l MY_LANGUAGE_CODE
+   # for generating translations corresponding to javascript code
+   python manage.py makemessages -l MY_LANGUAGE_CODE -d djangojs
+   ```
+
+   e.g. The persian language code is `fa`.
+
+   ```shell
+   python manage.py makemessages -l fa
+   python manage.py makemessages -l fa -d djangojs
+   ```
+   This will create two `.po` files inside the `locale/{MY_LANGUAGE_CODE}/LC_MESSAGES/` directory.
+
+3. After adding translation to both files, run the following command to verify everything is working.
+   ```shell
+   python manage.py compilemessages -l MY_LANGUAGE_CODE
+   # e.g. for persian translation use fa instead of MY_LANGUAGE_CODE
+   ```
+   If you don't see an error in the last command, your translations have been added in the correct format.
+
+4. In `settings.py` to enable internationalization in your django applications.
+   ```python
+   # settings.py
+
+   USE_I18N = True
+   USE_L18N = True
+   LANGUAGE_CODE = '{MY_LANGUAGE_CODE}'  # 'en-us' for english , 'fa-ir' for persian , ...
+   ```
 
 ## Front-End
 
