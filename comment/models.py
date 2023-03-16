@@ -3,7 +3,6 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.html import format_html
-from django.utils.text import slugify
 
 from comment.managers import CommentQuerySet, ReactionQuerySet
 
@@ -35,13 +34,9 @@ class CommentSettings(models.Model):
     def __str__(self):
         return f'{self.name} - [{self.slug}]'
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(CommentSettings, self).save(*args, **kwargs)
-
 
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
     content = models.TextField()
     parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='children', null=True, blank=True)
     is_spoiler = models.BooleanField(default=False)
@@ -96,7 +91,7 @@ class React(models.Model):
         return self.slug
 
     def source_file(self):
-        return format_html(f"<img style='height:20px' src='{self.source.url}'>") if self.source else 'X'
+        return format_html(f"<img style='height:20px' src='{self.source.url}' alt='{self.emoji}'>") if self.source else 'X'
 
 
 class Reaction(models.Model):
