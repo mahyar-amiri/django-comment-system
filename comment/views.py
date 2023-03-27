@@ -3,6 +3,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.utils import timezone
+from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, TemplateView
 
 from comment.forms import CommentForm
@@ -109,7 +110,7 @@ class CommentUpdate(CommentMixin, UpdateView):
         return HttpResponseBadRequest()
 
 
-class CommentDelete(CommentMixin, TemplateView):
+class CommentDelete(CommentMixin, View):
     def get(self, request, urlhash, *args, **kwargs):
         return render(request, 'comment/forms/comment_form_delete.html', context={'urlhash': urlhash})
 
@@ -121,7 +122,7 @@ class CommentDelete(CommentMixin, TemplateView):
         return HttpResponseBadRequest()
 
 
-class CommentReact(CommentMixin, TemplateView):
+class CommentReact(CommentMixin, View):
     def get(self, request, *args, **kwargs):
         urlhash = request.GET.get('urlhash')
         context = {'comment': Comment.objects.get(urlhash=urlhash)}

@@ -5,7 +5,7 @@
         {#PREVIOUS PAGE#}
         {% if paginator.has_previous %}
             <span onclick="LoadCommentList({{ paginator.previous_page_number }})" class="pt-3 cursor-pointer">
-            {% include 'icons/../icons/icon_arrow_backward.html' with class="h-5 w-5 rtl:scale-x-[-1] icon-pagination-light dark:fill-icon-pagination-dark hover:fill-icon-pagination-hover-light dark:hover:fill-icon-pagination-hover-dark" %}
+            {% include 'comment/icons/icon_arrow_backward.html' with class="h-5 w-5 rtl:scale-x-[-1] icon-pagination-light dark:fill-icon-pagination-dark hover:fill-icon-pagination-hover-light dark:hover:fill-icon-pagination-hover-dark" %}
             </span>
         {% endif %}
 
@@ -24,7 +24,7 @@
         {#NEXT PAGE#}
         {% if paginator.has_next %}
             <span onclick="LoadCommentList({{ paginator.next_page_number }})" class="pt-3 cursor-pointer">
-            {% include 'icons/../icons/icon_arrow_forward.html' with class="h-5 w-5 rtl:scale-x-[-1] icon-pagination-light dark:fill-icon-pagination-dark hover:fill-icon-pagination-hover-light dark:hover:fill-icon-pagination-hover-dark" %}
+            {% include 'comment/icons/icon_arrow_forward.html' with class="h-5 w-5 rtl:scale-x-[-1] icon-pagination-light dark:fill-icon-pagination-dark hover:fill-icon-pagination-hover-light dark:hover:fill-icon-pagination-hover-dark" %}
             </span>
         {% endif %}
     </div>
