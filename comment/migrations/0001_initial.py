@@ -74,7 +74,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('comment', models.ForeignKey(editable=False, on_delete=django.db.models.deletion.CASCADE, related_name='reactions', to='comment.comment')),
                 ('react', models.ForeignKey(editable=False, on_delete=django.db.models.deletion.CASCADE, related_name='reactions', to='comment.react')),
-                ('user', models.ForeignKey(editable=False, on_delete=django.db.models.deletion.CASCADE, related_name='reactions', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(editable=False, on_delete=django.db.models.deletion.CASCADE, related_name='comment_reactions', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'unique_together': {('user', 'comment')},
