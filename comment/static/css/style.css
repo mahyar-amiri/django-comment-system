@@ -1215,6 +1215,11 @@ video {
   line-height: 1.5rem;
 }
 
+.text-black {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity));
+}
+
 .text-comment-name-text-light {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));

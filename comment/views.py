@@ -11,7 +11,7 @@ from comment.models import Comment, Reaction, React, CommentSettings
 
 
 class CommentDetail(TemplateView):
-    template_name = 'comment/comment_body.html'
+    template_name = 'comment/comment/comment_body.html'
 
     def get(self, request, *args, **kwargs):
         urlhash = request.GET.get('urlhash')
@@ -25,7 +25,7 @@ class CommentDetail(TemplateView):
 
 class CommentList(ListView):
     context_object_name = 'comments'
-    template_name = 'comment/comment_list.html'
+    template_name = 'comment/comment/comment_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -111,7 +111,7 @@ class CommentUpdate(CommentMixin, UpdateView):
 
 class CommentDelete(CommentMixin, TemplateView):
     def get(self, request, urlhash, *args, **kwargs):
-        return render(request, 'forms/comment_form_delete.html', context={'urlhash': urlhash})
+        return render(request, 'comment/forms/comment_form_delete.html', context={'urlhash': urlhash})
 
     def post(self, request, urlhash, *args, **kwargs):
         comment = Comment.objects.get(urlhash=urlhash)
@@ -125,7 +125,7 @@ class CommentReact(CommentMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         urlhash = request.GET.get('urlhash')
         context = {'comment': Comment.objects.get(urlhash=urlhash)}
-        return render(request, 'comment/comment_reactions.html', context=context)
+        return render(request, 'comment/comment/comment_reactions.html', context=context)
 
     def post(self, request, *args, **kwargs):
         user = request.user

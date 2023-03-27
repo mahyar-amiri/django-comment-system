@@ -4,7 +4,7 @@
 <form id="form-comment-create" method="post" action="{% url 'comment:create' %}">{% csrf_token %}
 
     {# render info inputs #}
-    {% include 'comment/object_info.html' with object_info=object_info settings=settings %}
+    {% include 'comment/comment/object_info.html' with object_info=object_info settings=settings %}
 
     {# main form #}
     <div class="block rounded-lg bg-textarea-bg-light dark:bg-textarea-bg-dark p-4">
@@ -17,9 +17,9 @@
                     <label class="ltr:mr-4 rtl:ml-4 grid content-center">
                         <input type="checkbox" name="is_spoiler" id="id_is_spoiler" class="peer sr-only"/>
                         {#ICON EYE#}
-                        <span class="block cursor-pointer peer-checked:hidden">{% include 'icons/icon_eye.html' with class='inline-block w-8 fill-none stroke-icon-spoiler-light dark:stroke-icon-spoiler-dark' %}</span>
+                        <span class="block cursor-pointer peer-checked:hidden">{% include 'icons/../icons/icon_eye.html' with class='inline-block w-8 fill-none stroke-icon-spoiler-light dark:stroke-icon-spoiler-dark' %}</span>
                         {#ICON EYE OFF#}
-                        <span class="hidden cursor-pointer peer-checked:block">{% include 'icons/icon_eye_off.html' with class='inline-block w-8 fill-icon-spoiler-light dark:fill-icon-spoiler-dark' %}</span>
+                        <span class="hidden cursor-pointer peer-checked:block">{% include 'icons/../icons/icon_eye_off.html' with class='inline-block w-8 fill-icon-spoiler-light dark:fill-icon-spoiler-dark' %}</span>
                     </label>
                 {% endif %}
                 <button type="button" onclick="CreateComment('form-comment-create')" class="rounded-lg border-none bg-btn-send-bg-light dark:bg-btn-send-bg-dark py-2 px-6 text-xl text-btn-send-text-light dark:text-btn-send-text-dark dark:font-semibold outline-0 shadow-md">{% trans 'Send' context 'form-button' %}</button>

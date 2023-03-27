@@ -1,5 +1,5 @@
 {# COMMENTS COUNT #}
-{% include 'comment/comment_counter.html' with count=comments.paginator.count %}
+{% include 'comment/comment/comment_counter.html' with count=comments.paginator.count %}
 
 <div class="flex flex-col space-y-2">
     {% for comment in comments.object_list %}
@@ -8,7 +8,7 @@
             {% if settings.allow_reply %}<input type="checkbox" class="peer sr-only" name="reply-section" id="toggle-reply-{{ comment.urlhash }}">{% endif %}
             {# PARENT #}
             <div id="comment-{{ comment.urlhash }}" class="rounded-lg border-2 bg-comment-parent-bg-light border-comment-parent-border-light p-2 dark:bg-comment-parent-bg-dark dark:border-comment-parent-border-dark">
-                {% include 'comment/comment_body.html' with comment=comment %}
+                {% include 'comment/comment/comment_body.html' with comment=comment %}
             </div>
 
             {#ALLOW_REPLY#}
@@ -21,12 +21,12 @@
                         {# CHILDREN #}
                         {% for child in comment.children.filter_accepted.order_pinned_oldest %}
                             <div id="comment-{{ child.urlhash }}" class="rounded-lg border-2  bg-comment-child-bg-light border-comment-child-border-light p-2 dark:border-comment-child-border-dark dark:bg-comment-child-bg-dark">
-                                {% include 'comment/comment_body.html' with comment=child %}
+                                {% include 'comment/comment/comment_body.html' with comment=child %}
                             </div>
                         {% endfor %}
 
                         {# REPLY-FORM #}
-                        {% include 'forms/comment_form_reply.html' with comment=comment page=comments.number %}
+                        {% include 'comment/forms/comment_form_reply.html' with comment=comment page=comments.number %}
 
                     </div>
                 </div>
@@ -34,11 +34,11 @@
 
         </div>
     {% empty %}
-        {% include 'utils/comment_list_empty.html' %}
+        {% include 'comment/utils/comment_list_empty.html' %}
     {% endfor %}
 
     {#PAGINATION#}
     {% if comments.paginator.num_pages != 1 %}
-        {% include 'utils/comment_list_pagination.html' with paginator=comments %}
+        {% include 'comment/utils/comment_list_pagination.html' with paginator=comments %}
     {% endif %}
 </div>

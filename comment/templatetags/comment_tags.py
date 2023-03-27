@@ -10,12 +10,12 @@ from comment.models import CommentSettings
 register = template.Library()
 
 
-@register.inclusion_tag('utils/IMPORTS.html')
-def render_imports():
+@register.inclusion_tag('comment/utils/IMPORTS.html')
+def render_comment_import():
     return {'offline_imports': settings.OFFLINE_IMPORTS}
 
 
-@register.inclusion_tag('comment/comments.html')
+@register.inclusion_tag('comment/comment/comments.html')
 def render_comments(request, obj, settings_slug):
     context = {
         'object': obj,

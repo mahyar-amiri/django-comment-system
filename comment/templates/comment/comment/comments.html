@@ -1,7 +1,7 @@
 {% load static %}
 {% load comment_tags %}
 
-{% render_imports %}
+{% render_comment_import %}
 
 {% get_settings 'LANGUAGE_CODE' as LANGUAGE_CODE %}
 
@@ -12,13 +12,13 @@
         <div id="comment-modal"></div>
 
         {# CREATE COMMENT FORM #}
-        {% include 'forms/comment_form_create.html' with settings=settings %}
+        {% include 'comment/forms/comment_form_create.html' with settings=settings %}
 
         {# COMMENTS LIST #}
         <div id="comment-list">
-            {% include 'utils/comment_list_loader.html' %}
+            {% include 'comment/utils/comment_list_loader.html' %}
         </div>
 
     </div>
 </div>
-{% include 'utils/SCRIPTS.html' %}
+{% include 'comment/utils/SCRIPTS.html' %}
