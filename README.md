@@ -388,7 +388,7 @@ colors: {
 <p>
 
 ```text
-templates
+templates/comment
    ├── comment
    │    ├── comments.html
    │    ├── comment_list.html
