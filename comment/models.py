@@ -95,7 +95,7 @@ class React(models.Model):
 
 
 class Reaction(models.Model):
-    user = models.ForeignKey(User, related_name='reactions', on_delete=models.CASCADE, editable=False)
+    user = models.ForeignKey(User, related_name='comment_reactions', on_delete=models.CASCADE, editable=False)
     comment = models.ForeignKey(Comment, related_name='reactions', on_delete=models.CASCADE, editable=False)
     react = models.ForeignKey(React, related_name='reactions', on_delete=models.CASCADE, editable=False)
 
