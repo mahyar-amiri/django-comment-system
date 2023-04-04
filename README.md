@@ -1,8 +1,14 @@
 # Django Comment System
 
+<p align="center">
+  <img src="image.png" />
+</p>
+
 [![PyPI version](https://img.shields.io/pypi/v/django-comment-system.svg?logo=pypi&logoColor=FFE873)](https://pypi.org/project/django-comment-system)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/django-comment-system?color=092E20&logo=django)](https://pypi.org/project/django-comment-system)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/django-comment-system?color=092E20&logo=django)](https://pypistats.org/packages/django-comment-system)
 [![GitHub](https://img.shields.io/github/license/mahyar-amiri/django-comment-system)](LICENSE)
+
+**Here is a [live demo](https://mmaahhyyaarr.pythonanywhere.com/)**
 
 ## Table of Contents
 
@@ -15,6 +21,7 @@
 * [Reactions](#reactions)
 * [Translation](#translation)
 * [Front-End](#front-end)
+* [Live Demo](https://mmaahhyyaarr.pythonanywhere.com/)
 
 ## Installation
 
@@ -36,7 +43,8 @@
 
    ```python
    # setting.py
-   
+   from django.urls import reverse_lazy
+
    INSTALLED_APPS = [
        'django.contrib.admin',
        'django.contrib.auth',
@@ -48,6 +56,8 @@
        # MY APPS
        'comment.apps.CommentConfig',
    ]
+   
+   LOGIN_URL = reverse_lazy('admin:login')  # or your account login url
    ```
 
 2. Add `path('comment/', include('comment.urls')),` to urlpatterns in the `urls.py` file.
