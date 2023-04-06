@@ -70,6 +70,7 @@ class CommentCreate(CommentMixin, CreateView):
             comment = form.save(commit=False)
 
             comment.user = request.user
+            comment.content_main = comment.content
             app_name = request.POST.get('app_name', None)
             model_name = request.POST.get('model_name', None)
             object_id = request.POST.get('object_id', None)
@@ -103,6 +104,18 @@ class CommentUpdate(CommentMixin, UpdateView):
 
     def form_valid(self, form):
         super().form_valid(form)
+
+        settings_slug = self.request.POST.get('settings_slug', None)
+        comment_settings = CommentSettings.objects.get(slug=settings_slug)
+
+        if comment_settings.status_edited_check:
+            self.object.status_edited = 'd'
+            self.object.save()
+        else:
+            self.object.status_edited = 'a'
+            self.object.content_main = self.object.content
+            self.object.save()
+
         return JsonResponse({'urlhash': self.object.urlhash}, status=200)
 
     def form_invalid(self, form):

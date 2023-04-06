@@ -16,6 +16,7 @@ class CommentSettings(models.Model):
     default_profile_image = models.ImageField(upload_to='comment_default_profile_images', null=True, blank=True)
     content_words_count = models.PositiveSmallIntegerField(default=40, help_text='More than this value will have Read More button in comment content')
     status_check = models.BooleanField(default=False, help_text='If True, comment status will be set as d(Delivered) otherwise it will be set as a(Accepted).')
+    status_edited_check = models.BooleanField(default=False, help_text='If True, comment status_edited will be set as d(Delivered) otherwise it will be set as a(Accepted) when a comment is edited.')
     allow_spoiler = models.BooleanField(default=True)
     allow_reply = models.BooleanField(default=True)
     allow_edit = models.BooleanField(default=True)
@@ -38,12 +39,15 @@ class CommentSettings(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
-    content = models.TextField()
+    content_main = models.TextField()
+    content = models.TextField()  # edited content will store here
     parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='children', null=True, blank=True)
     is_spoiler = models.BooleanField(default=False)
     is_pinned = models.BooleanField(default=False)
     STATUS_CHOICES = (('d', 'Delivered'), ('a', 'Accepted'), ('r', 'Rejected'))
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='d')
+    STATUS_EDITED_CHOICES = (('n', 'None'), ('d', 'Delivered'), ('a', 'Accepted'), ('r', 'Rejected'))
+    status_edited = models.CharField(max_length=1, choices=STATUS_EDITED_CHOICES, default='n')
     urlhash = models.CharField(max_length=50, unique=True, editable=False)
     posted = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -59,9 +63,9 @@ class Comment(models.Model):
 
     def __str__(self):
         if not self.parent:
-            return f'{self.content[:20]}'
+            return f'{self.content_main[:20]}'
         else:
-            return f'[RE] ({self.parent.content[:10]}) : {self.content[:15]}'
+            return f'[RE] ({self.parent.content_main[:10]}) : {self.content_main[:15]}'
 
     def set_unique_urlhash(self):
         if not self.urlhash:
@@ -74,7 +78,7 @@ class Comment(models.Model):
         super(Comment, self).save(*args, **kwargs)
 
     def is_updated(self):
-        return True if self.updated.timestamp() > self.posted.timestamp() else False
+        return True if self.updated.timestamp() > self.posted.timestamp() and self.status_edited != 'n' else False
 
     is_updated.boolean = True
 
@@ -106,4 +110,4 @@ class Reaction(models.Model):
         unique_together = ['user', 'comment']
 
     def __str__(self):
-        return f'{self.user} <{self.react.slug}> ({self.comment.content[:20]})'
+        return f'{self.user} <{self.react.slug}> ({self.comment.content_main[:20]})'

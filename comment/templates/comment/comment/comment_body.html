@@ -69,14 +69,14 @@
     {% if settings.allow_edit %}<input type="checkbox" class="peer sr-only" id="toggle-edit-{{ comment.urlhash }}">{% endif %}
     <div class="p-2 text-justify block peer-checked:hidden">
         {#CONTENT#}
-        {% if comment.content|wordcount > settings.content_words_count %}
+        {% if comment.content_main|wordcount > settings.content_words_count %}
             <input type="checkbox" class="peer sr-only" id="toggle-more-{{ comment.urlhash }}">
-            <div class="whitespace-pre-wrap text-black dark:text-white inline-block peer-checked:hidden {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% else %}font-default{% endif %}">{{ comment.content|truncatewords:settings.content_words_count }}</div>
-            <div class="whitespace-pre-wrap text-black dark:text-white hidden peer-checked:block {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% else %}font-default{% endif %}">{{ comment.content }}</div>
+            <div class="whitespace-pre-wrap text-black dark:text-white inline-block peer-checked:hidden {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% else %}font-default{% endif %}">{{ comment.content_main|truncatewords:settings.content_words_count }}</div>
+            <div class="whitespace-pre-wrap text-black dark:text-white hidden peer-checked:block {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% else %}font-default{% endif %}">{{ comment.content_main }}</div>
             <label for="toggle-more-{{ comment.urlhash }}" class="inline peer-checked:hidden cursor-pointer text-comment-read-more-light dark:text-comment-read-more-dark">{% trans 'Read More' %} {% include 'comment/icons/icon_down.html' with class='w-6 inline-block' %}</label>
             <label for="toggle-more-{{ comment.urlhash }}" class="hidden peer-checked:block cursor-pointer text-comment-read-more-light dark:text-comment-read-more-dark">{% trans 'Read Less' %} {% include 'comment/icons/icon_up.html' with class='w-6 inline-block' %}</label>
         {% else %}
-            <div class="whitespace-pre-wrap text-black dark:text-white {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% else %}font-default{% endif %}">{{ comment.content }}</div>
+            <div class="whitespace-pre-wrap text-black dark:text-white {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% else %}font-default{% endif %}">{{ comment.content_main }}</div>
         {% endif %}
     </div>
     <div class="text-justify hidden peer-checked:block">

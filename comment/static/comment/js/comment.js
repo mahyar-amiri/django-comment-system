@@ -129,6 +129,7 @@ function EditComment(form_id, settings_slug) {
         content: $(`#${form_id} [name='content']`).val(),
         is_spoiler: $(`#${form_id} [name='is_spoiler']`).is(':checked'),
         urlhash: form_id.replace('form-comment-edit-', ''),
+        settings_slug: settings_slug,
     };
     $.ajax({
         type: method,

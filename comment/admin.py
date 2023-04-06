@@ -39,12 +39,12 @@ class ListFilterByUpdated(admin.SimpleListFilter):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'user', 'is_spoiler', 'is_pinned', 'is_updated', 'status', 'content_object', 'posted')
+    list_display = ('__str__', 'content', 'user', 'is_spoiler', 'is_pinned', 'is_updated', 'status', 'status_edited', 'content_object', 'posted', 'updated')
     ordering = ('-is_pinned', '-posted',)
     search_fields = ('content',)
-    list_filter = ('is_spoiler', 'is_pinned', ListFilterByUpdated, 'status', ListFilterByParent)
-    readonly_fields = ('user', 'content', 'parent', 'content_type', 'content_object', 'object_id', 'urlhash', 'posted', 'is_spoiler', 'is_pinned', 'status')
-    actions = ['accept_comment', 'reject_comment', 'pin_comment', 'unpin_comment', 'set_spoiler_comment', 'unset_spoiler_comment']
+    list_filter = ('is_spoiler', 'is_pinned', ListFilterByUpdated, 'status', 'status_edited', ListFilterByParent)
+    readonly_fields = ('user', 'content_main', 'content', 'parent', 'content_type', 'content_object', 'object_id', 'urlhash', 'posted', 'is_spoiler', 'is_pinned', 'status', 'status_edited')
+    actions = ['accept_comment', 'reject_comment', 'accept_edited_comment', 'reject_edited_comment', 'pin_comment', 'unpin_comment', 'set_spoiler_comment', 'unset_spoiler_comment']
 
     def accept_comment(self, request, queryset):
         accepted = queryset.update(status='a')
@@ -63,6 +63,30 @@ class CommentAdmin(admin.ModelAdmin):
                           messages.WARNING)
 
     reject_comment.short_description = 'Reject selected comments'
+
+    def accept_edited_comment(self, request, queryset):
+        for comment in queryset:
+            comment.content_main = comment.content
+            comment.save()
+        edited = queryset.update(status_edited='a')
+        self.message_user(request,
+                          ngettext(f'{edited} comment edited.',
+                                   f'{edited} comments edited.', edited),
+                          messages.SUCCESS)
+
+    accept_edited_comment.short_description = 'Accept edit for selected comments'
+
+    def reject_edited_comment(self, request, queryset):
+        for comment in queryset:
+            comment.content = comment.content_main
+            comment.save()
+        edited = queryset.update(status_edited='r')
+        self.message_user(request,
+                          ngettext(f'{edited} comment did not edit.',
+                                   f'{edited} comments did not edit.', edited),
+                          messages.WARNING)
+
+    reject_edited_comment.short_description = 'Reject edit for selected comments'
 
     def pin_comment(self, request, queryset):
         pinned = queryset.update(is_pinned=True)

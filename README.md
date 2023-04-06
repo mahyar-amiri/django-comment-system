@@ -140,8 +140,6 @@ COMMENT_SETTINGS = {
     # see link blew to create abstract user model
     # https://docs.djangoproject.com/en/4.1/topics/auth/customizing/#substituting-a-custom-user-model
     'PROFILE_IMAGE_FIELD': None,
-    # default profile image static path
-    'PROFILE_IMAGE_DEFAULT': 'img/profile.png'
 }
 ```
 
@@ -150,9 +148,15 @@ COMMENT_SETTINGS = {
 This settings can be configured in admin panel. Set your config in `CommentSettings` model.
 
 ```python
+# image file for default profile image, it null the image will not be shown
+DEFAULT_PROFILE_IMAGE
+
 # the comments need to be set as a(Accepted) to be shown in the comments list.
 # if True, comment status will be set as d(Delivered) otherwise it will be set as a(Accepted).
 STATUS_CHECK = False
+# the comments need to be set as a(Accepted) to be edited.
+# if True, comment status will be set as d(Delivered) otherwise it will be set as a(Accepted).
+STATUS_EDITED_CHECK = False
 
 # activate spoiler comment mode
 ALLOW_SPOILER = True
