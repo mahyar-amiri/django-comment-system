@@ -35,6 +35,9 @@ Installation & Configuration
           # MY APPS
           'comment.apps.CommentConfig',
       ]
+      LOGIN_URL = reverse_lazy('admin:login')  # or your account login url
+      MEDIA_URL = '/media/'
+      MEDIA_ROOT = BASE_DIR / 'media'
 
 3. Add ``path('comment/', include('comment.urls')),`` to urlpatterns in
    the ``urls.py`` file.
@@ -48,6 +51,8 @@ Installation & Configuration
       urlpatterns = [
            path('comment/', include('comment.urls')),
       ]
+      urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
 4. Connect ``comments`` to target model. In ``models.py`` add the field
    ``comments`` as a GenericRelation field to the required model.

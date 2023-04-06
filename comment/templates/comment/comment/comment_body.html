@@ -10,6 +10,8 @@
         {% get_profile_image comment.user as profile_image %}
         {% if profile_image %}
             <img src="{{ profile_image }}" alt="Profile" class="inline-block w-12 h-12 rounded-full"/>
+        {% elif settings.default_profile_image %}
+            <img src="{{ settings.default_profile_image.url }}" alt="Profile" class="inline-block w-12 h-12 rounded-full"/>
         {% endif %}
         <span class="inline-block align-middle ltr:ml-2 rtl:mr-2 text-lg font-semibold text-comment-name-text-light dark:text-comment-name-text-dark"><span dir="ltr">{{ comment.user.username }}</span></span>
         <span class="mx-1 text-comment-time-text-light dark:text-comment-time-text-dark">•</span>

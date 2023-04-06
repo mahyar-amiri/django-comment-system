@@ -42,8 +42,6 @@ def get_profile_image(user):
         profile = getattr(user, settings.PROFILE_IMAGE_FIELD)
         if profile:
             return profile.url
-        else:
-            return static(settings.PROFILE_IMAGE_DEFAULT)
     else:
         return None
 

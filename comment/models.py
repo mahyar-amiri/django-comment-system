@@ -13,6 +13,7 @@ class CommentSettings(models.Model):
     name = models.CharField(max_length=30)
     slug = models.SlugField(primary_key=True, help_text='This value will be used in render_comments tag')
 
+    default_profile_image = models.ImageField(upload_to='comment_default_profile_images', null=True, blank=True)
     content_words_count = models.PositiveSmallIntegerField(default=40, help_text='More than this value will have Read More button in comment content')
     status_check = models.BooleanField(default=False, help_text='If True, comment status will be set as d(Delivered) otherwise it will be set as a(Accepted).')
     allow_spoiler = models.BooleanField(default=True)
