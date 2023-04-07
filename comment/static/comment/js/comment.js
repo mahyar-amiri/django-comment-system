@@ -69,7 +69,7 @@ function ResetDeleteCommentForm() {
     $(`#comment-modal`).html('');
 }
 
-function CreateComment(form_id) {
+function CreateComment(form_id, status_check) {
     let form = $(`#${form_id}`);
     let method = form.prop('method');
     let action = form.prop('action');
@@ -94,6 +94,9 @@ function CreateComment(form_id) {
         },
         data: formData,
         success: function () {
+            if (status_check) {
+                alert('your comment has been sent. It will be shown if accepted by the admin.');
+            }
             if (formData.parent_id) {
                 let page = $(`#form-comment-reply-${formData.parent_id} [name='page']`).val();
                 LoadCommentList(page);
@@ -120,7 +123,7 @@ function CheckEditTextarea(form_id) {
     }
 }
 
-function EditComment(form_id, settings_slug) {
+function EditComment(form_id, settings_slug, status_check) {
     let form = $(`#${form_id}`);
     let method = form.prop('method');
     let action = form.prop('action');
@@ -140,9 +143,10 @@ function EditComment(form_id, settings_slug) {
         },
         data: formData,
         success: function (data) {
-            if (data.urlhash) {
-                LoadComment(data.urlhash, settings_slug);
+            if (status_check) {
+                alert('your comment has been edited. It will be shown if accepted by the admin.');
             }
+            LoadComment(data.urlhash, settings_slug);
         },
         error: function () {
             let textarea = $(`#${form_id} textarea`);

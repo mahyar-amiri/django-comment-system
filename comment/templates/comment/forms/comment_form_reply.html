@@ -26,7 +26,7 @@
                         <span class="hidden cursor-pointer peer-checked:block">{% include 'comment/icons/icon_eye_off.html' with class='inline-block w-8 fill-icon-spoiler-light dark:fill-icon-spoiler-dark' %}</span>
                     </label>
                 {% endif %}
-                <button type="button" onclick="CreateComment('form-comment-reply-{{ comment.urlhash }}')" class="rounded-lg border-none py-2 px-6 text-xl outline-0 shadow-md bg-btn-reply-bg-light dark:bg-btn-reply-bg-dark text-btn-reply-text-light dark:text-btn-reply-text-dark">{% trans 'Reply' context 'form-button' %}</button>
+                <button type="button" onclick="CreateComment('form-comment-reply-{{ comment.urlhash }}','{{ settings.status_check }}')" class="rounded-lg border-none py-2 px-6 text-xl outline-0 shadow-md bg-btn-reply-bg-light dark:bg-btn-reply-bg-dark text-btn-reply-text-light dark:text-btn-reply-text-dark">{% trans 'Reply' context 'form-button' %}</button>
             </div>
         {% else %}
             <div><a href="{% get_settings 'LOGIN_URL' %}" class="font-bold text-btn-login-text-light dark:text-btn-login-text-dark">{% trans 'Login to reply' context 'login-required' %}</a></div>
