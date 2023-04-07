@@ -95,7 +95,7 @@ function CreateComment(form_id, status_check) {
         data: formData,
         success: function () {
             if (status_check) {
-                alert('your comment has been sent. It will be shown if accepted by the admin.');
+                document.getElementById('toast').classList.remove('hidden');
             }
             if (formData.parent_id) {
                 let page = $(`#form-comment-reply-${formData.parent_id} [name='page']`).val();
@@ -144,7 +144,7 @@ function EditComment(form_id, settings_slug, status_check) {
         data: formData,
         success: function (data) {
             if (status_check) {
-                alert('your comment has been edited. It will be shown if accepted by the admin.');
+                document.getElementById('toast').classList.remove('hidden');
             }
             LoadComment(data.urlhash, settings_slug);
         },
@@ -199,6 +199,10 @@ function ReactComment(urlhash, react_slug) {
             LoadCommentReactions(urlhash);
         }
     });
+}
+
+function CloseToast() {
+    document.getElementById('toast').classList.add('hidden');
 }
 
 $(document).ready(function () {
