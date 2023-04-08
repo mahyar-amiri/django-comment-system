@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-08 18:50+0330\n"
+"POT-Creation-Date: 2023-04-08 21:09+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,71 +18,114 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: .\comment\admin.py:36
+#: .\comment\admin.py:52
 #, python-brace-format
 msgid "{accepted} comment accepted."
 msgid_plural "{accepted} comments accepted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\comment\admin.py:45
+#: .\comment\admin.py:61
 #, python-brace-format
 msgid "{rejected} comment rejected."
 msgid_plural "{rejected} comments rejected."
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\comment\templates\comment\comment_body.html:26
+#: .\comment\admin.py:73
+#, python-brace-format
+msgid "{edited} comment edited."
+msgid_plural "{edited} comments edited."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\comment\admin.py:85
+#, python-brace-format
+msgid "{edited} comment did not edit."
+msgid_plural "{edited} comments did not edit."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\comment\admin.py:94
+#, python-brace-format
+msgid "{pinned} comment pinned."
+msgid_plural "{pinned} comments pinned."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\comment\admin.py:103
+#, python-brace-format
+msgid "{unpinned} comment unpinned."
+msgid_plural "{unpinned} comments unpinned."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\comment\admin.py:112
+#, python-brace-format
+msgid "{spoiler} comment set as spoiler."
+msgid_plural "{spoiler} comments set as spoiler."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\comment\admin.py:121
+#, python-brace-format
+msgid "{spoiler} comment unset as spoiler."
+msgid_plural "{spoiler} comments unset as spoiler."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\comment\templates\comment\comment\comment_body.html:20
+#: .\comment\templates\comment\comment\comment_body.html:24
 msgid "ago"
 msgstr "پیش"
 
-#: .\comment\templates\comment\comment_body.html:73
+#: .\comment\templates\comment\comment\comment_body.html:76
 msgid "Read More"
 msgstr "ادامه"
 
-#: .\comment\templates\comment\comment_body.html:74
+#: .\comment\templates\comment\comment\comment_body.html:77
 msgid "Read Less"
 msgstr "خلاصه"
 
-#: .\comment\templates\comment\comment_body.html:104
+#: .\comment\templates\comment\comment\comment_body.html:107
 msgctxt "reply-count"
 msgid "Replies"
 msgstr "پاسخ"
 
-#: .\comment\templates\comment\comment_body.html:106
+#: .\comment\templates\comment\comment\comment_body.html:109
 msgctxt "reply-count"
 msgid "Reply"
 msgstr "پاسخ"
 
-#: .\comment\templates\comment\comment_body.html:108
+#: .\comment\templates\comment\comment\comment_body.html:111
 msgctxt "verb"
 msgid "Reply"
 msgstr "پاسخ"
 
-#: .\comment\templates\comment\comment_counter.html:6
-#: .\comment\templates\utils\comment_list_loader.html:4
+#: .\comment\templates\comment\comment\comment_counter.html:6
+#: .\comment\templates\comment\utils\comment_list_loader.html:4
 msgid "Comments"
 msgstr "نظرات"
 
-#: .\comment\templates\forms\comment_form_create.html:12
+#: .\comment\templates\comment\forms\comment_form_create.html:12
 msgid "Write Something..."
 msgstr "یه چیزی بنویس..."
 
-#: .\comment\templates\forms\comment_form_create.html:26
+#: .\comment\templates\comment\forms\comment_form_create.html:25
 msgctxt "form-button"
 msgid "Send"
 msgstr "ارسال"
 
-#: .\comment\templates\forms\comment_form_create.html:29
+#: .\comment\templates\comment\forms\comment_form_create.html:28
 msgctxt "login-required"
 msgid "Login to comment"
 msgstr "برای ارسال دیدگاه وارد شوید"
 
-#: .\comment\templates\forms\comment_form_delete.html:12
+#: .\comment\templates\comment\forms\comment_form_delete.html:12
 msgid "Delete Comment"
 msgstr "حذف دیدگاه"
 
-#: .\comment\templates\forms\comment_form_delete.html:15
+#: .\comment\templates\comment\forms\comment_form_delete.html:15
 msgid ""
 "Are you sure you want to delete your comment? All of your replies will be "
 "permanently removed. This action can not be undone."
@@ -90,36 +133,45 @@ msgstr ""
 "آیا مطمئن هستید که می خواهید نظر خود را حذف کنید؟ همه پاسخ های شما برای "
 "همیشه حذف خواهند شد. این عمل قابل لغو نیست."
 
-#: .\comment\templates\forms\comment_form_delete.html:22
+#: .\comment\templates\comment\forms\comment_form_delete.html:22
 msgctxt "form-button"
 msgid "Delete"
 msgstr "حذف"
 
-#: .\comment\templates\forms\comment_form_delete.html:23
-#: .\comment\templates\forms\comment_form_edit.html:20
+#: .\comment\templates\comment\forms\comment_form_delete.html:23
+#: .\comment\templates\comment\forms\comment_form_edit.html:18
 msgctxt "form-button"
 msgid "Cancel"
 msgstr "انصراف"
 
-#: .\comment\templates\forms\comment_form_edit.html:21
+#: .\comment\templates\comment\forms\comment_form_edit.html:19
 msgctxt "form-button"
 msgid "Edit"
 msgstr "ویرایش"
 
-#: .\comment\templates\forms\comment_form_reply.html:15
+#: .\comment\templates\comment\forms\comment_form_reply.html:16
 msgid "Reply to"
 msgstr "پاسخ به"
 
-#: .\comment\templates\forms\comment_form_reply.html:29
+#: .\comment\templates\comment\forms\comment_form_reply.html:29
 msgctxt "form-button"
 msgid "Reply"
 msgstr "پاسخ"
 
-#: .\comment\templates\forms\comment_form_reply.html:32
+#: .\comment\templates\comment\forms\comment_form_reply.html:32
 msgctxt "login-required"
 msgid "Login to reply"
 msgstr "برای ارسال پاسخ وارد شوید"
 
-#: .\comment\templates\utils\comment_list_empty.html:34
+#: .\comment\templates\comment\utils\comment_list_empty.html:35
 msgid "No comment yet"
 msgstr "هیچ دیدگاهی وجود ندارد"
+
+#: .\comment\templates\comment\utils\toast.html:4
+msgid "Your comment has been sent. It will be shown if accepted by the admin."
+msgstr "کامنت شما ارسال شد. در صورتی که توسط ادمین تایید شود در لیست نظرات نمایش داده می شود."
+
+#: .\comment\templates\comment\utils\toast.html:5
+msgctxt "toast button"
+msgid "OK"
+msgstr "تایید"
