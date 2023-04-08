@@ -1,11 +1,11 @@
 function getCookie(name) {
     let cookieValue = null;
-    if (document.cookie && document.cookie !== "") {
-        const cookies = document.cookie.split(";");
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
             const cookie = cookies[i].trim();
             // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + "=")) {
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                 break;
             }
@@ -14,199 +14,246 @@ function getCookie(name) {
     return cookieValue;
 }
 
+function load(element, url) {
+    let xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === XMLHttpRequest.DONE) {
+            if (xmlhttp.status === 200) {
+                element.innerHTML = xmlhttp.responseText;
+                const allScripts = element.getElementsByTagName('script');
+                for (let n = 0; n < allScripts.length; n++) {
+                    eval(allScripts [n].innerHTML)//run script inside div generally not a good idea but these scripts are anyways intended to be executed.
+                }
+            } else {
+                alert('Error');
+            }
+        }
+    }
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+
 function LoadComment(urlhash, settings_slug) {
-    $(`#comment-${urlhash}`).load(
+    load(
+        document.querySelector(`#comment-${urlhash}`),
         `/comment/detail?urlhash=${urlhash}&settings_slug=${settings_slug}`
     );
 }
 
 function LoadCommentList(page = 1, at_start = false) {
-    let app_name = $("#form-comment-create [name='app_name']").val();
-    let model_name = $("#form-comment-create [name='model_name']").val();
-    let object_id = $("#form-comment-create [name='object_id']").val();
-    let settings_slug = $("#form-comment-create [name='settings_slug']").val();
-    let comment_list = $("#comment-list")
-    comment_list.load(
-        `/comment/list?app_name=${app_name}&model_name=${model_name}&object_id=${object_id}&page=${page}&settings_slug=${settings_slug}`
-    );
+    let app_name = document.querySelector(`#form-comment-create [name='app_name']`).value;
+    let model_name = document.querySelector(`#form-comment-create [name='model_name']`).value;
+    let object_id = document.querySelector(`#form-comment-create [name='object_id']`).value;
+    let settings_slug = document.querySelector(`#form-comment-create [name='settings_slug']`).value;
+    let comment_list = document.querySelector('#comment-list')
+    load(comment_list, `/comment/list?app_name=${app_name}&model_name=${model_name}&object_id=${object_id}&page=${page}&settings_slug=${settings_slug}`);
 
     // scroll to top when turned page
     if (!at_start) {
-        $('html, body').animate({
-            scrollTop: comment_list.offset().top
-        }, 700);
+        document.querySelector('html').style.scrollBehavior = 'smooth';
+        window.scroll(0, comment_list.offsetTop);
     }
 }
 
 function LoadDeleteCommentForm(urlhash) {
-    $("#comment-modal").load(
+    load(
+        document.querySelector('#comment-modal'),
         `/comment/delete/${urlhash}`
     );
 }
 
 function LoadCommentReactions(urlhash) {
-    $(`#form-comment-react-${urlhash} #comment-react-list`).load(
+    load(
+        document.querySelector(`#form-comment-react-${urlhash} #comment-react-list`),
         `/comment/react?urlhash=${urlhash}`
     );
 }
 
 function ResetCreateCommentForm() {
-    $(`#form-comment-create [name='content']`).val('').height('124px');
-    $(`#form-comment-create [name='is_spoiler']`).prop('checked', false);
+    document.querySelector(`#form-comment-create [name='content']`).value = '';
+    document.querySelector(`#form-comment-create [name='content']`).style.height = '124px';
+    document.querySelector(`#form-comment-create [name='is_spoiler']`).checked = false;
 }
 
 function ResetEditCommentForm(form_id, content, is_spoiler) {
-    let form = $(`#${form_id}`);
-    form.find('textarea').val(content).removeClass('animate-[pulse_500ms_linear_infinite] border-textarea-border-empty-light dark:border-textarea-border-empty-dark').addClass('border-textarea-bg-light dark:border-textarea-bg-dark');
-    if (is_spoiler === 'True') {
-        form.find("[name='is_spoiler']").prop('checked', true);
-    } else {
-        form.find("[name='is_spoiler']").prop('checked', false);
-    }
+    let edit_textarea = document.querySelector(`#${form_id} textarea`);
+    edit_textarea.value = content;
+    edit_textarea.classList.remove('animate-[pulse_500ms_linear_infinite]', 'border-textarea-border-empty-light', 'dark:border-textarea-border-empty-dark');
+    edit_textarea.classList.add('border-textarea-bg-light', 'dark:border-textarea-bg-dark');
+    document.querySelector(`#${form_id} [name='is_spoiler']`).checked = is_spoiler === 'True';
 }
 
 function ResetDeleteCommentForm() {
-    $(`#comment-modal`).html('');
+    document.querySelector(`#comment-modal`).innerHTML = '';
 }
 
-function CreateComment(form_id, status_check) {
-    let form = $(`#${form_id}`);
-    let method = form.prop('method');
-    let action = form.prop('action');
-    let formData = {
+function CreateComment(form_id, statusCheck) {
+    let status_check = statusCheck === 'True'
+    let form = document.querySelector(`#${form_id}`);
+    let method = form.getAttribute('method');
+    let action = form.getAttribute('action');
+    let data = {
         //OBJECT INPUTS
-        app_name: $("#form-comment-create [name='app_name']").val(),
-        model_name: $("#form-comment-create [name='model_name']").val(),
-        content_type: $("#form-comment-create [name='content_type']").val(),
-        object_id: $("#form-comment-create [name='object_id']").val(),
-        settings_slug: $("#form-comment-create [name='settings_slug']").val(),
+        app_name: document.querySelector(`#form-comment-create [name='app_name']`).value,
+        model_name: document.querySelector(`#form-comment-create [name='model_name']`).value,
+        content_type: document.querySelector(`#form-comment-create [name='content_type']`).value,
+        object_id: document.querySelector(`#form-comment-create [name='object_id']`).value,
+        settings_slug: document.querySelector(`#form-comment-create [name='settings_slug']`).value,
         //FORM INPUTS
-        content: $(`#${form_id} [name='content']`).val(),
-        is_spoiler: $(`#${form_id} [name='is_spoiler']`).is(':checked'),
-        parent_id: $(`#${form_id} [name='parent_id']`).val(),
+        content: document.querySelector(`#${form_id} [name='content']`).value,
+        is_spoiler: document.querySelector(`#${form_id} [name='is_spoiler']`).matches(':checked'),
+        parent_id: document.querySelector(`#${form_id} [name='parent_id']`) ? (document.querySelector(`#${form_id} [name='parent_id']`).value) : null,
     };
-    $.ajax({
-        type: method,
-        url: action,
-        headers: {
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRFToken": getCookie("csrftoken"),
-        },
-        data: formData,
-        success: function () {
-            if (status_check) {
-                document.getElementById('toast').classList.remove('hidden');
-            }
-            if (formData.parent_id) {
-                let page = $(`#form-comment-reply-${formData.parent_id} [name='page']`).val();
-                LoadCommentList(page);
+
+    // AJAX
+    let http = new XMLHttpRequest();
+    http.open(method, action, true);
+
+    http.setRequestHeader('Content-type', 'application/json');
+    http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    http.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+
+    http.onreadystatechange = function () {
+        if (http.readyState === XMLHttpRequest.DONE) {
+            if (http.status === 200) {
+                if (status_check) {
+                    document.getElementById('toast').classList.remove('hidden');
+                }
+                if (data.parent_id) {
+                    let page = document.querySelector(`#form-comment-reply-${data.parent_id} [name='page']`).value;
+                    LoadCommentList(page);
+                } else {
+                    ResetCreateCommentForm();
+                    LoadCommentList();
+                }
             } else {
-                ResetCreateCommentForm();
-                LoadCommentList();
-            }
-        },
-        error: function () {
-            let textarea = $(`#${form_id} textarea`);
-            if (textarea.val().trim() !== '') {
-                alert('ERROR in Creating Comment!')
+                let textarea = document.querySelector(`#${form_id} textarea`);
+                if (textarea.value.trim() !== '') {
+                    alert('ERROR in Creating Comment!')
+                }
             }
         }
-    });
+    }
+    http.send(JSON.stringify(data));
 }
 
 function CheckEditTextarea(form_id) {
-    let textarea = $(`#${form_id} textarea`)
-    if (textarea.val().trim() === '') {
-        textarea.removeClass('border-textarea-bg-light dark:border-textarea-bg-dark').addClass('border-textarea-border-empty-light dark:border-textarea-border-empty-dark');
+    let textarea = document.querySelector(`#${form_id} textarea`)
+    if (textarea.value.trim() === '') {
+        textarea.classList.remove('border-textarea-bg-light', 'dark:border-textarea-bg-dark');
+        textarea.classList.add('border-textarea-border-empty-light', 'dark:border-textarea-border-empty-dark');
     } else {
-        textarea.removeClass('border-textarea-border-empty-light dark:border-textarea-border-empty-dark animate-[pulse_500ms_linear_infinite]').addClass('border-textarea-bg-light dark:border-textarea-bg-dark');
+        textarea.classList.remove('border-textarea-border-empty-light', 'dark:border-textarea-border-empty-dark', 'animate-[pulse_500ms_linear_infinite]');
+        textarea.classList.add('border-textarea-bg-light', 'dark:border-textarea-bg-dark');
     }
 }
 
-function EditComment(form_id, settings_slug, status_check) {
-    let form = $(`#${form_id}`);
-    let method = form.prop('method');
-    let action = form.prop('action');
-    let formData = {
+function EditComment(form_id, settings_slug, statusCheck) {
+    let status_check = statusCheck === 'True'
+    let form = document.querySelector(`#${form_id}`);
+    let method = form.getAttribute('method');
+    let action = form.getAttribute('action');
+    let data = {
         //FORM INPUTS
-        content: $(`#${form_id} [name='content']`).val(),
-        is_spoiler: $(`#${form_id} [name='is_spoiler']`).is(':checked'),
+        content: document.querySelector(`#${form_id} [name='content']`).value,
+        is_spoiler: document.querySelector(`#${form_id} [name='is_spoiler']`).checked,
         urlhash: form_id.replace('form-comment-edit-', ''),
         settings_slug: settings_slug,
     };
-    $.ajax({
-        type: method,
-        url: action,
-        headers: {
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRFToken": getCookie("csrftoken"),
-        },
-        data: formData,
-        success: function (data) {
-            if (status_check) {
-                document.getElementById('toast').classList.remove('hidden');
-            }
-            LoadComment(data.urlhash, settings_slug);
-        },
-        error: function () {
-            let textarea = $(`#${form_id} textarea`);
-            if (textarea.val().trim() === '') {
-                textarea.removeClass('border-textarea-bg-light dark:border-textarea-bg-dark').addClass('animate-[pulse_500ms_linear_infinite] border-textarea-border-empty-light dark:border-textarea-border-empty-dark');
+
+    // AJAX
+    let http = new XMLHttpRequest();
+    http.open(method, action, true);
+
+    http.setRequestHeader('Content-type', 'application/json');
+    http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    http.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+
+    http.onreadystatechange = function () {
+        if (http.readyState === XMLHttpRequest.DONE) {
+            if (http.status === 200) {
+                if (status_check && http.response) {
+                    document.getElementById('toast').classList.remove('hidden');
+                }
+                LoadComment(data.urlhash, settings_slug);
             } else {
-                alert('ERROR in Creating Comment!')
+                let textarea = document.querySelector(`#${form_id} textarea`);
+                if (textarea.value.trim() === '') {
+                    textarea.classList.remove('border-textarea-bg-light', 'dark:border-textarea-bg-dark');
+                    textarea.classList.add('animate-[pulse_500ms_linear_infinite]', 'border-textarea-border-empty-light', 'dark:border-textarea-border-empty-dark');
+                } else {
+                    alert('ERROR in Creating Comment!')
+                }
             }
         }
-    });
+    }
+    http.send(JSON.stringify(data));
 }
 
 function DeleteComment(urlhash) {
-    let form = $(`#form-comment-delete-${urlhash}`);
-    let method = form.prop('method');
-    let action = form.prop('action');
-    $.ajax({
-        type: method,
-        url: action,
-        headers: {
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRFToken": getCookie("csrftoken"),
-        },
-        success: function () {
-            ResetDeleteCommentForm();
-            LoadCommentList();
-        },
-        error: function () {
-            alert('ERROR in Deleting Comment!')
+    let form = document.querySelector(`#form-comment-delete-${urlhash}`);
+    let method = form.getAttribute('method');
+    let action = form.getAttribute('action');
+
+    // AJAX
+    let http = new XMLHttpRequest();
+    http.open(method, action, true);
+
+    http.setRequestHeader('Content-type', 'application/json');
+    http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    http.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+
+    http.onreadystatechange = function () {
+        if (http.readyState === XMLHttpRequest.DONE) {
+            if (http.status === 200) {
+                ResetDeleteCommentForm();
+                LoadCommentList();
+            } else {
+                alert('ERROR in Deleting Comment!')
+            }
         }
-    });
+    }
+    http.send();
 }
 
 function ReactComment(urlhash, react_slug) {
-    let form = $(`#form-comment-react-${urlhash}`);
-    let method = form.prop('method');
-    let action = form.prop('action');
-    $.ajax({
-        type: method,
-        url: action,
-        data: {
-            urlhash,
-            react_slug
-        },
-        headers: {
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRFToken": getCookie("csrftoken"),
-        },
-        success: function () {
-            LoadCommentReactions(urlhash);
+    let form = document.querySelector(`#form-comment-react-${urlhash}`);
+    let method = form.getAttribute('method');
+    let action = form.getAttribute('action');
+    let data = {
+        urlhash: urlhash,
+        react_slug: react_slug
+    }
+
+    // AJAX
+    let http = new XMLHttpRequest();
+    http.open(method, action, true);
+
+    http.setRequestHeader('Content-type', 'application/json');
+    http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    http.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+
+    http.onreadystatechange = function () {
+        if (http.readyState === XMLHttpRequest.DONE) {
+            if (http.status === 200) {
+                LoadCommentReactions(urlhash);
+            }
         }
-    });
+    }
+    http.send(JSON.stringify(data));
 }
 
 function CloseToast() {
     document.getElementById('toast').classList.add('hidden');
 }
 
-$(document).ready(function () {
-    // setTimeout(function () {
+document.addEventListener("DOMContentLoaded", () => {
     LoadCommentList(undefined, true);
-    // }, 100);
 });

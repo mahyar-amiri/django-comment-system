@@ -3,11 +3,9 @@
 {% if offline_imports %}
     {# load from source #}
     <link rel="stylesheet" href="{% static 'comment/css/style.min.css' %}">
-    <script src="{% static 'comment/js/jquery.min.js' %}"></script>
 {% else %}
     {# load from url #}
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="{% static 'comment/tailwindcss/tailwind.config.js' %}"></script>
     <link rel="stylesheet" href="{% static 'comment/tailwindcss/style.css' %}">
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 {% endif %}

@@ -78,7 +78,7 @@ class Comment(models.Model):
         super(Comment, self).save(*args, **kwargs)
 
     def is_updated(self):
-        return True if self.updated.timestamp() > self.posted.timestamp() and self.status_edited != 'n' else False
+        return True if self.updated.timestamp() > self.posted.timestamp() and self.status_edited == 'a' else False
 
     is_updated.boolean = True
 

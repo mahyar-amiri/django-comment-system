@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<form id="form-comment-edit-{{ comment.urlhash }}" method="post" action="{% url 'comment:update' pk=comment.pk %}">{% csrf_token %}
+<form id="form-comment-edit-{{ comment.urlhash }}" method="post" action="{% url 'comment:update' %}">{% csrf_token %}
     <div class="block rounded-lg bg-textarea-bg-light dark:bg-textarea-bg-dark pb-4 pt-1 ltr:pr-4 rtl:pl-4 ltr:pl-1 rtl:pr-1">
         <textarea name="content" oninput="CheckEditTextarea('form-comment-edit-{{ comment.urlhash }}')" spellcheck="false" class="p-1 rounded-md block w-full border-2 resize-y bg-transparent box-border text-base mb-2 outline-0 min-h-[66px] text-textarea-text-light dark:text-textarea-text-dark border-textarea-bg-light dark:border-textarea-bg-dark selection:bg-textarea-text-selection-light dark:selection:bg-text-selection-dark placeholder:text-textarea-text-placeholder-light dark:placeholder:text-textarea-text-placeholder-dark {% if LANGUAGE_CODE == 'fa-ir' %}font-default-fd{% else %}font-default{% endif %}">{{ comment.content_main }}</textarea>
 
@@ -16,7 +16,7 @@
                 </label>
             {% endif %}
             <label for="toggle-edit-{{ comment.urlhash }}" onclick="ResetEditCommentForm('form-comment-edit-{{ comment.urlhash }}','{{ comment.content_main }}','{{ comment.is_spoiler }}')" class="inline cursor-pointer rounded-lg border-none bg-btn-cancel-bg-light dark:bg-btn-cancel-bg-dark py-2 px-6 text-xl text-btn-cancel-text-light dark:text-btn-cancel-text-dark outline-0 shadow-md ltr:mr-2 rtl:ml-2">{% trans 'Cancel' context 'form-button' %}</label>
-            <button type="button" onclick="EditComment('form-comment-edit-{{ comment.urlhash }}','{{ settings.slug }}','{{ settings.status_check }}')" class="rounded-lg border-none bg-btn-edit-bg-light dark:bg-btn-edit-bg-dark py-2 px-6 text-xl text-btn-edit-text-light dark:text-btn-edit-text-dark outline-0 shadow-md">{% trans 'Edit' context 'form-button' %}</button>
+            <button type="button" onclick="EditComment('form-comment-edit-{{ comment.urlhash }}','{{ settings.slug }}','{{ settings.status_edited_check }}')" class="rounded-lg border-none bg-btn-edit-bg-light dark:bg-btn-edit-bg-dark py-2 px-6 text-xl text-btn-edit-text-light dark:text-btn-edit-text-dark outline-0 shadow-md">{% trans 'Edit' context 'form-button' %}</button>
         </div>
     </div>
 </form>

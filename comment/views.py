@@ -1,10 +1,12 @@
+import json
+
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.utils import timezone
 from django.views import View
-from django.views.generic import ListView, CreateView, UpdateView, TemplateView
+from django.views.generic import ListView, TemplateView
 
 from comment.forms import CommentForm
 from comment.mixins import CommentMixin
@@ -63,19 +65,20 @@ class CommentList(ListView):
         return queryset
 
 
-class CommentCreate(CommentMixin, CreateView):
+class CommentCreate(CommentMixin, View):
     def post(self, request, *args, **kwargs):
-        form = CommentForm(data=request.POST)
+        data = json.loads(request.body)
+        form = CommentForm(data=data)
         if form.is_valid():
             comment = form.save(commit=False)
 
             comment.user = request.user
             comment.content_main = comment.content
-            app_name = request.POST.get('app_name', None)
-            model_name = request.POST.get('model_name', None)
-            object_id = request.POST.get('object_id', None)
-            parent_id = request.POST.get('parent_id', None)
-            settings_slug = request.POST.get('settings_slug', None)
+            app_name = data.get('app_name', None)
+            model_name = data.get('model_name', None)
+            object_id = data.get('object_id', None)
+            parent_id = data.get('parent_id', None)
+            settings_slug = data.get('settings_slug', None)
             comment_settings = CommentSettings.objects.get(slug=settings_slug)
             time_posted = timezone.now()
             comment.content_type = ContentType.objects.get(app_label=app_name, model=model_name.lower())
@@ -97,30 +100,33 @@ class CommentCreate(CommentMixin, CreateView):
             return HttpResponseBadRequest()
 
 
-class CommentUpdate(CommentMixin, UpdateView):
-    model = Comment
-    form_class = CommentForm
-    success_url = '/'
+class CommentUpdate(CommentMixin, View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        form = CommentForm(data=data)
+        if form.is_valid():
+            comment = Comment.objects.get(urlhash=data.get('urlhash'))
+            new_content = data.get('content')
+            new_is_spoiler = data.get('is_spoiler')
+            if comment.content_main != new_content or comment.is_spoiler != new_is_spoiler:
+                comment.content = new_content
+                comment.is_spoiler = new_is_spoiler
 
-    def form_valid(self, form):
-        super().form_valid(form)
+                settings_slug = data.get('settings_slug', None)
+                comment_settings = CommentSettings.objects.get(slug=settings_slug)
 
-        settings_slug = self.request.POST.get('settings_slug', None)
-        comment_settings = CommentSettings.objects.get(slug=settings_slug)
+                if comment_settings.status_edited_check and comment.content_main != comment.content:
+                    comment.status_edited = 'd'
+                    comment.save()
+                else:
+                    comment.status_edited = 'a'
+                    comment.content_main = comment.content
+                    comment.save()
 
-        if comment_settings.status_edited_check:
-            self.object.status_edited = 'd'
-            self.object.save()
+                return JsonResponse({'urlhash': comment.urlhash}, status=200)
+            return HttpResponse(status=200)
         else:
-            self.object.status_edited = 'a'
-            self.object.content_main = self.object.content
-            self.object.save()
-
-        return JsonResponse({'urlhash': self.object.urlhash}, status=200)
-
-    def form_invalid(self, form):
-        super().form_invalid(form)
-        return HttpResponseBadRequest()
+            return HttpResponseBadRequest()
 
 
 class CommentDelete(CommentMixin, View):
@@ -143,8 +149,9 @@ class CommentReact(CommentMixin, View):
 
     def post(self, request, *args, **kwargs):
         user = request.user
-        comment_urlhash = request.POST.get('urlhash', None)
-        react_slug = request.POST.get('react_slug', None)
+        data = json.loads(request.body)
+        comment_urlhash = data.get('urlhash', None)
+        react_slug = data.get('react_slug', None)
 
         reaction = Reaction.objects.filter(user=user, comment__urlhash=comment_urlhash).first()
 
