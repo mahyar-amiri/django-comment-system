@@ -594,8 +594,8 @@ video {
   margin-bottom: 4rem;
 }
 
-.ml-auto {
-  margin-left: auto;
+.ml-4 {
+  margin-left: 1rem;
 }
 
 .box-border {
