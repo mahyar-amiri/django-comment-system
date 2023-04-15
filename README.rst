@@ -35,7 +35,10 @@ Installation & Configuration
           # MY APPS
           'comment.apps.CommentConfig',
       ]
-      LOGIN_URL = reverse_lazy('admin:login')  # or your account login url
+
+      # your account login url
+      LOGIN_URL = 'admin:login'  # or reverse_lazy('admin:login')
+
       MEDIA_URL = '/media/'
       MEDIA_ROOT = BASE_DIR / 'media'
 
