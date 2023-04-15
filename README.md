@@ -453,8 +453,8 @@ templates/comment
 ```text
 static
    ├── css
-   │    ├── style.css
-   │    └── style.min.css
+   │    ├── comment.css
+   │    └── comment.min.css
    ├── font
    │    ├── Vazir
    │    └── Vazir-FD
@@ -534,7 +534,7 @@ static
    ```
 2. Usage
    ```shell
-   npm static/css/style.css > static/css/style.min.css
+   npm static/css/comment.css > static/css/comment.min.css
    npm static/js/comment.js > static/js/comment.min.js
    ```
 
